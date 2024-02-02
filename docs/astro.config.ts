@@ -6,7 +6,7 @@ export default defineConfig({
     starlight({
       customCss: ['./src/styles/custom.css'],
       editLink: {
-        baseUrl: 'https://github.com/HiDeoo/starlight-d2/edit/main/docs/',
+        baseUrl: 'https://github.com/HiDeoo/astro-d2/edit/main/docs/',
       },
       sidebar: [
         {
@@ -15,9 +15,9 @@ export default defineConfig({
         },
       ],
       social: {
-        github: 'https://github.com/HiDeoo/starlight-d2',
+        github: 'https://github.com/HiDeoo/astro-d2',
       },
-      title: 'Starlight D2',
+      title: 'Astro D2',
     }),
   ],
 })

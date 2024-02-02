@@ -44,14 +44,14 @@ importers:
       astro:
         specifier: 4.3.1
         version: 4.3.1(typescript@5.3.3)
+      astro-d2:
+        specifier: workspace:*
+        version: link:../packages/astro-d2
       sharp:
         specifier: 0.33.2
         version: 0.33.2
-      starlight-d2:
-        specifier: workspace:*
-        version: link:../packages/starlight-d2
 
-  packages/starlight-d2:
+  packages/astro-d2:
     dependencies:
       '@astrojs/starlight':
         specifier: '>=0.15.0'

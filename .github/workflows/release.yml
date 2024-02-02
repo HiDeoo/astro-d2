@@ -39,7 +39,7 @@ jobs:
 
       - name: Publish
         run: pnpm publish --no-git-checks
-        working-directory: packages/starlight-d2
+        working-directory: packages/astro-d2
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

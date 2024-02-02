@@ -1,5 +1,5 @@
 {
-  "name": "starlight-d2-monorepo",
+  "name": "astro-d2-monorepo",
   "version": "0.0.1",
   "license": "MIT",
   "description": "// TODO(HiDeoo) ",
@@ -29,12 +29,12 @@
   "keywords": [
     "// TODO(HiDeoo) "
   ],
-  "homepage": "https://github.com/HiDeoo/starlight-d2",
+  "homepage": "https://github.com/HiDeoo/astro-d2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/starlight-d2.git"
+    "url": "https://github.com/HiDeoo/astro-d2.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-d2/issues",
+  "bugs": "https://github.com/HiDeoo/astro-d2/issues",
   "prettier": "@hideoo/prettier-config",
   "lint-staged": {
     "**/*": "prettier -w -u --cache",

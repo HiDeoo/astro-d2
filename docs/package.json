@@ -1,5 +1,5 @@
 {
-  "name": "starlight-d2-docs",
+  "name": "astro-d2-docs",
   "version": "0.0.1",
   "license": "MIT",
   "description": "// TODO(HiDeoo) ",
@@ -14,8 +14,8 @@
   "dependencies": {
     "@astrojs/starlight": "0.17.2",
     "astro": "4.3.1",
-    "sharp": "0.33.2",
-    "starlight-d2": "workspace:*"
+    "astro-d2": "workspace:*",
+    "sharp": "0.33.2"
   },
   "engines": {
     "node": ">=18"
@@ -26,10 +26,10 @@
   "keywords": [
     "// TODO(HiDeoo) "
   ],
-  "homepage": "https://github.com/HiDeoo/starlight-d2",
+  "homepage": "https://github.com/HiDeoo/astro-d2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/starlight-d2.git"
+    "url": "https://github.com/HiDeoo/astro-d2.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-d2/issues"
+  "bugs": "https://github.com/HiDeoo/astro-d2/issues"
 }
