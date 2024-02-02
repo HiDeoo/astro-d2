@@ -1,1 +1,1 @@
-# starlight-d2
+packages/starlight-d2/README.md
