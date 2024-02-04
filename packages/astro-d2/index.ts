@@ -2,23 +2,16 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 
 import type { AstroIntegration } from 'astro'
-import { z } from 'astro/zod'
 
+import { AstroD2ConfigSchema, type AstroD2UserConfig } from './config'
 import { isD2Installed } from './libs/d2'
 import { throwErrorWithHint } from './libs/integration'
 import { remarkAstroD2 } from './libs/remark'
 
-const astroD2ConfigSchema = z
-  .object({
-    // TODO(HiDeoo)
-    enabled: z.boolean().default(true),
-    // TODO(HiDeoo)
-    output: z.string().default('d2'),
-  })
-  .default({})
+export type { AstroD2UserConfig } from './config'
 
 export default function astroD2Integration(userConfig?: AstroD2UserConfig): AstroIntegration {
-  const parsedConfig = astroD2ConfigSchema.safeParse(userConfig)
+  const parsedConfig = AstroD2ConfigSchema.safeParse(userConfig)
 
   if (!parsedConfig.success) {
     throwErrorWithHint(
@@ -54,6 +47,3 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
     },
   }
 }
-
-export type AstroD2UserConfig = z.input<typeof astroD2ConfigSchema>
-export type AstroD2Config = z.output<typeof astroD2ConfigSchema>

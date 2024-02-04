@@ -4,7 +4,7 @@ import type { Code, Html, Parent, Root } from 'mdast'
 import { SKIP, visit } from 'unist-util-visit'
 import type { VFile } from 'vfile'
 
-import type { AstroD2Config } from '..'
+import type { AstroD2Config } from '../config'
 
 import { generateD2Diagram } from './d2'
 
