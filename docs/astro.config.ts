@@ -1,8 +1,10 @@
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
+import astroD2 from 'astro-d2'
 
 export default defineConfig({
   integrations: [
+    astroD2(),
     starlight({
       customCss: ['./src/styles/custom.css'],
       editLink: {
