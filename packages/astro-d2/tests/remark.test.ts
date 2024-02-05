@@ -125,7 +125,7 @@ ${defaultDiagram}
 })
 
 test('uses the sketch meta if specified', async () => {
-  await transformMd(`\`\`\`d2 sketch=true
+  await transformMd(`\`\`\`d2 sketch
 ${defaultDiagram}
 \`\`\`
 `)

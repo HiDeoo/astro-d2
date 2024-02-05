@@ -16,7 +16,8 @@ const metaSchema = z
   })
   .default({})
 
-const metaRegex = /(?<key>[^\s"'=]+)=(?:(?<noQuoteValue>\w+)|'(?<singleQuoteValue>[^']+)'|"(?<doubleQuoteValue>[^"]+))/g
+const metaRegex =
+  /(?<key>[^\s"'=]+)=(?:(?<noQuoteValue>\w+)|'(?<singleQuoteValue>[^']+)'|"(?<doubleQuoteValue>[^"]+))|(?<truthyKey>\w+)/g
 
 export function getMeta(metaStr: string | null | undefined) {
   return metaSchema.parse(parseMeta(metaStr))
@@ -32,12 +33,13 @@ function parseMeta(metaStr: string | null | undefined) {
   const meta: Record<string, string> = {}
 
   for (const match of matches) {
-    const { key, noQuoteValue, singleQuoteValue, doubleQuoteValue } = match.groups ?? {}
+    const { key, noQuoteValue, singleQuoteValue, doubleQuoteValue, truthyKey } = match.groups ?? {}
 
-    const value = noQuoteValue ?? singleQuoteValue ?? doubleQuoteValue
+    const metaKey = truthyKey ?? key
+    const metaValue = truthyKey ? 'true' : noQuoteValue ?? singleQuoteValue ?? doubleQuoteValue
 
-    if (key && value) {
-      meta[key] = value
+    if (metaKey && metaValue) {
+      meta[metaKey] = metaValue
     }
   }
 
