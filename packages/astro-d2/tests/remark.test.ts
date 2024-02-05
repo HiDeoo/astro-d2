@@ -142,6 +142,15 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--pad=50')
 })
 
+test('uses the `animateInterval` meta if specified', async () => {
+  await transformMd(`\`\`\`d2 animateInterval=1000
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--animate-interval=1000')
+})
+
 async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
   const processor = userConfig ? remark().use(remarkAstroD2, AstroD2ConfigSchema.parse(userConfig)) : defaultProcessor
 
@@ -172,9 +181,9 @@ function expectD2ToHaveBeenNthCalledWith(
     'd2',
     [
       `--theme=${config.theme.default}`,
-      `--dark-theme=${config.theme.dark}`,
       `--sketch=false`,
       `--pad=100`,
+      `--dark-theme=${config.theme.dark}`,
       '-',
       fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url)),
     ],

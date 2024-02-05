@@ -3,6 +3,8 @@ import { z } from 'astro/zod'
 export const MetaSchema = z
   .object({
     // TODO(HiDeoo)
+    animateInterval: z.string().optional(),
+    // TODO(HiDeoo)
     darkTheme: z
       .string()
       .optional()

@@ -18,18 +18,33 @@ export async function isD2Installed() {
 }
 
 export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta, input: string, outputPath: string) {
-  const themeArgs = [`--theme=${meta.theme ?? config.theme.default}`]
+  const extraArgs = []
 
   if (
     (config.theme.dark !== false && meta.darkTheme !== false) ||
     (meta.darkTheme !== undefined && meta.darkTheme !== false)
   ) {
-    themeArgs.push(`--dark-theme=${meta.darkTheme ?? config.theme.dark}`)
+    extraArgs.push(`--dark-theme=${meta.darkTheme ?? config.theme.dark}`)
+  }
+
+  if (meta.animateInterval) {
+    extraArgs.push(`--animate-interval=${meta.animateInterval}`)
   }
 
   try {
     // The `-` argument is used to read from stdin instead of a file.
-    await exec('d2', [...themeArgs, `--sketch=${meta.sketch}`, `--pad=${meta.pad}`, '-', outputPath], input)
+    await exec(
+      'd2',
+      [
+        `--theme=${meta.theme ?? config.theme.default}`,
+        `--sketch=${meta.sketch}`,
+        `--pad=${meta.pad}`,
+        ...extraArgs,
+        '-',
+        outputPath,
+      ],
+      input,
+    )
   } catch (error) {
     throw new Error('Failed to generate D2 diagram.', { cause: error })
   }
