@@ -8,6 +8,7 @@ import type { AstroD2Config } from '../config'
 
 import { generateD2Diagram, type D2Size } from './d2'
 import { throwErrorWithHint } from './integration'
+import { parseMeta, type Meta } from './meta'
 
 export function remarkAstroD2(config: AstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {
@@ -28,6 +29,7 @@ export function remarkAstroD2(config: AstroD2Config) {
     await Promise.all(
       d2Nodes.map(async ([node, { index, parent }], d2Index) => {
         const outputPath = getOutputPaths(config, file, d2Index)
+        const meta = parseMeta(node.meta)
         let size: D2Size = { width: undefined, height: undefined }
 
         try {
@@ -39,17 +41,16 @@ export function remarkAstroD2(config: AstroD2Config) {
         }
 
         if (parent && index !== undefined) {
-          parent.children.splice(index, 1, makHtmlImgNode(outputPath.imgPath, size))
+          parent.children.splice(index, 1, makHtmlImgNode(meta, outputPath.imgPath, size))
         }
       }),
     )
   }
 }
 
-function makHtmlImgNode(imgPath: string, size: D2Size): Html {
-  // TODO(HiDeoo) alt
-
+function makHtmlImgNode(meta: Meta, imgPath: string, size: D2Size): Html {
   const attributes: Record<string, string> = {
+    alt: meta['title'] ?? 'Diagram',
     decoding: 'async',
     loading: 'lazy',
     src: imgPath,

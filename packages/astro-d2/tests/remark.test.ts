@@ -27,7 +27,7 @@ test('does nothing if the markdown does not contain any diagrams', async () => {
   const md = `test
 
 \`\`\`js
-console.log('Hello, world!')
+console.warning('Hello, world!')
 \`\`\`
 `
 
@@ -45,7 +45,7 @@ test('generates a basic diagram', async () => {
   expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram)
 
   expect(result).toMatchInlineSnapshot(`
-    "<img decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
+    "<img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
     "
   `)
 })
@@ -69,11 +69,11 @@ y -> z
   expect(result).toMatchInlineSnapshot(`
     "test 1
 
-    <img decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
+    <img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
 
     test 2
 
-    <img decoding="async" loading="lazy" src="/d2/tests/index-1.svg" width="128" height="64" />
+    <img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-1.svg" width="128" height="64" />
     "
   `)
 })
@@ -92,6 +92,18 @@ test('uses a single theme if the dark theme is disabled', async () => {
   await transformMd(defaultMd, config)
 
   expect(vi.mocked(exec).mock.lastCall?.[1].every((arg) => !arg.includes('--dark-theme'))).toBe(true)
+})
+
+test('uses title from meta', async () => {
+  const result = await transformMd(`\`\`\`d2 title="Test Diagram"
+${defaultDiagram}
+\`\`\`
+`)
+
+  expect(result).toMatchInlineSnapshot(`
+    "<img alt="Test Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
+    "
+  `)
 })
 
 async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
