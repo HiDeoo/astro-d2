@@ -63,3 +63,9 @@ test('supports coersed number for `pad`', () => {
 
   expect(meta).toEqual({ ...defaultMeta, pad: 50 })
 })
+
+test('transforms the `target` root value to an empty string', () => {
+  const meta = getMeta('target=root')
+
+  expect(meta).toEqual({ ...defaultMeta, target: '' })
+})

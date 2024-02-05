@@ -14,6 +14,11 @@ export const MetaSchema = z
     // TODO(HiDeoo)
     sketch: z.union([z.literal('true'), z.literal('false')]).default('false'),
     // TODO(HiDeoo)
+    target: z
+      .string()
+      .optional()
+      .transform((value) => (value === 'root' ? '' : value)),
+    // TODO(HiDeoo)
     title: z.string().default('Diagram'),
     // TODO(HiDeoo)
     theme: z.string().optional(),

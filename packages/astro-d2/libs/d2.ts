@@ -31,6 +31,10 @@ export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta
     extraArgs.push(`--animate-interval=${meta.animateInterval}`)
   }
 
+  if (meta.target !== undefined) {
+    extraArgs.push(`--target='${meta.target}'`)
+  }
+
   try {
     // The `-` argument is used to read from stdin instead of a file.
     await exec(

@@ -159,6 +159,15 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--animate-interval=1000')
 })
 
+test('uses the `target` meta if specified', async () => {
+  await transformMd(`\`\`\`d2 target=root
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg("--target=''")
+})
+
 async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
   const processor = userConfig ? remark().use(remarkAstroD2, AstroD2ConfigSchema.parse(userConfig)) : defaultProcessor
 
