@@ -5,6 +5,8 @@ const metaSchema = z
     // TODO(HiDeoo)
     darkTheme: z.string().optional(),
     // TODO(HiDeoo)
+    sketch: z.union([z.literal('true'), z.literal('false')]).default('false'),
+    // TODO(HiDeoo)
     title: z.string().default('Diagram'),
     // TODO(HiDeoo)
     theme: z.string().optional(),

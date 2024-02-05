@@ -91,7 +91,7 @@ test('uses a single theme if the dark theme is disabled', async () => {
 
   await transformMd(defaultMd, config)
 
-  expect(vi.mocked(exec).mock.lastCall?.[1].every((arg) => !arg.includes('--dark-theme'))).toBe(true)
+  expectD2ToNotHaveBeenCalledWithArg('--dark-theme')
 })
 
 test('uses title from meta', async () => {
@@ -121,7 +121,16 @@ ${defaultDiagram}
 \`\`\`
 `)
 
-  expect(vi.mocked(exec).mock.lastCall?.[1].every((arg) => !arg.includes('--dark-theme'))).toBe(true)
+  expectD2ToNotHaveBeenCalledWithArg('--dark-theme')
+})
+
+test('uses the sketch meta if specified', async () => {
+  await transformMd(`\`\`\`d2 sketch=true
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--sketch=true')
 })
 
 async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
@@ -155,9 +164,18 @@ function expectD2ToHaveBeenNthCalledWith(
     [
       `--theme=${config.theme.default}`,
       `--dark-theme=${config.theme.dark}`,
+      `--sketch=false`,
       '-',
       fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url)),
     ],
     input,
   )
+}
+
+function expectD2ToNotHaveBeenCalledWithArg(excludedArg: string) {
+  expect(vi.mocked(exec).mock.lastCall?.[1].every((arg) => !arg.includes(excludedArg))).toBe(true)
+}
+
+function expectD2ToHaveBeenCalledWithArg(includedArg: string) {
+  expect(vi.mocked(exec).mock.lastCall?.[1].some((arg) => arg.includes(includedArg))).toBe(true)
 }
