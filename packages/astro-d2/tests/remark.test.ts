@@ -106,6 +106,24 @@ ${defaultDiagram}
   `)
 })
 
+test('uses the themes specified in the meta if any', async () => {
+  await transformMd(`\`\`\`d2 theme=102 darkTheme=8
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram, { theme: { dark: '8', default: '102' } })
+})
+
+test('uses the meta to disable the dark theme if specified', async () => {
+  await transformMd(`\`\`\`d2 darkTheme=false
+${defaultDiagram}
+\`\`\`
+`)
+
+  expect(vi.mocked(exec).mock.lastCall?.[1].every((arg) => !arg.includes('--dark-theme'))).toBe(true)
+})
+
 async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
   const processor = userConfig ? remark().use(remarkAstroD2, AstroD2ConfigSchema.parse(userConfig)) : defaultProcessor
 

@@ -3,6 +3,7 @@ import fs from 'node:fs/promises'
 import type { AstroD2Config } from '../config'
 
 import { exec } from './exec'
+import type { DiagramMeta } from './meta'
 
 const viewBoxRegex = /viewBox="\d+ \d+ (?<width>\d+) (?<height>\d+)"/
 
@@ -16,11 +17,14 @@ export async function isD2Installed() {
   }
 }
 
-export async function generateD2Diagram(config: AstroD2Config, input: string, outputPath: string) {
-  const themeArgs = [`--theme=${config.theme.default}`]
+export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta, input: string, outputPath: string) {
+  const themeArgs = [`--theme=${meta.theme ?? config.theme.default}`]
 
-  if (config.theme.dark !== false) {
-    themeArgs.push(`--dark-theme=${config.theme.dark}`)
+  if (
+    (config.theme.dark !== false && meta.darkTheme !== 'false') ||
+    (meta.darkTheme !== undefined && meta.darkTheme !== 'false')
+  ) {
+    themeArgs.push(`--dark-theme=${meta.darkTheme ?? config.theme.dark}`)
   }
 
   try {
