@@ -13,16 +13,18 @@ export async function isD2Installed() {
 }
 
 export async function generateD2Diagram(config: AstroD2Config, input: string, outputPath: string) {
-  // TODO(HiDeoo) error handling
-
   const themeArgs = [`--theme=${config.theme.default}`]
 
   if (config.theme.dark !== false) {
     themeArgs.push(`--dark-theme=${config.theme.dark}`)
   }
 
-  // The `-` argument is used to read from stdin instead of a file.
-  await exec('d2', [...themeArgs, '-', outputPath], input)
+  try {
+    // The `-` argument is used to read from stdin instead of a file.
+    await exec('d2', [...themeArgs, '-', outputPath], input)
+  } catch (error) {
+    throw new Error('Failed to generate D2 diagram.', { cause: error })
+  }
 }
 
 async function getD2Version() {
