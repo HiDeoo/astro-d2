@@ -29,7 +29,7 @@ export function remarkAstroD2(config: AstroD2Config) {
       d2Nodes.map(async ([node, { index, parent }], d2Index) => {
         const outputPath = getOutputPaths(config, file, d2Index)
 
-        await generateD2Diagram(node.value, outputPath.fsPath)
+        await generateD2Diagram(config, node.value, outputPath.fsPath)
 
         if (parent && index !== undefined) {
           parent.children.splice(index, 1, makHtmlImgNode(outputPath.imgPath))

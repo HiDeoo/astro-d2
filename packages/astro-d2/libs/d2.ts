@@ -1,3 +1,5 @@
+import type { AstroD2Config } from '../config'
+
 import { exec } from './exec'
 
 export async function isD2Installed() {
@@ -10,11 +12,17 @@ export async function isD2Installed() {
   }
 }
 
-export async function generateD2Diagram(input: string, outputPath: string) {
+export async function generateD2Diagram(config: AstroD2Config, input: string, outputPath: string) {
   // TODO(HiDeoo) error handling
 
+  const themeArgs = [`--theme=${config.theme.default}`]
+
+  if (config.theme.dark !== false) {
+    themeArgs.push(`--dark-theme=${config.theme.dark}`)
+  }
+
   // The `-` argument is used to read from stdin instead of a file.
-  await exec('d2', ['-', outputPath], input)
+  await exec('d2', [...themeArgs, '-', outputPath], input)
 }
 
 async function getD2Version() {

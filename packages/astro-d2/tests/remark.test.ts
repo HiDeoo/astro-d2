@@ -4,13 +4,16 @@ import { remark } from 'remark'
 import { VFile } from 'vfile'
 import { afterEach, expect, test, vi } from 'vitest'
 
-import { AstroD2ConfigSchema, type AstroD2Config } from '../config'
+import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
 import { exec } from '../libs/exec'
 import { remarkAstroD2 } from '../libs/remark'
 
-const defaultConfig = AstroD2ConfigSchema.parse({})
-const defaultProcessor = remark().use(remarkAstroD2, defaultConfig)
+const defaultProcessor = remark().use(remarkAstroD2, AstroD2ConfigSchema.parse({}))
 const defaultDiagram = 'x -> y'
+const defaultMd = `\`\`\`d2
+${defaultDiagram}
+\`\`\`
+`
 
 vi.mock('../libs/exec')
 
@@ -34,10 +37,7 @@ console.log('Hello, world!')
 })
 
 test('generates a basic diagram', async () => {
-  const result = await transformMd(`\`\`\`d2
-${defaultDiagram}
-\`\`\`
-`)
+  const result = await transformMd(defaultMd)
 
   expectD2ToHaveBeenCalledTimes(1)
   expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram)
@@ -51,9 +51,7 @@ ${defaultDiagram}
 test('generates multiple diagrams in the same file', async () => {
   const result = await transformMd(`test 1
 
-\`\`\`d2
-${defaultDiagram}
-\`\`\`
+${defaultMd}
 
 test 2
 
@@ -78,8 +76,24 @@ y -> z
   `)
 })
 
-async function transformMd(md: string, config?: AstroD2Config) {
-  const processor = config ? remark().use(remarkAstroD2, AstroD2ConfigSchema.parse(config)) : defaultProcessor
+test('uses the configured themes', async () => {
+  const config = { theme: { dark: '301', default: '5' } }
+
+  await transformMd(defaultMd, config)
+
+  expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram, config)
+})
+
+test('uses a single theme if the dark theme is disabled', async () => {
+  const config = { theme: { dark: false, default: '5' } } as const
+
+  await transformMd(defaultMd, config)
+
+  expect(vi.mocked(exec).mock.lastCall?.[1].every((arg) => !arg.includes('--dark-theme'))).toBe(true)
+})
+
+async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
+  const processor = userConfig ? remark().use(remarkAstroD2, AstroD2ConfigSchema.parse(userConfig)) : defaultProcessor
 
   const file = await processor.process(
     new VFile({
@@ -99,12 +113,19 @@ function expectD2ToHaveBeenNthCalledWith(
   nth: number,
   diagramIndex: number,
   input: string,
-  config: AstroD2Config = defaultConfig,
+  userConfig: AstroD2UserConfig = {},
 ) {
+  const config = AstroD2ConfigSchema.parse(userConfig)
+
   expect(exec).toHaveBeenNthCalledWith(
     nth,
     'd2',
-    ['-', fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url))],
+    [
+      `--theme=${config.theme.default}`,
+      `--dark-theme=${config.theme.dark}`,
+      '-',
+      fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url)),
+    ],
     input,
   )
 }

@@ -6,6 +6,15 @@ export const AstroD2ConfigSchema = z
     enabled: z.boolean().default(true),
     // TODO(HiDeoo)
     output: z.string().default('d2'),
+    // TODO(HiDeoo)
+    theme: z
+      .object({
+        // TODO(HiDeoo)
+        dark: z.union([z.string(), z.literal(false)]).default('200'),
+        // TODO(HiDeoo)
+        default: z.string().default('0'),
+      })
+      .default({}),
   })
   .default({})
 
