@@ -1,3 +1,4 @@
+import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
 import { remark } from 'remark'
@@ -16,6 +17,7 @@ ${defaultDiagram}
 `
 
 vi.mock('../libs/exec')
+vi.spyOn(fs, 'readFile').mockResolvedValue(`<?xml viewBox="0 0 128 64">`)
 
 afterEach(() => {
   vi.clearAllMocks()
@@ -43,7 +45,7 @@ test('generates a basic diagram', async () => {
   expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram)
 
   expect(result).toMatchInlineSnapshot(`
-    "<img src="/d2/tests/index-0.svg" />
+    "<img decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
     "
   `)
 })
@@ -67,11 +69,11 @@ y -> z
   expect(result).toMatchInlineSnapshot(`
     "test 1
 
-    <img src="/d2/tests/index-0.svg" />
+    <img decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
 
     test 2
 
-    <img src="/d2/tests/index-1.svg" />
+    <img decoding="async" loading="lazy" src="/d2/tests/index-1.svg" width="128" height="64" />
     "
   `)
 })

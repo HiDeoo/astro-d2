@@ -1,6 +1,10 @@
+import fs from 'node:fs/promises'
+
 import type { AstroD2Config } from '../config'
 
 import { exec } from './exec'
+
+const viewBoxRegex = /viewBox="\d+ \d+ (?<width>\d+) (?<height>\d+)"/
 
 export async function isD2Installed() {
   try {
@@ -25,6 +29,8 @@ export async function generateD2Diagram(config: AstroD2Config, input: string, ou
   } catch (error) {
     throw new Error('Failed to generate D2 diagram.', { cause: error })
   }
+
+  return await getD2DiagramSize(outputPath)
 }
 
 async function getD2Version() {
@@ -39,4 +45,21 @@ async function getD2Version() {
   } catch (error) {
     throw new Error('Failed to get D2 version.', { cause: error })
   }
+}
+
+async function getD2DiagramSize(diagramPath: string): Promise<D2Size> {
+  try {
+    const content = await fs.readFile(diagramPath, 'utf8')
+    const match = content.match(viewBoxRegex)
+    const { height, width } = match?.groups ?? {}
+
+    return { height, width }
+  } catch (error) {
+    throw new Error('Failed to get D2 diagram size.', { cause: error })
+  }
+}
+
+export interface D2Size {
+  height: string | undefined
+  width: string | undefined
 }

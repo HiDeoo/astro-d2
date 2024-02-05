@@ -6,7 +6,7 @@ import type { VFile } from 'vfile'
 
 import type { AstroD2Config } from '../config'
 
-import { generateD2Diagram } from './d2'
+import { generateD2Diagram, type D2Size } from './d2'
 import { throwErrorWithHint } from './integration'
 
 export function remarkAstroD2(config: AstroD2Config) {
@@ -28,9 +28,10 @@ export function remarkAstroD2(config: AstroD2Config) {
     await Promise.all(
       d2Nodes.map(async ([node, { index, parent }], d2Index) => {
         const outputPath = getOutputPaths(config, file, d2Index)
+        let size: D2Size = { width: undefined, height: undefined }
 
         try {
-          await generateD2Diagram(config, node.value, outputPath.fsPath)
+          size = await generateD2Diagram(config, node.value, outputPath.fsPath)
         } catch {
           throwErrorWithHint(
             `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
@@ -38,19 +39,35 @@ export function remarkAstroD2(config: AstroD2Config) {
         }
 
         if (parent && index !== undefined) {
-          parent.children.splice(index, 1, makHtmlImgNode(outputPath.imgPath))
+          parent.children.splice(index, 1, makHtmlImgNode(outputPath.imgPath, size))
         }
       }),
     )
   }
 }
 
-function makHtmlImgNode(imgPath: string): Html {
+function makHtmlImgNode(imgPath: string, size: D2Size): Html {
+  // TODO(HiDeoo) alt
+
+  const attributes: Record<string, string> = {
+    decoding: 'async',
+    loading: 'lazy',
+    src: imgPath,
+  }
+
+  if (size.width) {
+    attributes['width'] = size.width
+  }
+
+  if (size.height) {
+    attributes['height'] = size.height
+  }
+
   return {
     type: 'html',
-    // TODO(HiDeoo) more attributes, e.g. alt, width, etc.
-    // TODO(HiDeoo) async loading, lazy loading, etc.
-    value: `<img src="${imgPath}" />`,
+    value: `<img ${Object.entries(attributes)
+      .map(([key, value]) => `${key}="${value}"`)
+      .join(' ')} />`,
   }
 }
 
