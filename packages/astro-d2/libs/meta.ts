@@ -1,12 +1,14 @@
 import { z } from 'astro/zod'
 
-const metaSchema = z
+export const MetaSchema = z
   .object({
     // TODO(HiDeoo)
     darkTheme: z
       .string()
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
+    // TODO(HiDeoo)
+    pad: z.coerce.number().default(100),
     // TODO(HiDeoo)
     sketch: z.union([z.literal('true'), z.literal('false')]).default('false'),
     // TODO(HiDeoo)
@@ -20,7 +22,7 @@ const metaRegex =
   /(?<key>[^\s"'=]+)=(?:(?<noQuoteValue>\w+)|'(?<singleQuoteValue>[^']+)'|"(?<doubleQuoteValue>[^"]+))|(?<truthyKey>\w+)/g
 
 export function getMeta(metaStr: string | null | undefined) {
-  return metaSchema.parse(parseMeta(metaStr))
+  return MetaSchema.parse(parseMeta(metaStr))
 }
 
 function parseMeta(metaStr: string | null | undefined) {
@@ -46,4 +48,4 @@ function parseMeta(metaStr: string | null | undefined) {
   return meta
 }
 
-export type DiagramMeta = z.infer<typeof metaSchema>
+export type DiagramMeta = z.infer<typeof MetaSchema>

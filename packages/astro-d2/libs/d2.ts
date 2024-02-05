@@ -29,7 +29,7 @@ export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta
 
   try {
     // The `-` argument is used to read from stdin instead of a file.
-    await exec('d2', [...themeArgs, `--sketch=${meta.sketch}`, '-', outputPath], input)
+    await exec('d2', [...themeArgs, `--sketch=${meta.sketch}`, `--pad=${meta.pad}`, '-', outputPath], input)
   } catch (error) {
     throw new Error('Failed to generate D2 diagram.', { cause: error })
   }

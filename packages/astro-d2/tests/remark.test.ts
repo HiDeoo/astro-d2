@@ -124,13 +124,22 @@ ${defaultDiagram}
   expectD2ToNotHaveBeenCalledWithArg('--dark-theme')
 })
 
-test('uses the sketch meta if specified', async () => {
+test('uses the `sketch` meta if specified', async () => {
   await transformMd(`\`\`\`d2 sketch
 ${defaultDiagram}
 \`\`\`
 `)
 
   expectD2ToHaveBeenCalledWithArg('--sketch=true')
+})
+
+test('uses the `pad` meta if specified', async () => {
+  await transformMd(`\`\`\`d2 pad=50
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--pad=50')
 })
 
 async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
@@ -165,6 +174,7 @@ function expectD2ToHaveBeenNthCalledWith(
       `--theme=${config.theme.default}`,
       `--dark-theme=${config.theme.dark}`,
       `--sketch=false`,
+      `--pad=100`,
       '-',
       fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url)),
     ],
