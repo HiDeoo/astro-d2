@@ -75,7 +75,6 @@ function getOutputPaths(config: AstroD2Config, file: VFile, nodeIndex: number) {
   const relativePath = path.relative(file.cwd, file.path).replace(/^src\/(content|pages)\//, '')
   const parsedRelativePath = path.parse(relativePath)
 
-  // TODO(HiDeoo) extension customization
   const relativeOutputPath = path.join(parsedRelativePath.dir, `${parsedRelativePath.name}-${nodeIndex}.svg`)
 
   return {
