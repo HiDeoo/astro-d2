@@ -3,7 +3,10 @@ import { z } from 'astro/zod'
 const metaSchema = z
   .object({
     // TODO(HiDeoo)
-    darkTheme: z.string().optional(),
+    darkTheme: z
+      .string()
+      .optional()
+      .transform((value) => (value === 'false' ? false : value)),
     // TODO(HiDeoo)
     sketch: z.union([z.literal('true'), z.literal('false')]).default('false'),
     // TODO(HiDeoo)

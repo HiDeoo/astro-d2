@@ -43,3 +43,9 @@ test('overrides default values', () => {
 
   expect(meta).toEqual({ sketch: 'true', title: 'Diagram' })
 })
+
+test('transforms the darkTheme value to a boolean if set to `false`', () => {
+  const meta = getMeta('darkTheme=false')
+
+  expect(meta).toEqual({ darkTheme: false, sketch: 'false', title: 'Diagram' })
+})

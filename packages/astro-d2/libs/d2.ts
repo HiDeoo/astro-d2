@@ -21,8 +21,8 @@ export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta
   const themeArgs = [`--theme=${meta.theme ?? config.theme.default}`]
 
   if (
-    (config.theme.dark !== false && meta.darkTheme !== 'false') ||
-    (meta.darkTheme !== undefined && meta.darkTheme !== 'false')
+    (config.theme.dark !== false && meta.darkTheme !== false) ||
+    (meta.darkTheme !== undefined && meta.darkTheme !== false)
   ) {
     themeArgs.push(`--dark-theme=${meta.darkTheme ?? config.theme.dark}`)
   }
