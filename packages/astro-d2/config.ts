@@ -5,6 +5,8 @@ export const AstroD2ConfigSchema = z
     // TODO(HiDeoo)
     enabled: z.boolean().default(true),
     // TODO(HiDeoo)
+    layout: z.union([z.literal('dagre'), z.literal('elk'), z.literal('tala')]).default('dagre'),
+    // TODO(HiDeoo)
     output: z.string().default('d2'),
     // TODO(HiDeoo)
     theme: z

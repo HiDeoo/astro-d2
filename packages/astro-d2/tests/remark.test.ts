@@ -78,6 +78,14 @@ y -> z
   `)
 })
 
+test('uses the configured layout engine', async () => {
+  const config = { layout: 'elk' } as const
+
+  await transformMd(defaultMd, config)
+
+  expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram, config)
+})
+
 test('uses the configured themes', async () => {
   const config = { theme: { dark: '301', default: '5' } }
 
@@ -180,6 +188,7 @@ function expectD2ToHaveBeenNthCalledWith(
     nth,
     'd2',
     [
+      `--layout=${config.layout}`,
       `--theme=${config.theme.default}`,
       `--sketch=false`,
       `--pad=100`,

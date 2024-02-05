@@ -36,6 +36,7 @@ export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta
     await exec(
       'd2',
       [
+        `--layout=${config.layout}`,
         `--theme=${meta.theme ?? config.theme.default}`,
         `--sketch=${meta.sketch}`,
         `--pad=${meta.pad}`,
