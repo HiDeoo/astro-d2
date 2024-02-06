@@ -10,6 +10,8 @@ export const MetaSchema = z
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
     // TODO(HiDeoo)
+    height: z.coerce.number().optional(),
+    // TODO(HiDeoo)
     pad: z.coerce.number().default(100),
     // TODO(HiDeoo)
     sketch: z.union([z.literal('true'), z.literal('false')]).default('false'),
@@ -22,6 +24,8 @@ export const MetaSchema = z
     title: z.string().default('Diagram'),
     // TODO(HiDeoo)
     theme: z.string().optional(),
+    // TODO(HiDeoo)
+    width: z.coerce.number().optional(),
   })
   .default({})
 

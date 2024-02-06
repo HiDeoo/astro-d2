@@ -30,7 +30,7 @@ export function remarkAstroD2(config: AstroD2Config) {
       d2Nodes.map(async ([node, { index, parent }], d2Index) => {
         const outputPath = getOutputPaths(config, file, d2Index)
         const meta = getMeta(node.meta)
-        let size: D2Size = { width: undefined, height: undefined }
+        let size: D2Size = undefined
 
         if (config.skipGeneration) {
           size = await getD2DiagramSize(outputPath.fsPath)
@@ -60,13 +60,7 @@ function makHtmlImgNode(meta: DiagramMeta, imgPath: string, size: D2Size): Html 
     src: imgPath,
   }
 
-  if (size.width) {
-    attributes['width'] = size.width
-  }
-
-  if (size.height) {
-    attributes['height'] = size.height
-  }
+  computeImgSize(attributes, meta, size)
 
   return {
     type: 'html',
@@ -85,6 +79,22 @@ function getOutputPaths(config: AstroD2Config, file: VFile, nodeIndex: number) {
   return {
     fsPath: path.join(file.cwd, 'public', config.output, relativeOutputPath),
     imgPath: path.posix.join('/', config.output, relativeOutputPath),
+  }
+}
+
+function computeImgSize(attributes: Record<string, string>, meta: DiagramMeta, size: D2Size) {
+  if (meta.width !== undefined) {
+    attributes['width'] = String(meta.width)
+
+    if (meta.height !== undefined) {
+      attributes['height'] = String(meta.height)
+    } else if (size) {
+      const aspectRatio = size.height / size.width
+      attributes['height'] = String(Math.round(meta.width * aspectRatio))
+    }
+  } else if (size) {
+    attributes['width'] = String(size.width)
+    attributes['height'] = String(size.height)
   }
 }
 

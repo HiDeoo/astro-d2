@@ -168,6 +168,30 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg("--target=''")
 })
 
+test('uses the `width` meta if specified and computes the height', async () => {
+  const result = await transformMd(`\`\`\`d2 width=100
+${defaultDiagram}
+\`\`\`
+`)
+
+  expect(result).toMatchInlineSnapshot(`
+    "<img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="100" height="50" />
+    "
+  `)
+})
+
+test('uses the `width` and `height` meta if specified', async () => {
+  const result = await transformMd(`\`\`\`d2 width=100 height=200
+${defaultDiagram}
+\`\`\`
+`)
+
+  expect(result).toMatchInlineSnapshot(`
+    "<img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="100" height="200" />
+    "
+  `)
+})
+
 async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
   const processor = userConfig ? remark().use(remarkAstroD2, AstroD2ConfigSchema.parse(userConfig)) : defaultProcessor
 

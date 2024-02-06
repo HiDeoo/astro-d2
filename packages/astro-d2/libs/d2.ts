@@ -63,7 +63,14 @@ export async function getD2DiagramSize(diagramPath: string): Promise<D2Size> {
     const match = content.match(viewBoxRegex)
     const { height, width } = match?.groups ?? {}
 
-    return { height, width }
+    if (!height || !width) {
+      return
+    }
+
+    const computedHeight = Number.parseInt(height, 10)
+    const computedWidth = Number.parseInt(width, 10)
+
+    return { height: computedHeight, width: computedWidth }
   } catch (error) {
     throw new Error(`Failed to get D2 diagram size at '${diagramPath}'.`, { cause: error })
   }
@@ -83,7 +90,9 @@ async function getD2Version() {
   }
 }
 
-export interface D2Size {
-  height: string | undefined
-  width: string | undefined
-}
+export type D2Size =
+  | {
+      height: number
+      width: number
+    }
+  | undefined

@@ -58,10 +58,10 @@ test('supports a shorthand syntax for `sketch`', () => {
   expect(meta).toEqual({ ...defaultMeta, sketch: 'true' })
 })
 
-test('supports coersed number for `pad`', () => {
-  const meta = getMeta('pad=50')
+test('supports coersed number for `pad`, `width` and `height`', () => {
+  const meta = getMeta('pad=50 width=100 height=200')
 
-  expect(meta).toEqual({ ...defaultMeta, pad: 50 })
+  expect(meta).toEqual({ ...defaultMeta, pad: 50, width: 100, height: 200 })
 })
 
 test('transforms the `target` root value to an empty string', () => {
