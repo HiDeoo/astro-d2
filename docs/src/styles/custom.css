@@ -5,3 +5,11 @@
   justify-content: center;
   line-height: var(--size);
 }
+
+.diagram-showcase {
+  border: 1px solid var(--sl-color-gray-5);
+
+  img {
+    width: 100%;
+  }
+}
