@@ -1,6 +1,6 @@
 import { z } from 'astro/zod'
 
-export const MetaSchema = z
+export const AttributesSchema = z
   .object({
     /**
      * When specified, the diagram will package multiple boards as 1 SVG which transitions through each board at the
@@ -59,34 +59,34 @@ export const MetaSchema = z
   })
   .default({})
 
-const metaRegex =
+const attributeRegex =
   /(?<key>[^\s"'=]+)=(?:(?<noQuoteValue>\w+)|'(?<singleQuoteValue>[^']+)'|"(?<doubleQuoteValue>[^"]+))|(?<truthyKey>\w+)/g
 
-export function getMeta(metaStr: string | null | undefined) {
-  return MetaSchema.parse(parseMeta(metaStr))
+export function getAttributes(attributesStr: string | null | undefined) {
+  return AttributesSchema.parse(parseAttributes(attributesStr))
 }
 
-function parseMeta(metaStr: string | null | undefined) {
-  if (!metaStr) {
+function parseAttributes(attributesStr: string | null | undefined) {
+  if (!attributesStr) {
     return {}
   }
 
-  const matches = metaStr.matchAll(metaRegex)
+  const matches = attributesStr.matchAll(attributeRegex)
 
-  const meta: Record<string, string> = {}
+  const attributes: Record<string, string> = {}
 
   for (const match of matches) {
     const { key, noQuoteValue, singleQuoteValue, doubleQuoteValue, truthyKey } = match.groups ?? {}
 
-    const metaKey = truthyKey ?? key
-    const metaValue = truthyKey ? 'true' : noQuoteValue ?? singleQuoteValue ?? doubleQuoteValue
+    const attributeKey = truthyKey ?? key
+    const attributeValue = truthyKey ? 'true' : noQuoteValue ?? singleQuoteValue ?? doubleQuoteValue
 
-    if (metaKey && metaValue) {
-      meta[metaKey] = metaValue
+    if (attributeKey && attributeValue) {
+      attributes[attributeKey] = attributeValue
     }
   }
 
-  return meta
+  return attributes
 }
 
-export type DiagramMeta = z.infer<typeof MetaSchema>
+export type DiagramAttributes = z.infer<typeof AttributesSchema>

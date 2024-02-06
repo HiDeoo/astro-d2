@@ -6,9 +6,9 @@ import type { VFile } from 'vfile'
 
 import type { AstroD2Config } from '../config'
 
+import { type DiagramAttributes, getAttributes } from './attributes'
 import { generateD2Diagram, type D2Size, getD2DiagramSize } from './d2'
 import { throwErrorWithHint } from './integration'
-import { type DiagramMeta, getMeta } from './meta'
 
 export function remarkAstroD2(config: AstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {
@@ -29,14 +29,14 @@ export function remarkAstroD2(config: AstroD2Config) {
     await Promise.all(
       d2Nodes.map(async ([node, { index, parent }], d2Index) => {
         const outputPath = getOutputPaths(config, file, d2Index)
-        const meta = getMeta(node.meta)
+        const attributes = getAttributes(node.meta)
         let size: D2Size = undefined
 
         if (config.skipGeneration) {
           size = await getD2DiagramSize(outputPath.fsPath)
         } else {
           try {
-            size = await generateD2Diagram(config, meta, node.value, outputPath.fsPath)
+            size = await generateD2Diagram(config, attributes, node.value, outputPath.fsPath)
           } catch {
             throwErrorWithHint(
               `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
@@ -45,26 +45,26 @@ export function remarkAstroD2(config: AstroD2Config) {
         }
 
         if (parent && index !== undefined) {
-          parent.children.splice(index, 1, makHtmlImgNode(meta, outputPath.imgPath, size))
+          parent.children.splice(index, 1, makHtmlImgNode(attributes, outputPath.imgPath, size))
         }
       }),
     )
   }
 }
 
-function makHtmlImgNode(meta: DiagramMeta, imgPath: string, size: D2Size): Html {
-  const attributes: Record<string, string> = {
-    alt: meta.title,
+function makHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D2Size): Html {
+  const htmlAttributes: Record<string, string> = {
+    alt: attributes.title,
     decoding: 'async',
     loading: 'lazy',
     src: imgPath,
   }
 
-  computeImgSize(attributes, meta, size)
+  computeImgSize(htmlAttributes, attributes, size)
 
   return {
     type: 'html',
-    value: `<img ${Object.entries(attributes)
+    value: `<img ${Object.entries(htmlAttributes)
       .map(([key, value]) => `${key}="${value}"`)
       .join(' ')} />`,
   }
@@ -82,17 +82,17 @@ function getOutputPaths(config: AstroD2Config, file: VFile, nodeIndex: number) {
   }
 }
 
-function computeImgSize(attributes: Record<string, string>, meta: DiagramMeta, size: D2Size) {
-  if (meta.width !== undefined) {
-    attributes['width'] = String(meta.width)
+function computeImgSize(htmlAttributes: Record<string, string>, attributes: DiagramAttributes, size: D2Size) {
+  if (attributes.width !== undefined) {
+    htmlAttributes['width'] = String(attributes.width)
 
     if (size) {
       const aspectRatio = size.height / size.width
-      attributes['height'] = String(Math.round(meta.width * aspectRatio))
+      htmlAttributes['height'] = String(Math.round(attributes.width * aspectRatio))
     }
   } else if (size) {
-    attributes['width'] = String(size.width)
-    attributes['height'] = String(size.height)
+    htmlAttributes['width'] = String(size.width)
+    htmlAttributes['height'] = String(size.height)
   }
 }
 

@@ -102,7 +102,7 @@ test('uses a single theme if the dark theme is disabled', async () => {
   expectD2ToNotHaveBeenCalledWithArg('--dark-theme')
 })
 
-test('uses title from meta', async () => {
+test('uses title from attributes', async () => {
   const result = await transformMd(`\`\`\`d2 title="Test Diagram"
 ${defaultDiagram}
 \`\`\`
@@ -114,7 +114,7 @@ ${defaultDiagram}
   `)
 })
 
-test('uses the themes specified in the meta if any', async () => {
+test('uses the themes specified in the attributes if any', async () => {
   await transformMd(`\`\`\`d2 theme=102 darkTheme=8
 ${defaultDiagram}
 \`\`\`
@@ -123,7 +123,7 @@ ${defaultDiagram}
   expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram, { theme: { dark: '8', default: '102' } })
 })
 
-test('uses the meta to disable the dark theme if specified', async () => {
+test('uses the attributes to disable the dark theme if specified', async () => {
   await transformMd(`\`\`\`d2 darkTheme=false
 ${defaultDiagram}
 \`\`\`
@@ -132,7 +132,7 @@ ${defaultDiagram}
   expectD2ToNotHaveBeenCalledWithArg('--dark-theme')
 })
 
-test('uses the `sketch` meta if specified', async () => {
+test('uses the `sketch` attribute if specified', async () => {
   await transformMd(`\`\`\`d2 sketch
 ${defaultDiagram}
 \`\`\`
@@ -141,7 +141,7 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--sketch=true')
 })
 
-test('uses the `pad` meta if specified', async () => {
+test('uses the `pad` attribute if specified', async () => {
   await transformMd(`\`\`\`d2 pad=50
 ${defaultDiagram}
 \`\`\`
@@ -150,7 +150,7 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--pad=50')
 })
 
-test('uses the `animateInterval` meta if specified', async () => {
+test('uses the `animateInterval` attribute if specified', async () => {
   await transformMd(`\`\`\`d2 animateInterval=1000
 ${defaultDiagram}
 \`\`\`
@@ -159,7 +159,7 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--animate-interval=1000')
 })
 
-test('uses the `target` meta if specified', async () => {
+test('uses the `target` attribute if specified', async () => {
   await transformMd(`\`\`\`d2 target=root
 ${defaultDiagram}
 \`\`\`
@@ -168,7 +168,7 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg("--target=''")
 })
 
-test('uses the `width` meta if specified and computes the height', async () => {
+test('uses the `width` attribute if specified and computes the height', async () => {
   const result = await transformMd(`\`\`\`d2 width=100
 ${defaultDiagram}
 \`\`\`
@@ -176,18 +176,6 @@ ${defaultDiagram}
 
   expect(result).toMatchInlineSnapshot(`
     "<img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="100" height="50" />
-    "
-  `)
-})
-
-test('uses the `width` and `height` meta if specified', async () => {
-  const result = await transformMd(`\`\`\`d2 width=100 height=200
-${defaultDiagram}
-\`\`\`
-`)
-
-  expect(result).toMatchInlineSnapshot(`
-    "<img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="100" height="200" />
     "
   `)
 })

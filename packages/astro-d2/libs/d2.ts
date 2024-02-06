@@ -2,8 +2,8 @@ import fs from 'node:fs/promises'
 
 import type { AstroD2Config } from '../config'
 
+import type { DiagramAttributes } from './attributes'
 import { exec } from './exec'
-import type { DiagramMeta } from './meta'
 
 const viewBoxRegex = /viewBox="\d+ \d+ (?<width>\d+) (?<height>\d+)"/
 
@@ -17,22 +17,27 @@ export async function isD2Installed() {
   }
 }
 
-export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta, input: string, outputPath: string) {
+export async function generateD2Diagram(
+  config: AstroD2Config,
+  attributes: DiagramAttributes,
+  input: string,
+  outputPath: string,
+) {
   const extraArgs = []
 
   if (
-    (config.theme.dark !== false && meta.darkTheme !== false) ||
-    (meta.darkTheme !== undefined && meta.darkTheme !== false)
+    (config.theme.dark !== false && attributes.darkTheme !== false) ||
+    (attributes.darkTheme !== undefined && attributes.darkTheme !== false)
   ) {
-    extraArgs.push(`--dark-theme=${meta.darkTheme ?? config.theme.dark}`)
+    extraArgs.push(`--dark-theme=${attributes.darkTheme ?? config.theme.dark}`)
   }
 
-  if (meta.animateInterval) {
-    extraArgs.push(`--animate-interval=${meta.animateInterval}`)
+  if (attributes.animateInterval) {
+    extraArgs.push(`--animate-interval=${attributes.animateInterval}`)
   }
 
-  if (meta.target !== undefined) {
-    extraArgs.push(`--target='${meta.target}'`)
+  if (attributes.target !== undefined) {
+    extraArgs.push(`--target='${attributes.target}'`)
   }
 
   try {
@@ -41,9 +46,9 @@ export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta
       'd2',
       [
         `--layout=${config.layout}`,
-        `--theme=${meta.theme ?? config.theme.default}`,
-        `--sketch=${meta.sketch}`,
-        `--pad=${meta.pad}`,
+        `--theme=${attributes.theme ?? config.theme.default}`,
+        `--sketch=${attributes.sketch}`,
+        `--pad=${attributes.pad}`,
         ...extraArgs,
         '-',
         outputPath,
