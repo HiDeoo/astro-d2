@@ -4,7 +4,9 @@ import astroD2 from 'astro-d2'
 
 export default defineConfig({
   integrations: [
-    astroD2(),
+    astroD2({
+      skipGeneration: !!process.env['VERCEL'],
+    }),
     starlight({
       customCss: ['./src/styles/custom.css'],
       editLink: {
