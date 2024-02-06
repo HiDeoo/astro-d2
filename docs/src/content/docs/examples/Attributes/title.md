@@ -4,9 +4,9 @@ title: Title
 
 Use the [`title` attribute](/attributes/#title) to specify a title for a diagram.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" 'title="My custom diagram"'
 ```d2 title="My custom diagram"
-x -> y: hello world
+Content -> Website: Astro
 ```
 ````
 

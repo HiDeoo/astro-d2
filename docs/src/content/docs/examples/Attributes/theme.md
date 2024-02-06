@@ -4,16 +4,16 @@ title: Theme
 
 Use the [`theme` attribute](/attributes/#theme) to customize the theme of a diagram.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "theme=102"
 ```d2 theme=102 darkTheme=false
-x -> y: hello world
+Content -> Website: Astro
 ```
 ````
 
 The above code block will be rendered as the following diagram with the `Shirley temple` theme:
 
 ```d2 theme=102 darkTheme=false
-x -> y: hello world
+Content -> Website: Astro
 ```
 
 :::note

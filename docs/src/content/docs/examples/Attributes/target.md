@@ -4,28 +4,30 @@ title: Target
 
 Use the [`target` attribute](/attributes/#target) to defines the target board to render when using [composition](https://d2lang.com/tour/composition).
 
-````md title="src/content/docs/example.md"
-```d2 target=numbers
+````md title="src/content/docs/example.md" "target=starlight"
+```d2 target=starlight
 # Root board
-x -> y
+Content -> Website: Astro
+
 layers: {
-  # Board named "numbers" that does not inherit anything from root
-  numbers: {
-    1 -> 2
+  # A different board named "starlight"
+  starlight: {
+    Documentation -> Website: Starlight
   }
 }
 ```
 ````
 
-The above code block will be rendered as the following diagram with only the `numbers` board being visible:
+The above code block will be rendered as the following diagram with only the `starlight` board being visible:
 
-```d2 target=numbers
+```d2 target=starlight
 # Root board
-x -> y
+Content -> Website: Astro
+
 layers: {
-  # Board named "numbers" that does not inherit anything from root
-  numbers: {
-    1 -> 2
+  # Board named "starlight" that does not inherit anything from root
+  starlight: {
+    Documentation -> Website: Starlight
   }
 }
 ```

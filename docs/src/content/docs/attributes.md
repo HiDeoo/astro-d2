@@ -27,7 +27,7 @@ The following attributes are supported by the Astro D2 integration:
 
 When specified, the diagram will package multiple boards as 1 SVG which transitions through each board at the specified interval (in milliseconds).
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "animateInterval=1000"
 ```d2 animateInterval=1000
 x -> y
 
@@ -46,7 +46,7 @@ layers: {
 The dark theme to use for the diagrams when the user's system preference is set to dark mode.
 To disable the dark theme and have all diagrams look the same, set this attribute to `'false'`.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "darkTheme=301"
 ```d2 darkTheme=301
 x -> y
 ```
@@ -61,7 +61,7 @@ See the D2 documentation for more information about the available [themes](https
 
 The padding (in pixels) around the rendered diagram.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "pad=10"
 ```d2 pad=10
 x -> y
 ```
@@ -74,7 +74,7 @@ x -> y
 
 Whether to render the diagram as if it was sketched by hand.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "sketch"
 ```d2 sketch
 x -> y
 ```
@@ -87,10 +87,11 @@ x -> y
 Defines the target board to render when using [composition](https://d2lang.com/tour/composition).
 Use `root` to target the root board.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "target=numbers"
 ```d2 target=numbers
 # Root board
 x -> y
+
 layers: {
   # Board named "numbers" that does not inherit anything from root
   numbers: {
@@ -106,7 +107,7 @@ layers: {
 
 The title of the diagram that will be used as the `alt` attribute of the generated image.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" 'title="My custom diagram"'
 ```d2 title="My custom diagram"
 x -> y
 ```
@@ -118,7 +119,7 @@ x -> y
 
 The default theme to use for the diagrams.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "theme=102"
 ```d2 theme=102
 x -> y
 ```
@@ -131,8 +132,9 @@ See the D2 documentation for more information about the available [themes](https
 **Example**: [Width attribute](/examples/attributes/width/)
 
 The width (in pixels) of the diagram.
+The height of the diagram will be adjusted to maintain the aspect ratio.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "width=50"
 ```d2 width=50
 x -> y
 ```

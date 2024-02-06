@@ -4,16 +4,16 @@ title: Dark theme
 
 Use the [`darkTheme` attribute](/attributes/#darktheme) to customize the dark theme of a diagram.
 
-````md title="src/content/docs/example.md"
+````md title="src/content/docs/example.md" "darkTheme=301"
 ```d2 theme=301 darkTheme=301
-x -> y: hello world
+Content -> Website: Astro
 ```
 ````
 
 The above code block will be rendered as the following diagram with the `Terminal grayscale` dark theme:
 
 ```d2 theme=301 darkTheme=301
-x -> y: hello world
+Content -> Website: Astro
 ```
 
 :::note
