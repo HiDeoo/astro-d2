@@ -16,6 +16,7 @@ export default defineConfig({
           items: [
             { label: 'Getting Started', link: '/getting-started/' },
             { label: 'Configuration', link: '/configuration/' },
+            { label: 'Attributes', link: '/attributes/' },
           ],
         },
         {

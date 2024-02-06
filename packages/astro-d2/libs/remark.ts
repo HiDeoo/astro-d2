@@ -86,9 +86,7 @@ function computeImgSize(attributes: Record<string, string>, meta: DiagramMeta, s
   if (meta.width !== undefined) {
     attributes['width'] = String(meta.width)
 
-    if (meta.height !== undefined) {
-      attributes['height'] = String(meta.height)
-    } else if (size) {
+    if (size) {
       const aspectRatio = size.height / size.width
       attributes['height'] = String(Math.round(meta.width * aspectRatio))
     }
