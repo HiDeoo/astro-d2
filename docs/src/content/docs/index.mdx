@@ -1,6 +1,41 @@
 ---
 title: Astro D2
+description: Astro integration and remark plugin to transform D2 Markdown code blocks into diagrams.
+head:
+  - tag: title
+    content: Astro D2
+template: splash
+editUrl: false
+lastUpdated: false
+hero:
+  tagline: Astro integration and remark plugin to transform D2 Markdown code blocks into diagrams.
+  image:
+    html: '✏️'
+  actions:
+    - text: Getting Started
+      link: /getting-started/
+      icon: rocket
+      variant: primary
+    - text: Examples
+      link: /examples/hello/
+      icon: external
 ---
 
-// TODO(HiDeoo)
-// FIXME(HiDeoo)
+import { Card, CardGrid } from '@astrojs/starlight/components'
+
+## Next steps
+
+<CardGrid stagger>
+  <Card title="Install D2" icon="laptop">
+    Follow the [D2 installation guide](https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md) to install D2.
+  </Card>
+  <Card title="Install the integration" icon="puzzle">
+    Check the [getting started guide](/getting-started/) for installation instructions.
+  </Card>
+  <Card title="Configure the integration" icon="setting">
+    Edit your config in `astro.config.mjs`.
+  </Card>
+  <Card title="Read the docs" icon="open-book">
+    Learn more in [the Astro D2 Docs](/getting-started/).
+  </Card>
+</CardGrid>
