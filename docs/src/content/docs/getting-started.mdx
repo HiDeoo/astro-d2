@@ -1,0 +1,144 @@
+---
+title: Getting Started
+description: Learn how to start creating diagrams with the Astro D2 integration.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+
+An [Astro](https://astro.build/) integration and remark plugin to transform [D2](https://d2lang.com/) Markdown code blocks into diagrams.
+
+Check out the [examples](/examples/hello-world/) for previews of some diagrams you can create with D2.
+
+## Prerequisites
+
+1. You will need to have an Astro set up.
+   If you don't have one yet, you can follow the [installation guide](https://docs.astro.build/en/install/auto/) in the Astro docs to create one.
+2. You will also need to have D2 installed.
+   You can follow the [installation instructions](https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md) to install D2 on various platforms.
+
+## Installation
+
+Astro D2 is an Astro [integration](https://docs.astro.build/en/guides/integrations-guide/).
+Astro includes an `astro add` command to automate the setup of integrations.
+If you prefer, you can [install the integration manually](#manual-install) instead.
+
+To install `astro-d2`, run the following from your project directory and follow the prompts:
+
+<Tabs>
+<TabItem label="npm">
+
+```sh
+npx astro add astro-d2
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm astro add astro-d2
+```
+
+</TabItem>
+<TabItem label="Yarn">
+
+```sh
+yarn astro add astro-d2
+```
+
+</TabItem>
+<TabItem label="Bun">
+
+```sh
+bun run --bun astro add astro-d2
+```
+
+</TabItem>
+<TabItem label="ni">
+
+```sh
+nr astro add astro-d2
+```
+
+</TabItem>
+</Tabs>
+
+### Manual Install
+
+First, install the `astro-d2` integration using your favorite package manager:
+
+<Tabs>
+<TabItem label="npm">
+
+```sh
+npm install astro-d2
+```
+
+</TabItem>
+<TabItem label="pnpm">
+
+```sh
+pnpm add astro-d2
+```
+
+</TabItem>
+<TabItem label="Yarn">
+
+```sh
+yarn add astro-d2
+```
+
+</TabItem>
+<TabItem label="Bun">
+
+```sh
+bun add astro-d2
+```
+
+</TabItem>
+<TabItem label="ni">
+
+```sh
+ni astro-d2
+```
+
+</TabItem>
+</Tabs>
+
+Then, add the integration to your `astro.config.mjs` file using the `integrations` property:
+
+```diff lang="js" ins="astroD2()"
+// astro.config.mjs
+import { defineConfig } from 'astro/config'
++import astroD2 from 'astro-d2'
+
+export default defineConfig({
+  // …
+  integrations: [astroD2()],
+})
+```
+
+### Editor Integration
+
+For editor support in [Visual Studio Code](https://code.visualstudio.com/), install the [official D2 extension](https://github.com/terrastruct/d2-vscode).
+
+For other editors, you can check the list of official and community-developed [plugins and extensions](https://d2lang.com/tour/extensions).
+
+## Usage
+
+With the Astro D2 integration, you can create a D2 diagram by using a Markdown code block which is indicated by a block with three backticks <code>```</code> at the start and end and by indicating the D2 language after the opening backticks.
+
+````md
+```d2
+direction: right
+installation -> configuration
+```
+````
+
+The above code block will be rendered as the following diagram:
+
+```d2
+direction: right
+installation -> configuration
+```
+
+The Astro D2 instegration behavior can be tweaked using various [configuration options](/configuration) and individual diagrams can be customized using [attributes](/attributes).
