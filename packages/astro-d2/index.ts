@@ -38,7 +38,9 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
             )
           }
 
-          await fs.rm(path.join('public', config.output), { force: true, recursive: true })
+          if (command === 'build') {
+            await fs.rm(path.join('public', config.output), { force: true, recursive: true })
+          }
         }
 
         updateConfig({
