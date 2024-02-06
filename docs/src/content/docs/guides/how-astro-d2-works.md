@@ -1,6 +1,7 @@
 ---
 title: How Astro D2 Works?
 description: Learn more about how the Astro D2 integration works to create diagrams with D2.
+next: false
 ---
 
 The Astro D2 integration is an Astro [integration](https://docs.astro.build/en/guides/integrations-guide/) embedding a [remark](https://remark.js.org/) plugin to transform [D2](https://d2lang.com/) Markdown code blocks into diagrams.
