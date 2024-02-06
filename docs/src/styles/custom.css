@@ -8,8 +8,13 @@
 
 .diagram-showcase {
   border: 1px solid var(--sl-color-gray-5);
+  border-bottom: 0;
 
   img {
     width: 100%;
   }
+}
+
+.diagram-showcase + .expressive-code {
+  margin-top: 0;
 }
