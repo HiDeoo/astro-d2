@@ -6,7 +6,7 @@ import type { VFile } from 'vfile'
 
 import type { AstroD2Config } from '../config'
 
-import { generateD2Diagram, type D2Size } from './d2'
+import { generateD2Diagram, type D2Size, getD2DiagramSize } from './d2'
 import { throwErrorWithHint } from './integration'
 import { type DiagramMeta, getMeta } from './meta'
 
@@ -32,12 +32,16 @@ export function remarkAstroD2(config: AstroD2Config) {
         const meta = getMeta(node.meta)
         let size: D2Size = { width: undefined, height: undefined }
 
-        try {
-          size = await generateD2Diagram(config, meta, node.value, outputPath.fsPath)
-        } catch {
-          throwErrorWithHint(
-            `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
-          )
+        if (config.skipGeneration) {
+          size = await getD2DiagramSize(outputPath.fsPath)
+        } else {
+          try {
+            size = await generateD2Diagram(config, meta, node.value, outputPath.fsPath)
+          } catch {
+            throwErrorWithHint(
+              `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
+            )
+          }
         }
 
         if (parent && index !== undefined) {

@@ -3,11 +3,11 @@ import { z } from 'astro/zod'
 export const AstroD2ConfigSchema = z
   .object({
     // TODO(HiDeoo)
-    enabled: z.boolean().default(true),
-    // TODO(HiDeoo)
     layout: z.union([z.literal('dagre'), z.literal('elk'), z.literal('tala')]).default('dagre'),
     // TODO(HiDeoo)
     output: z.string().default('d2'),
+    // TODO(HiDeoo)
+    skipGeneration: z.boolean().default(false),
     // TODO(HiDeoo)
     theme: z
       .object({

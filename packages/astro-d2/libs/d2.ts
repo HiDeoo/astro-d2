@@ -57,6 +57,18 @@ export async function generateD2Diagram(config: AstroD2Config, meta: DiagramMeta
   return await getD2DiagramSize(outputPath)
 }
 
+export async function getD2DiagramSize(diagramPath: string): Promise<D2Size> {
+  try {
+    const content = await fs.readFile(diagramPath, 'utf8')
+    const match = content.match(viewBoxRegex)
+    const { height, width } = match?.groups ?? {}
+
+    return { height, width }
+  } catch (error) {
+    throw new Error(`Failed to get D2 diagram size at '${diagramPath}'.`, { cause: error })
+  }
+}
+
 async function getD2Version() {
   try {
     const [version] = await exec('d2', ['--version'])
@@ -68,18 +80,6 @@ async function getD2Version() {
     return version
   } catch (error) {
     throw new Error('Failed to get D2 version.', { cause: error })
-  }
-}
-
-async function getD2DiagramSize(diagramPath: string): Promise<D2Size> {
-  try {
-    const content = await fs.readFile(diagramPath, 'utf8')
-    const match = content.match(viewBoxRegex)
-    const { height, width } = match?.groups ?? {}
-
-    return { height, width }
-  } catch (error) {
-    throw new Error('Failed to get D2 diagram size.', { cause: error })
   }
 }
 

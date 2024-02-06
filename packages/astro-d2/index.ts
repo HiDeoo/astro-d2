@@ -24,19 +24,22 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
   return {
     name: 'astro-d2-integration',
     hooks: {
-      'astro:config:setup': async ({ logger, updateConfig }) => {
-        if (!config.enabled) {
-          logger.warn('The D2 integration is disabled, skipping diagrams generation.')
+      'astro:config:setup': async ({ command, logger, updateConfig }) => {
+        if (command !== 'build' && command !== 'dev') {
           return
         }
 
-        if (!(await isD2Installed())) {
-          throwErrorWithHint(
-            'Could not find D2. Please check the installation instructions at https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md',
-          )
-        }
+        if (config.skipGeneration) {
+          logger.warn("Skipping generation of D2 diagrams as the 'skipGeneration' option is enabled.")
+        } else {
+          if (!(await isD2Installed())) {
+            throwErrorWithHint(
+              'Could not find D2. Please check the installation instructions at https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md',
+            )
+          }
 
-        await fs.rm(path.join('public', config.output), { force: true, recursive: true })
+          await fs.rm(path.join('public', config.output), { force: true, recursive: true })
+        }
 
         updateConfig({
           markdown: {
