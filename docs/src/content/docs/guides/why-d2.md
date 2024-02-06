@@ -20,3 +20,7 @@ D2 also includes a lot of powerful features out of the box, such as:
 - [And more…](https://d2lang.com/)
 
 You can read more about D2 design decisions on the [official website](https://d2lang.com/tour/design).
+
+## Comparison
+
+You can use the ["Text to Diagram" comparison tool](https://text-to-diagram.com/) to compare D2 with other similar tools like Mermaid, Graphviz, PlantUML, etc. from diagram definition, rendering to detailed list of features.
