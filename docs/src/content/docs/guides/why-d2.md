@@ -5,7 +5,7 @@ description: Learn why D2 is an excellent choice for creating diagrams.
 
 [**D2**](https://d2lang.com/) is a modern language that turns text to diagrams. It stands for _Declarative Diagramming_.
 
-One of the main advantages of D2 is that its main target is to output diagrams that are meant to be viewed in a web context. To achieve this, D2 outputs SVG by default which contains the diagram and its associated CSS styles. No client-side JavaScript is required to render the diagrams, even animated ones.
+One of the main advantages of D2 is that its main objective is to output diagrams that are meant to be viewed in a web context. To achieve this, D2 outputs SVG by default which contains the diagram and its associated CSS styles. No client-side JavaScript is required to render the diagrams, even animated ones.
 
 ## Features
 

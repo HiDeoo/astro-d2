@@ -21,23 +21,45 @@ In the above example, the `foo` attribute is set to `bar` and the `baz` attribut
 All attributes are optional and can be combined together.
 The following attributes are supported by the Astro D2 integration:
 
-### `animateInterval`
+### `title`
 
-**Example**: [Animate interval attribute](/examples/attributes/animate-interval/)
+**Default:** `'Diagram'`  
+**Example**: [Title attribute](/examples/attributes/title/)
 
-When specified, the diagram will package multiple boards as 1 SVG which transitions through each board at the specified interval (in milliseconds).
+The title of the diagram that will be used as the `alt` attribute of the generated image.
 
-````md title="src/content/docs/example.md" "animateInterval=1000"
-```d2 animateInterval=1000
+````md title="src/content/docs/example.md" 'title="My custom diagram"'
+```d2 title="My custom diagram"
 x -> y
-
-layers: {
-  numbers: {
-    1 -> 2
-  }
-}
 ```
 ````
+
+### `width`
+
+**Example**: [Width attribute](/examples/attributes/width/)
+
+The width (in pixels) of the diagram.
+The height of the diagram will be adjusted to maintain the aspect ratio.
+
+````md title="src/content/docs/example.md" "width=50"
+```d2 width=50
+x -> y
+```
+````
+
+### `theme`
+
+**Example**: [Theme attribute](/examples/attributes/theme/)
+
+The default theme to use for the diagrams.
+
+````md title="src/content/docs/example.md" "theme=102"
+```d2 theme=102
+x -> y
+```
+````
+
+See the D2 documentation for more information about the available [themes](https://d2lang.com/tour/themes).
 
 ### `darkTheme`
 
@@ -54,19 +76,6 @@ x -> y
 
 See the D2 documentation for more information about the available [themes](https://d2lang.com/tour/themes).
 
-### `pad`
-
-**Default:** `'100'`  
-**Example**: [Padding attribute](/examples/attributes/padding/)
-
-The padding (in pixels) around the rendered diagram.
-
-````md title="src/content/docs/example.md" "pad=10"
-```d2 pad=10
-x -> y
-```
-````
-
 ### `sketch`
 
 **Default:** `'false'`  
@@ -76,6 +85,19 @@ Whether to render the diagram as if it was sketched by hand.
 
 ````md title="src/content/docs/example.md" "sketch"
 ```d2 sketch
+x -> y
+```
+````
+
+### `pad`
+
+**Default:** `'100'`  
+**Example**: [Padding attribute](/examples/attributes/padding/)
+
+The padding (in pixels) around the rendered diagram.
+
+````md title="src/content/docs/example.md" "pad=10"
+```d2 pad=10
 x -> y
 ```
 ````
@@ -101,41 +123,20 @@ layers: {
 ```
 ````
 
-### `title`
+### `animateInterval`
 
-**Example**: [Title attribute](/examples/attributes/title/)
+**Example**: [Animate interval attribute](/examples/attributes/animate-interval/)
 
-The title of the diagram that will be used as the `alt` attribute of the generated image.
+When specified, the diagram will package multiple boards as 1 SVG which transitions through each board at the specified interval (in milliseconds).
 
-````md title="src/content/docs/example.md" 'title="My custom diagram"'
-```d2 title="My custom diagram"
+````md title="src/content/docs/example.md" "animateInterval=1000"
+```d2 animateInterval=1000
 x -> y
-```
-````
 
-### `theme`
-
-**Example**: [Theme attribute](/examples/attributes/theme/)
-
-The default theme to use for the diagrams.
-
-````md title="src/content/docs/example.md" "theme=102"
-```d2 theme=102
-x -> y
-```
-````
-
-See the D2 documentation for more information about the available [themes](https://d2lang.com/tour/themes).
-
-### `width`
-
-**Example**: [Width attribute](/examples/attributes/width/)
-
-The width (in pixels) of the diagram.
-The height of the diagram will be adjusted to maintain the aspect ratio.
-
-````md title="src/content/docs/example.md" "width=50"
-```d2 width=50
-x -> y
+layers: {
+  numbers: {
+    1 -> 2
+  }
+}
 ```
 ````

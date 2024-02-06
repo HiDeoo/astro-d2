@@ -2,7 +2,7 @@
 title: Target
 ---
 
-Use the [`target` attribute](/attributes/#target) to defines the target board to render when using [composition](https://d2lang.com/tour/composition).
+Use the [`target` attribute](/attributes/#target) to define the target board to render when using [composition](https://d2lang.com/tour/composition).
 
 ````md title="src/content/docs/example.md" "target=starlight"
 ```d2 target=starlight
