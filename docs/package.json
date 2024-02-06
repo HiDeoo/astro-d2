@@ -2,7 +2,7 @@
   "name": "astro-d2-docs",
   "version": "0.0.1",
   "license": "MIT",
-  "description": "// TODO(HiDeoo) ",
+  "description": "Astro integration and remark plugin to transform D2 Markdown code blocks into diagrams.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
   "type": "module",
   "scripts": {
@@ -24,7 +24,11 @@
   "private": true,
   "sideEffects": false,
   "keywords": [
-    "// TODO(HiDeoo) "
+    "astro",
+    "integration",
+    "markdown",
+    "d2",
+    "diagram"
   ],
   "homepage": "https://github.com/HiDeoo/astro-d2",
   "repository": {
