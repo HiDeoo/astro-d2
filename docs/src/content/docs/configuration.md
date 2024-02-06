@@ -43,7 +43,8 @@ The name of the output directory containing the generated diagrams relative to t
 
 Whether the Astro D2 integration should skip the generation of diagrams.
 
-This is useful to disable generating diagrams when deploying on platforms that do not have the D2 binary available. This will require you to build and commit the diagrams before deploying your site.
+This is useful to disable generating diagrams when deploying on platforms that do not have D2 installed or cannot be easily installed.
+This will require you to [build](https://docs.astro.build/en/reference/cli-reference/#astro-build) and commit diagrams before deploying your site.
 
 ### `layout`
 

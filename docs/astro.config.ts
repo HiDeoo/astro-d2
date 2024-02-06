@@ -20,6 +20,13 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Guides',
+          items: [
+            { label: 'Why D2?', link: '/guides/why-d2/' },
+            { label: 'How Astro D2 Works?', link: '/guides/how-astro-d2-works/' },
+          ],
+        },
+        {
           label: 'Examples',
           autogenerate: { directory: 'examples' },
         },
