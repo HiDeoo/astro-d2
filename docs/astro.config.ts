@@ -15,6 +15,10 @@ export default defineConfig({
           label: 'Start Here',
           items: [{ label: 'Getting Started', link: '/getting-started/' }],
         },
+        {
+          label: 'Examples',
+          autogenerate: { directory: 'examples' },
+        },
       ],
       social: {
         github: 'https://github.com/HiDeoo/astro-d2',
