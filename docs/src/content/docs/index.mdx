@@ -21,7 +21,7 @@ hero:
       icon: external
 ---
 
-import { Card, CardGrid, Code } from '@astrojs/starlight/components'
+import { Card, CardGrid } from '@astrojs/starlight/components'
 
 <div class="diagram-showcase">
 
@@ -32,11 +32,17 @@ Astro.Markdown -> D2 -> SVG -> Browser.Diagrams -> Astro.Markdown: {style.animat
 ```
 
 </div>
-<Code code={`\`\`\`d2 sketch pad=50
+<div class="diagram-showcase-code">
+
+````md
+```d2 sketch pad=50
 direction: right
 
 Astro.Markdown -> D2 -> SVG -> Browser.Diagrams -> Astro.Markdown: {style.animated: true}
-\`\`\``} lang="md" />
+```
+````
+
+</div>
 
 ## Next steps
 

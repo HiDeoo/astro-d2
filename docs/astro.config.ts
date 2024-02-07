@@ -2,6 +2,8 @@ import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import astroD2 from 'astro-d2'
 
+import { expressiveCodeD2Plugin } from './src/libs/ec'
+
 export default defineConfig({
   integrations: [
     astroD2({
@@ -12,6 +14,7 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/HiDeoo/astro-d2/edit/main/docs/',
       },
+      expressiveCode: { plugins: [expressiveCodeD2Plugin()] },
       sidebar: [
         {
           label: 'Start Here',
