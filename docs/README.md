@@ -13,15 +13,13 @@
   <br />
 </div>
 
-## Getting Started
+## Documentation
 
-Want to get started immediately? Check out the [getting started guide](https://astro-d2.vercel.app/getting-started/).
+Run the docs locally using your favorite package manager, e.g. with [pnpm](https://pnpm.io):
 
-## Features
-
-An [Astro](https://astro.build/) integration and [remark](https://remark.js.org/) plugin to transform [D2](https://d2lang.com/) Markdown code blocks into diagrams.
-
-Check out the [demo](https://astro-d2.vercel.app/demo/hello/) for a preview of the generated pages.
+```shell
+pnpm run dev
+```
 
 ## License
 
