@@ -7,7 +7,7 @@ import { expressiveCodeD2Plugin } from './src/libs/ec'
 export default defineConfig({
   integrations: [
     astroD2({
-      skipGeneration: !!process.env['VERCEL'],
+      skipGeneration: !!process.env['CI'] || !!process.env['VERCEL'],
     }),
     starlight({
       customCss: ['./src/styles/custom.css'],
