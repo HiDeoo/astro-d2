@@ -21,7 +21,7 @@ Want to get started immediately? Check out the [getting started guide](https://a
 
 An [Astro](https://astro.build/) integration and [remark](https://remark.js.org/) plugin to transform [D2](https://d2lang.com/) Markdown code blocks into diagrams.
 
-Check out the [demo](https://astro-d2.vercel.app/demo/hello/) for a preview of the generated pages.
+Check out the [examples](https://astro-d2.vercel.app/examples/hello-world/) for previews of some diagrams you can create with D2.
 
 ## License
 
