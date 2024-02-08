@@ -1,1 +1,1 @@
-packages/starlight-d2/README.md
+packages/astro-d2/README.md
