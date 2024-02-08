@@ -1,1 +1,1 @@
-# starlight-d2
+packages/astro-d2/README.md

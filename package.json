@@ -1,0 +1,48 @@
+{
+  "name": "astro-d2-monorepo",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "Astro integration and remark plugin to transform D2 Markdown code blocks into diagrams.",
+  "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
+  "type": "module",
+  "scripts": {
+    "test": "pnpm --stream -r test",
+    "lint": "pnpm -r lint",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@hideoo/eslint-config": "2.0.2",
+    "@hideoo/prettier-config": "2.0.0",
+    "@hideoo/tsconfig": "2.0.1",
+    "eslint": "8.56.0",
+    "husky": "9.0.10",
+    "lint-staged": "15.2.1",
+    "prettier": "3.2.4",
+    "prettier-plugin-astro": "0.13.0",
+    "typescript": "5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@8.15.1",
+  "private": true,
+  "sideEffects": false,
+  "keywords": [
+    "astro",
+    "integration",
+    "markdown",
+    "d2",
+    "diagram"
+  ],
+  "homepage": "https://github.com/HiDeoo/astro-d2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HiDeoo/astro-d2.git"
+  },
+  "bugs": "https://github.com/HiDeoo/astro-d2/issues",
+  "prettier": "@hideoo/prettier-config",
+  "lint-staged": {
+    "**/*": "prettier -w -u --cache",
+    "**/*.{js,jsx,ts,tsx,cjs,mjs,astro}": "eslint --cache --max-warnings=0"
+  }
+}
