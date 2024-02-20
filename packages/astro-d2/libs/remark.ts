@@ -78,7 +78,7 @@ function getOutputPaths(config: AstroD2Config, file: VFile, nodeIndex: number) {
 
   return {
     fsPath: path.join(file.cwd, 'public', config.output, relativeOutputPath),
-    imgPath: path.posix.join('/', config.output, relativeOutputPath),
+    imgPath: path.posix.join('/', config.basePath, config.output, relativeOutputPath),
   }
 }
 
