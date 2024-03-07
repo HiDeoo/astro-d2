@@ -85,7 +85,7 @@ async function getD2Version() {
   try {
     const [version] = await exec('d2', ['--version'])
 
-    if (!version || !/^\d+\.\d+\.\d+$/.test(version)) {
+    if (!version || !/^v?\d+\.\d+\.\d+$/.test(version)) {
       throw new Error(`Invalid D2 version, got '${version}'.`)
     }
 
