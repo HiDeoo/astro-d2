@@ -10,7 +10,7 @@ import { type DiagramAttributes, getAttributes } from './attributes'
 import { generateD2Diagram, type D2Size, getD2DiagramSize } from './d2'
 import { throwErrorWithHint } from './integration'
 
-export function remarkAstroD2(config: AstroD2Config) {
+export function remarkAstroD2(config: RemarkAstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {
     const d2Nodes: [node: Code, context: VisitorContext][] = []
 
@@ -70,7 +70,7 @@ function makHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D2
   }
 }
 
-function getOutputPaths(config: AstroD2Config, file: VFile, nodeIndex: number) {
+function getOutputPaths(config: RemarkAstroD2Config, file: VFile, nodeIndex: number) {
   const relativePath = path.relative(file.cwd, file.path).replace(/^src\/(content|pages)\//, '')
   const parsedRelativePath = path.parse(relativePath)
 
@@ -78,7 +78,7 @@ function getOutputPaths(config: AstroD2Config, file: VFile, nodeIndex: number) {
 
   return {
     fsPath: path.join(file.cwd, 'public', config.output, relativeOutputPath),
-    imgPath: path.posix.join('/', config.basePath, config.output, relativeOutputPath),
+    imgPath: path.posix.join(config.base, config.output, relativeOutputPath),
   }
 }
 
@@ -99,4 +99,8 @@ function computeImgSize(htmlAttributes: Record<string, string>, attributes: Diag
 interface VisitorContext {
   index: number | undefined
   parent: Parent | undefined
+}
+
+interface RemarkAstroD2Config extends AstroD2Config {
+  base: string
 }

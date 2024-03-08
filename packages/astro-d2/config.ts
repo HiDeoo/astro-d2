@@ -3,14 +3,6 @@ import { z } from 'astro/zod'
 export const AstroD2ConfigSchema = z
   .object({
     /**
-     * The base path to use website.
-     *
-     * This is useful when you want to serve the astro website from a subdirectory.
-     *
-     * @default ''
-     */
-    basePath: z.string().default(''),
-    /**
      * Defines the layout engine to use to generate the diagrams.
      *
      * @default 'dagre'
