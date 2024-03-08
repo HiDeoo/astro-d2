@@ -24,7 +24,7 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
   return {
     name: 'astro-d2-integration',
     hooks: {
-      'astro:config:setup': async ({ command, logger, updateConfig }) => {
+      'astro:config:setup': async ({ command, config: astroConfig, logger, updateConfig }) => {
         if (command !== 'build' && command !== 'dev') {
           return
         }
@@ -45,7 +45,7 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
 
         updateConfig({
           markdown: {
-            remarkPlugins: [[remarkAstroD2, config]],
+            remarkPlugins: [[remarkAstroD2, { ...config, base: astroConfig.base }]],
           },
         })
       },

@@ -9,7 +9,7 @@ import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
 import { exec } from '../libs/exec'
 import { remarkAstroD2 } from '../libs/remark'
 
-const defaultProcessor = remark().use(remarkAstroD2, AstroD2ConfigSchema.parse({}))
+const defaultProcessor = remark().use(remarkAstroD2, { ...AstroD2ConfigSchema.parse({}), base: '/' })
 const defaultDiagram = 'x -> y'
 const defaultMd = `\`\`\`d2
 ${defaultDiagram}
@@ -180,8 +180,19 @@ ${defaultDiagram}
   `)
 })
 
-async function transformMd(md: string, userConfig?: AstroD2UserConfig) {
-  const processor = userConfig ? remark().use(remarkAstroD2, AstroD2ConfigSchema.parse(userConfig)) : defaultProcessor
+test('uses the specified base option', async () => {
+  const result = await transformMd(defaultMd, {}, '/test')
+
+  expect(result).toMatchInlineSnapshot(`
+    "<img alt="Diagram" decoding="async" loading="lazy" src="/test/d2/tests/index-0.svg" width="128" height="64" />
+    "
+  `)
+})
+
+async function transformMd(md: string, userConfig?: AstroD2UserConfig, base = '/') {
+  const processor = userConfig
+    ? remark().use(remarkAstroD2, { ...AstroD2ConfigSchema.parse(userConfig), base })
+    : defaultProcessor
 
   const file = await processor.process(
     new VFile({
