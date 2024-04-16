@@ -76,6 +76,6 @@ See the D2 documentation for more information about the available [themes](https
 **Default:** `'200'`
 
 The dark theme to use for the diagrams when the user's system preference is set to dark mode.
-To disable the dark theme and have all diagrams look the same, set this option to `false`.
+To disable the dark theme, set this option to `false`.
 
 See the D2 documentation for more information about the available [themes](https://d2lang.com/tour/themes).
