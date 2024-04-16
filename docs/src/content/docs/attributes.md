@@ -51,7 +51,7 @@ x -> y
 
 **Example**: [Theme attribute](/examples/attributes/theme/)
 
-The default theme to use for the diagrams.
+The default theme to use for the diagram.
 
 ````md title="src/content/docs/example.md" "theme=102"
 ```d2 theme=102
@@ -65,8 +65,8 @@ See the D2 documentation for more information about the available [themes](https
 
 **Example**: [Dark theme attribute](/examples/attributes/dark-theme/)
 
-The dark theme to use for the diagrams when the user's system preference is set to dark mode.
-To disable the dark theme and have all diagrams look the same, set this attribute to `'false'`.
+The dark theme to use for the diagram when the user's system preference is set to dark mode.
+To disable the dark theme for the diagram, set this attribute to `'false'`.
 
 ````md title="src/content/docs/example.md" "darkTheme=301"
 ```d2 darkTheme=301
