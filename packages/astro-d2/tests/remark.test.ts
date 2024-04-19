@@ -141,6 +141,15 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--sketch=true')
 })
 
+test('disables the `sketch` attribute if specified', async () => {
+  await transformMd(`\`\`\`d2 sketch=false
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--sketch=false')
+})
+
 test('uses the `pad` attribute if specified', async () => {
   await transformMd(`\`\`\`d2 pad=50
 ${defaultDiagram}
@@ -222,8 +231,8 @@ function expectD2ToHaveBeenNthCalledWith(
     [
       `--layout=${config.layout}`,
       `--theme=${config.theme.default}`,
-      `--sketch=false`,
-      `--pad=100`,
+      `--sketch=${config.sketch}`,
+      `--pad=${config.pad}`,
       `--dark-theme=${config.theme.dark}`,
       '-',
       fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url)),

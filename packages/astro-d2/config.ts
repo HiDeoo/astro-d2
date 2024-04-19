@@ -16,6 +16,18 @@ export const AstroD2ConfigSchema = z
      */
     output: z.string().default('d2'),
     /**
+     * Defines the default pad value for all diagrams.
+     *
+     * @default 100
+     */
+    pad: z.number().default(100),
+    /**
+     * Whether the Astro D2 integration should default to render the diagram as if sketched by hand.
+     *
+     * @default false
+     */
+    sketch: z.boolean().default(false),
+    /**
      * Whether the Astro D2 integration should skip the generation of diagrams.
      *
      * This is useful to disable generating diagrams when deploying on platforms that do not have the D2 binary

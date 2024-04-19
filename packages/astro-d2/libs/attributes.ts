@@ -23,13 +23,13 @@ export const AttributesSchema = z
      *
      * @default 100
      */
-    pad: z.coerce.number().default(100),
+    pad: z.coerce.string().optional(),
     /**
      * Whether to render the diagram as if it was sketched by hand.
      *
      * @default 'false'
      */
-    sketch: z.union([z.literal('true'), z.literal('false')]).default('false'),
+    sketch: z.union([z.literal('true'), z.literal('false')]).optional(),
     /**
      * Defines the target board to render when using composition.
      * Use `root` to target the root board.
