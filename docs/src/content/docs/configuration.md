@@ -54,6 +54,20 @@ This will require you to [build](https://docs.astro.build/en/reference/cli-refer
 Defines the layout engine to use to generate the diagrams.
 See the D2 documentation for more information about the available [layout engines](https://d2lang.com/tour/layouts#layout-engines).
 
+### `sketch`
+
+**Type:** `boolean`  
+**Default:** `false`
+
+Whether to render the diagrams as if they were sketched by hand.
+
+### `pad`
+
+**Type:** `number`  
+**Default:** `100`
+
+The padding (in pixels) around the rendered diagrams.
+
 ---
 
 ## Theme configuration

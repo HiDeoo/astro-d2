@@ -19,17 +19,16 @@ export const AttributesSchema = z
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
     /**
-     * The padding (in pixels) around the rendered diagram.
-     *
-     * @default 100
+     * Overrides the global `pad` configuration for the diagram.
      */
-    pad: z.coerce.number().default(100),
+    pad: z.coerce.number().optional(),
     /**
-     * Whether to render the diagram as if it was sketched by hand.
-     *
-     * @default 'false'
+     * Overrides the global `sketch` configuration for the diagram.
      */
-    sketch: z.union([z.literal('true'), z.literal('false')]).default('false'),
+    sketch: z
+      .union([z.literal('true'), z.literal('false')])
+      .optional()
+      .transform((value) => (value === 'false' ? false : value)),
     /**
      * Defines the target board to render when using composition.
      * Use `root` to target the root board.

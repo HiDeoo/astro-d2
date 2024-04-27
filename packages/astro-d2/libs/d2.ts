@@ -47,8 +47,8 @@ export async function generateD2Diagram(
       [
         `--layout=${config.layout}`,
         `--theme=${attributes.theme ?? config.theme.default}`,
-        `--sketch=${attributes.sketch}`,
-        `--pad=${attributes.pad}`,
+        `--sketch=${attributes.sketch ?? config.sketch}`,
+        `--pad=${attributes.pad ?? config.pad}`,
         ...extraArgs,
         '-',
         outputPath,

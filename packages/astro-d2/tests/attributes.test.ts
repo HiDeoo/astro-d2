@@ -58,6 +58,12 @@ test('supports a shorthand syntax for `sketch`', () => {
   expect(attributes).toEqual({ ...defaultAttributes, sketch: 'true' })
 })
 
+test('transforms the `sketch` value to a boolean if set to `false`', () => {
+  const attributes = getAttributes('sketch=false')
+
+  expect(attributes).toEqual({ ...defaultAttributes, sketch: false })
+})
+
 test('supports coersed number for `pad` and `width`', () => {
   const attributes = getAttributes('pad=50 width=100')
 
