@@ -133,6 +133,15 @@ ${defaultDiagram}
 })
 
 test('uses the `sketch` attribute if specified', async () => {
+  await transformMd(`\`\`\`d2 sketch=true
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--sketch=true')
+})
+
+test('uses the `sketch` shorthand attribute if specified', async () => {
   await transformMd(`\`\`\`d2 sketch
 ${defaultDiagram}
 \`\`\`
@@ -141,13 +150,32 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--sketch=true')
 })
 
-test('disables the `sketch` attribute if specified', async () => {
-  await transformMd(`\`\`\`d2 sketch=false
+test('uses the `sketch` attribute to disable the `sketch` config if specified', async () => {
+  const config = { sketch: true }
+
+  await transformMd(
+    `\`\`\`d2 sketch=false
 ${defaultDiagram}
 \`\`\`
-`)
+`,
+    config,
+  )
 
   expectD2ToHaveBeenCalledWithArg('--sketch=false')
+})
+
+test('uses the `sketch` attribute to enable the `sketch` config if specified', async () => {
+  const config = { sketch: false }
+
+  await transformMd(
+    `\`\`\`d2 sketch
+${defaultDiagram}
+\`\`\`
+`,
+    config,
+  )
+
+  expectD2ToHaveBeenCalledWithArg('--sketch=true')
 })
 
 test('uses the `pad` attribute if specified', async () => {
@@ -157,6 +185,20 @@ ${defaultDiagram}
 `)
 
   expectD2ToHaveBeenCalledWithArg('--pad=50')
+})
+
+test('uses the `pad` attribute to override the `pad` config if specified', async () => {
+  const config = { pad: 200 }
+
+  await transformMd(
+    `\`\`\`d2 pad=25
+${defaultDiagram}
+\`\`\`
+`,
+    config,
+  )
+
+  expectD2ToHaveBeenCalledWithArg('--pad=25')
 })
 
 test('uses the `animateInterval` attribute if specified', async () => {

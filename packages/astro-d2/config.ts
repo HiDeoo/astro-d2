@@ -16,13 +16,13 @@ export const AstroD2ConfigSchema = z
      */
     output: z.string().default('d2'),
     /**
-     * Defines the default pad value for all diagrams.
+     * The padding (in pixels) around the rendered diagrams.
      *
      * @default 100
      */
     pad: z.number().default(100),
     /**
-     * Whether the Astro D2 integration should default to render the diagram as if sketched by hand.
+     * Whether to render the diagrams as if they were sketched by hand.
      *
      * @default false
      */

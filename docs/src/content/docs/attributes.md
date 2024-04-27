@@ -78,10 +78,9 @@ See the D2 documentation for more information about the available [themes](https
 
 ### `sketch`
 
-**Default:** `'false'`  
 **Example**: [Sketch attribute](/examples/attributes/sketch/)
 
-Whether to render the diagram as if it was sketched by hand.
+Overrides the [global `sketch` configuration](/configuration/#sketch) and defines whether to render the diagram as if it was sketched by hand.
 
 ````md title="src/content/docs/example.md" "sketch"
 ```d2 sketch
@@ -91,10 +90,9 @@ x -> y
 
 ### `pad`
 
-**Default:** `'100'`  
 **Example**: [Padding attribute](/examples/attributes/padding/)
 
-The padding (in pixels) around the rendered diagram.
+Overrides the [global `pad` configuration](/configuration/#pad) and defines the padding (in pixels) around the rendered diagram.
 
 ````md title="src/content/docs/example.md" "pad=10"
 ```d2 pad=10
