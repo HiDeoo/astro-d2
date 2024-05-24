@@ -71,7 +71,7 @@ function makHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D2
 }
 
 function getOutputPaths(config: RemarkAstroD2Config, file: VFile, nodeIndex: number) {
-  const relativePath = path.relative(file.cwd, file.path).replace(/^src\/(content|pages)\//, '')
+  const relativePath = path.relative(file.cwd, file.path).replace(/^src[/\\](content|pages)[/\\]/, '')
   const parsedRelativePath = path.parse(relativePath)
 
   const relativeOutputPath = path.join(parsedRelativePath.dir, `${parsedRelativePath.name}-${nodeIndex}.svg`)
