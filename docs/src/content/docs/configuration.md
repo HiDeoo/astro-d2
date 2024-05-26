@@ -46,6 +46,8 @@ Whether the Astro D2 integration should skip the generation of diagrams.
 This is useful to disable generating diagrams when deploying on platforms that do not have D2 installed or cannot be easily installed.
 This will require you to [build](https://docs.astro.build/en/reference/cli-reference/#astro-build) and commit diagrams before deploying your site.
 
+Read more about deploying your site in the [“Deployment”](/guides/how-astro-d2-works/#deployment) guide.
+
 ### `layout`
 
 **Type:** `'dagre' | 'elk' | 'tala'`  
