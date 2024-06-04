@@ -36,7 +36,13 @@ export function remarkAstroD2(config: RemarkAstroD2Config) {
           size = await getD2DiagramSize(outputPath.fsPath)
         } else {
           try {
-            size = await generateD2Diagram(config, attributes, node.value, outputPath.fsPath)
+            size = await generateD2Diagram(
+              config,
+              attributes,
+              node.value,
+              outputPath.fsPath,
+              file.history[0] ? path.dirname(file.history[0]) : file.cwd,
+            )
           } catch {
             throwErrorWithHint(
               `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,

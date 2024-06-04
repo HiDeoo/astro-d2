@@ -1,8 +1,9 @@
 import { spawn } from 'node:child_process'
 
-export function exec(command: string, args: string[], stdin?: string) {
+export function exec(command: string, args: string[], stdin?: string, cwd?: string) {
   return new Promise<string[]>((resolve, reject) => {
     const child = spawn(command, args, {
+      cwd,
       stdio: [],
     })
 
