@@ -22,6 +22,7 @@ export async function generateD2Diagram(
   attributes: DiagramAttributes,
   input: string,
   outputPath: string,
+  cwd: string,
 ) {
   const extraArgs = []
 
@@ -54,6 +55,7 @@ export async function generateD2Diagram(
         outputPath,
       ],
       input,
+      cwd,
     )
   } catch (error) {
     throw new Error('Failed to generate D2 diagram.', { cause: error })

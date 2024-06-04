@@ -280,6 +280,7 @@ function expectD2ToHaveBeenNthCalledWith(
       fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url)),
     ],
     input,
+    expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests$/),
   )
 }
 

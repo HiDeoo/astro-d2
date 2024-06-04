@@ -67,3 +67,25 @@ container: Docker {
 :::tip
 A collection of icons commonly found in software architecture diagrams is hosted for free by Terrastruct: https://icons.terrastruct.com
 :::
+
+## Relative paths
+
+The Astro D2 integration supports rendering icons with paths relative to your Markdown file.
+
+For example, considering a file located at `src/content/docs/example.md` and an icon located at `src/assets/icon.svg`, you can reference the icon as follows:
+
+````md title="src/content/docs/example.md"
+```d2
+network: {
+  icon: ../../assets/icon.svg
+}
+```
+````
+
+The above code block will be rendered as the following diagram:
+
+```d2
+network: {
+  icon: ../../../assets/icon.svg
+}
+```
