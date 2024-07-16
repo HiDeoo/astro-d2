@@ -107,6 +107,7 @@ interface VisitorContext {
   parent: Parent | undefined
 }
 
-interface RemarkAstroD2Config extends AstroD2Config {
+export interface RemarkAstroD2Config extends AstroD2Config {
   base: string
+  root: URL
 }

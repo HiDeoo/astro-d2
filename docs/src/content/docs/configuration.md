@@ -70,6 +70,12 @@ Whether to render the diagrams as if they were sketched by hand.
 
 The padding (in pixels) around the rendered diagrams.
 
+### `fonts`
+
+**Type:** [`AstroD2FontsConfig`](#fonts-configuration)
+
+The fonts to use for the generated diagrams.
+
 ---
 
 ## Theme configuration
@@ -95,3 +101,28 @@ The dark theme to use for the diagrams when the user's system preference is set 
 To disable the dark theme, set this option to `false`.
 
 See the D2 documentation for more information about the available [themes](https://d2lang.com/tour/themes).
+
+---
+
+## Fonts configuration
+
+The fonts configuration is an object used to configure the fonts used for the generated diagrams.
+It accepts the following options:
+
+### `regular`
+
+**Type:** `string`
+
+The relative path from the project's root to the `.ttf` font file to use for the regular font.
+
+### `italic`
+
+**Type:** `string`
+
+The relative path from the project's root to the `.ttf` font file to use for the italic font.
+
+### `bold`
+
+**Type:** `string`
+
+The relative path from the project's root to the `.ttf` font file to use for the bold font.

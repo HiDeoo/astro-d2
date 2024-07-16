@@ -9,7 +9,11 @@ import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
 import { exec } from '../libs/exec'
 import { remarkAstroD2 } from '../libs/remark'
 
-const defaultProcessor = remark().use(remarkAstroD2, { ...AstroD2ConfigSchema.parse({}), base: '/' })
+const defaultProcessor = remark().use(remarkAstroD2, {
+  ...AstroD2ConfigSchema.parse({}),
+  base: '/',
+  root: new URL('.', import.meta.url),
+})
 const defaultDiagram = 'x -> y'
 const defaultMd = `\`\`\`d2
 ${defaultDiagram}
@@ -92,6 +96,30 @@ test('uses the configured themes', async () => {
   await transformMd(defaultMd, config)
 
   expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram, config)
+})
+
+test('uses the configured fonts', async () => {
+  const config = { fonts: { regular: './fonts/regular.ttf', italic: './fonts/italic.ttf', bold: './fonts/bold.ttf' } }
+
+  await transformMd(defaultMd, config)
+
+  expect(
+    vi.mocked(exec).mock.lastCall?.[1].some((arg) => {
+      return /--font-regular=fonts[/\\]regular\.ttf/.test(arg)
+    }),
+  ).toBe(true)
+
+  expect(
+    vi.mocked(exec).mock.lastCall?.[1].some((arg) => {
+      return /--font-italic=fonts[/\\]italic\.ttf/.test(arg)
+    }),
+  ).toBe(true)
+
+  expect(
+    vi.mocked(exec).mock.lastCall?.[1].some((arg) => {
+      return /--font-bold=fonts[/\\]bold\.ttf/.test(arg)
+    }),
+  ).toBe(true)
 })
 
 test('uses a single theme if the dark theme is disabled', async () => {
@@ -242,7 +270,11 @@ test('uses the specified base option', async () => {
 
 async function transformMd(md: string, userConfig?: AstroD2UserConfig, base = '/') {
   const processor = userConfig
-    ? remark().use(remarkAstroD2, { ...AstroD2ConfigSchema.parse(userConfig), base })
+    ? remark().use(remarkAstroD2, {
+        ...AstroD2ConfigSchema.parse(userConfig),
+        base,
+        root: new URL('.', import.meta.url),
+      })
     : defaultProcessor
 
   const file = await processor.process(
