@@ -3,6 +3,27 @@ import { z } from 'astro/zod'
 export const AstroD2ConfigSchema = z
   .object({
     /**
+     * Defines the fonts to use for the generated diagrams.
+     *
+     * @see https://d2lang.com/tour/fonts/
+     */
+    fonts: z
+      .object({
+        /**
+         * The relative path from the project's root to the .ttf font file to use for the regular font.
+         */
+        regular: z.string().optional(),
+        /**
+         * The relative path from the project's root to the .ttf font file to use for the italic font.
+         */
+        italic: z.string().optional(),
+        /**
+         * The relative path from the project's root to the .ttf font file to use for the bold font.
+         */
+        bold: z.string().optional(),
+      })
+      .optional(),
+    /**
      * Defines the layout engine to use to generate the diagrams.
      *
      * @default 'dagre'

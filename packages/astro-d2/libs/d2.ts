@@ -1,9 +1,10 @@
 import fs from 'node:fs/promises'
-
-import type { AstroD2Config } from '../config'
+import path from 'node:path'
+import url from 'node:url'
 
 import type { DiagramAttributes } from './attributes'
 import { exec } from './exec'
+import type { RemarkAstroD2Config } from './remark'
 
 const viewBoxRegex = /viewBox="\d+ \d+ (?<width>\d+) (?<height>\d+)"/
 
@@ -18,7 +19,7 @@ export async function isD2Installed() {
 }
 
 export async function generateD2Diagram(
-  config: AstroD2Config,
+  config: RemarkAstroD2Config,
   attributes: DiagramAttributes,
   input: string,
   outputPath: string,
@@ -39,6 +40,22 @@ export async function generateD2Diagram(
 
   if (attributes.target !== undefined) {
     extraArgs.push(`--target='${attributes.target}'`)
+  }
+
+  if (config.fonts?.regular) {
+    extraArgs.push(
+      `--font-regular=${path.relative(cwd, path.join(url.fileURLToPath(config.root), config.fonts.regular))}`,
+    )
+  }
+
+  if (config.fonts?.italic) {
+    extraArgs.push(
+      `--font-italic=${path.relative(cwd, path.join(url.fileURLToPath(config.root), config.fonts.italic))}`,
+    )
+  }
+
+  if (config.fonts?.bold) {
+    extraArgs.push(`--font-bold=${path.relative(cwd, path.join(url.fileURLToPath(config.root), config.fonts.bold))}`)
   }
 
   try {
