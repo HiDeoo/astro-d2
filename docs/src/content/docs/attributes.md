@@ -138,3 +138,16 @@ layers: {
 }
 ```
 ````
+
+### `layout`
+
+**Example**: [Layout attribute](/examples/attributes/layout/)
+
+Overrides the [global `layout` configuration](/configuration/#layout) and defines the layout engine to use to generate the diagrams.
+See the D2 documentation for more information about the available [layout engines](https://d2lang.com/tour/layouts#layout-engines).
+
+````md title="src/content/docs/example.md" "layout=elk"
+```d2 layout=elk
+x -> y
+```
+````

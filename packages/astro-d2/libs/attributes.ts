@@ -19,6 +19,10 @@ export const AttributesSchema = z
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
     /**
+     * Overrides the global `layout` configuration for the diagram.
+     */
+    layout: z.union([z.literal('dagre'), z.literal('elk'), z.literal('tala')]).optional(),
+    /**
      * Overrides the global `pad` configuration for the diagram.
      */
     pad: z.coerce.number().optional(),

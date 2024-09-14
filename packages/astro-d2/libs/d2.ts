@@ -63,7 +63,7 @@ export async function generateD2Diagram(
     await exec(
       'd2',
       [
-        `--layout=${config.layout}`,
+        `--layout=${attributes.layout ?? config.layout}`,
         `--theme=${attributes.theme ?? config.theme.default}`,
         `--sketch=${attributes.sketch ?? config.sketch}`,
         `--pad=${attributes.pad ?? config.pad}`,
