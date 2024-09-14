@@ -268,6 +268,27 @@ test('uses the specified base option', async () => {
   `)
 })
 
+test('uses the `layout` attribute if specified', async () => {
+  await transformMd(`\`\`\`d2 pad=50
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--pad=50')
+})
+
+test('uses the `layout` attribute to override the `layout` config if specified', async () => {
+  await transformMd(
+    `\`\`\`d2 layout=tala
+${defaultDiagram}
+\`\`\`
+`,
+    { layout: 'elk' },
+  )
+
+  expectD2ToHaveBeenCalledWithArg('--layout=tala')
+})
+
 async function transformMd(md: string, userConfig?: AstroD2UserConfig, base = '/') {
   const processor = userConfig
     ? remark().use(remarkAstroD2, {
