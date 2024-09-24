@@ -1,6 +1,6 @@
 {
   "name": "astro-d2-monorepo",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "description": "Astro integration and remark plugin to transform D2 Markdown code blocks into diagrams.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
