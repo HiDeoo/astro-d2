@@ -1,4 +1,5 @@
 import path from 'node:path'
+import url from 'node:url'
 
 import type { Code, Html, Parent, Root } from 'mdast'
 import { SKIP, visit } from 'unist-util-visit'
@@ -83,7 +84,7 @@ function getOutputPaths(config: RemarkAstroD2Config, file: VFile, nodeIndex: num
   const relativeOutputPath = path.join(parsedRelativePath.dir, `${parsedRelativePath.name}-${nodeIndex}.svg`)
 
   return {
-    fsPath: path.join(file.cwd, 'public', config.output, relativeOutputPath),
+    fsPath: path.join(url.fileURLToPath(config.publicDir), config.output, relativeOutputPath),
     imgPath: path.posix.join(config.base, config.output, relativeOutputPath),
   }
 }
@@ -109,5 +110,6 @@ interface VisitorContext {
 
 export interface RemarkAstroD2Config extends AstroD2Config {
   base: string
+  publicDir: URL
   root: URL
 }

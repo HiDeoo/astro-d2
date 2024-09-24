@@ -45,7 +45,17 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
 
         updateConfig({
           markdown: {
-            remarkPlugins: [[remarkAstroD2, { ...config, base: astroConfig.base, root: astroConfig.root }]],
+            remarkPlugins: [
+              [
+                remarkAstroD2,
+                {
+                  ...config,
+                  base: astroConfig.base,
+                  publicDir: astroConfig.publicDir,
+                  root: astroConfig.root,
+                },
+              ],
+            ],
           },
         })
       },
