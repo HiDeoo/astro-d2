@@ -7,11 +7,12 @@ import { afterEach, expect, test, vi } from 'vitest'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
 import { exec } from '../libs/exec'
-import { remarkAstroD2 } from '../libs/remark'
+import { remarkAstroD2, type RemarkAstroD2Config } from '../libs/remark'
 
 const defaultProcessor = remark().use(remarkAstroD2, {
   ...AstroD2ConfigSchema.parse({}),
   base: '/',
+  publicDir: new URL('public', import.meta.url),
   root: new URL('.', import.meta.url),
 })
 const defaultDiagram = 'x -> y'
@@ -260,7 +261,7 @@ ${defaultDiagram}
 })
 
 test('uses the specified base option', async () => {
-  const result = await transformMd(defaultMd, {}, '/test')
+  const result = await transformMd(defaultMd, {}, { base: '/test' })
 
   expect(result).toMatchInlineSnapshot(`
     "<img alt="Diagram" decoding="async" loading="lazy" src="/test/d2/tests/index-0.svg" width="128" height="64" />
@@ -289,11 +290,20 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--layout=tala')
 })
 
-async function transformMd(md: string, userConfig?: AstroD2UserConfig, base = '/') {
+test('uses the specified publicDir option', async () => {
+  const astroConfig = { publicDir: new URL('my-custom-publicDir-directory/', import.meta.url) }
+
+  await transformMd(defaultMd, {}, astroConfig)
+
+  expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram, {}, astroConfig)
+})
+
+async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {
   const processor = userConfig
     ? remark().use(remarkAstroD2, {
         ...AstroD2ConfigSchema.parse(userConfig),
-        base,
+        base: astroConfig?.base ?? '/',
+        publicDir: astroConfig?.publicDir ?? new URL('public/', import.meta.url),
         root: new URL('.', import.meta.url),
       })
     : defaultProcessor
@@ -317,6 +327,7 @@ function expectD2ToHaveBeenNthCalledWith(
   diagramIndex: number,
   input: string,
   userConfig: AstroD2UserConfig = {},
+  astroConfig?: Partial<RemarkAstroD2Config>,
 ) {
   const config = AstroD2ConfigSchema.parse(userConfig)
 
@@ -330,7 +341,11 @@ function expectD2ToHaveBeenNthCalledWith(
       `--pad=${config.pad}`,
       `--dark-theme=${config.theme.dark}`,
       '-',
-      fileURLToPath(new URL(`../public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url)),
+      fileURLToPath(
+        astroConfig?.publicDir
+          ? new URL(`${config.output}/tests/index-${diagramIndex}.svg`, astroConfig.publicDir)
+          : new URL(`public/${config.output}/tests/index-${diagramIndex}.svg`, import.meta.url),
+      ),
     ],
     input,
     expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests$/),
