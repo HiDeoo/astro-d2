@@ -240,12 +240,12 @@ ${defaultDiagram}
 })
 
 test('uses the `target` attribute if specified', async () => {
-  await transformMd(`\`\`\`d2 target=root
+  await transformMd(`\`\`\`d2 target=test
 ${defaultDiagram}
 \`\`\`
 `)
 
-  expectD2ToHaveBeenCalledWithArg("--target=''")
+  expectD2ToHaveBeenCalledWithArg('--target=test')
 })
 
 test('uses the `width` attribute if specified and computes the height', async () => {

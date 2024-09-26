@@ -39,7 +39,7 @@ export async function generateD2Diagram(
   }
 
   if (attributes.target !== undefined) {
-    extraArgs.push(`--target='${attributes.target}'`)
+    extraArgs.push(`--target=${attributes.target}`)
   }
 
   if (config.fonts?.regular) {
