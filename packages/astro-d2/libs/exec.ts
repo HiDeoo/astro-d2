@@ -8,7 +8,7 @@ export function exec(command: string, args: string[], stdin?: string, cwd?: stri
     })
 
     const output: string[] = []
-    const errorMessage = `Unable to run command: '${command} ${args.join(' ')}'.`
+    let errorMessage = `Unable to run command: '${command} ${args.join(' ')}'.`
 
     child.stdout.on('data', (data: Buffer) => {
       const lines = data
@@ -17,6 +17,10 @@ export function exec(command: string, args: string[], stdin?: string, cwd?: stri
         .filter((line) => line.length > 0)
 
       output.push(...lines)
+    })
+
+    child.stderr.on('data', (data: Buffer) => {
+      errorMessage += `\n${data.toString()}`
     })
 
     child.on('error', (error) => {

@@ -44,9 +44,10 @@ export function remarkAstroD2(config: RemarkAstroD2Config) {
               outputPath.fsPath,
               file.history[0] ? path.dirname(file.history[0]) : file.cwd,
             )
-          } catch {
+          } catch (error) {
             throwErrorWithHint(
               `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
+              error instanceof Error ? (error.cause instanceof Error ? error.cause : error) : undefined,
             )
           }
         }
