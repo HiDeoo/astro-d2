@@ -1,14 +1,17 @@
 import path from 'node:path'
 import url from 'node:url'
 
+import type { Element } from 'hast'
+import { fromHtml } from 'hast-util-from-html'
+import { toHtml } from 'hast-util-to-html'
 import type { Code, Html, Parent, Root } from 'mdast'
-import { SKIP, visit } from 'unist-util-visit'
+import { CONTINUE, EXIT, SKIP, visit } from 'unist-util-visit'
 import type { VFile } from 'vfile'
 
 import type { AstroD2Config } from '../config'
 
 import { type DiagramAttributes, getAttributes } from './attributes'
-import { generateD2Diagram, type D2Size, getD2DiagramSize } from './d2'
+import { generateD2Diagram, type D2Size, getD2Diagram, type D2Diagram } from './d2'
 import { throwErrorWithHint } from './integration'
 
 export function remarkAstroD2(config: RemarkAstroD2Config) {
@@ -31,13 +34,13 @@ export function remarkAstroD2(config: RemarkAstroD2Config) {
       d2Nodes.map(async ([node, { index, parent }], d2Index) => {
         const outputPath = getOutputPaths(config, file, d2Index)
         const attributes = getAttributes(node.meta)
-        let size: D2Size = undefined
+        let diagram: D2Diagram | undefined = undefined
 
         if (config.skipGeneration) {
-          size = await getD2DiagramSize(outputPath.fsPath)
+          diagram = await getD2Diagram(outputPath.fsPath)
         } else {
           try {
-            size = await generateD2Diagram(
+            diagram = await generateD2Diagram(
               config,
               attributes,
               node.value,
@@ -53,14 +56,20 @@ export function remarkAstroD2(config: RemarkAstroD2Config) {
         }
 
         if (parent && index !== undefined) {
-          parent.children.splice(index, 1, makHtmlImgNode(attributes, outputPath.imgPath, size))
+          parent.children.splice(
+            index,
+            1,
+            config.inline
+              ? makeHtmlSvgNode(attributes, diagram)
+              : makeHtmlImgNode(attributes, outputPath.imgPath, diagram?.size),
+          )
         }
       }),
     )
   }
 }
 
-function makHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D2Size): Html {
+function makeHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D2Size): Html {
   const htmlAttributes: Record<string, string> = {
     alt: attributes.title,
     decoding: 'async',
@@ -75,6 +84,34 @@ function makHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D2
     value: `<img ${Object.entries(htmlAttributes)
       .map(([key, value]) => `${key}="${value}"`)
       .join(' ')} />`,
+  }
+}
+
+function makeHtmlSvgNode(attributes: DiagramAttributes, diagram?: D2Diagram): Html {
+  if (!diagram) {
+    throwErrorWithHint('Failed to retrieve the D2 diagram content for inline rendering.')
+  }
+
+  const tree = fromHtml(diagram.content, { fragment: true })
+
+  visit(tree, 'element', (node) => {
+    if (node.tagName !== 'svg' || !('d2version' in node.properties)) return CONTINUE
+
+    computeSvgSize(node, attributes, diagram.size)
+
+    node.children.unshift({
+      type: 'element',
+      tagName: 'title',
+      properties: {},
+      children: [{ type: 'text', value: attributes.title }],
+    })
+
+    return EXIT
+  })
+
+  return {
+    type: 'html',
+    value: toHtml(tree),
   }
 }
 
@@ -102,6 +139,15 @@ function computeImgSize(htmlAttributes: Record<string, string>, attributes: Diag
     htmlAttributes['width'] = String(size.width)
     htmlAttributes['height'] = String(size.height)
   }
+}
+
+function computeSvgSize(node: Element, attributes: DiagramAttributes, size: D2Size) {
+  if (!attributes.width || !size) return
+
+  const aspectRatio = size.height / size.width
+
+  node.properties['width'] = String(attributes.width)
+  node.properties['height'] = String(Math.round(attributes.width * aspectRatio))
 }
 
 interface VisitorContext {

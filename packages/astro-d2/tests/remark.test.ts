@@ -22,7 +22,9 @@ ${defaultDiagram}
 `
 
 vi.mock('../libs/exec')
-vi.spyOn(fs, 'readFile').mockResolvedValue(`<?xml viewBox="0 0 128 64">`)
+vi.spyOn(fs, 'readFile').mockResolvedValue(
+  `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`,
+)
 
 afterEach(() => {
   vi.clearAllMocks()
@@ -296,6 +298,45 @@ test('uses the specified publicDir option', async () => {
   await transformMd(defaultMd, {}, astroConfig)
 
   expectD2ToHaveBeenNthCalledWith(1, 0, defaultDiagram, {}, astroConfig)
+})
+
+test('inlines SVGs if the `inline` config is set', async () => {
+  const result = await transformMd(defaultMd, { inline: true })
+
+  expect(result).toMatchInlineSnapshot(`
+    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+    "
+  `)
+})
+
+test('uses the `title` attribute if specified for inline SVGs', async () => {
+  const result = await transformMd(
+    `\`\`\`d2 title="Test Diagram"
+    ${defaultDiagram}
+    \`\`\`
+    `,
+    { inline: true },
+  )
+
+  expect(result).toMatchInlineSnapshot(`
+    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Test Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+    "
+  `)
+})
+
+test('sets the width and height attributes if the `width` attribute is set for inline SVGs', async () => {
+  const result = await transformMd(
+    `\`\`\`d2 width=100
+    ${defaultDiagram}
+    \`\`\`
+    `,
+    { inline: true },
+  )
+
+  expect(result).toMatchInlineSnapshot(`
+    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64" width="100" height="50"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+    "
+  `)
 })
 
 async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {

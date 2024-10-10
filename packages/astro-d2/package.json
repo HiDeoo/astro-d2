@@ -14,9 +14,12 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
+    "hast-util-from-html": "2.0.3",
+    "hast-util-to-html": "9.0.3",
     "unist-util-visit": "5.0.0"
   },
   "devDependencies": {
+    "@types/hast": "3.0.4",
     "@types/mdast": "4.0.3",
     "remark": "15.0.1",
     "vfile": "6.0.1",
