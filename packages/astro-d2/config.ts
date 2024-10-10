@@ -24,6 +24,12 @@ export const AstroD2ConfigSchema = z
       })
       .optional(),
     /**
+     * Defines if the SVG diagrams should be inlined in the HTML output.
+     *
+     * By default, the diagrams are rendered using the `<img>` tag.
+     */
+    inline: z.boolean().default(false),
+    /**
      * Defines the layout engine to use to generate the diagrams.
      *
      * @default 'dagre'

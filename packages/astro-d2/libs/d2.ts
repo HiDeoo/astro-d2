@@ -78,10 +78,10 @@ export async function generateD2Diagram(
     throw new Error('Failed to generate D2 diagram.', { cause: error })
   }
 
-  return await getD2DiagramSize(outputPath)
+  return await getD2Diagram(outputPath)
 }
 
-export async function getD2DiagramSize(diagramPath: string): Promise<D2Size> {
+export async function getD2Diagram(diagramPath: string): Promise<D2Diagram | undefined> {
   try {
     const content = await fs.readFile(diagramPath, 'utf8')
     const match = content.match(viewBoxRegex)
@@ -94,7 +94,7 @@ export async function getD2DiagramSize(diagramPath: string): Promise<D2Size> {
     const computedHeight = Number.parseInt(height, 10)
     const computedWidth = Number.parseInt(width, 10)
 
-    return { height: computedHeight, width: computedWidth }
+    return { content, size: { height: computedHeight, width: computedWidth } }
   } catch (error) {
     throw new Error(`Failed to get D2 diagram size at '${diagramPath}'.`, { cause: error })
   }
@@ -112,6 +112,11 @@ async function getD2Version() {
   } catch (error) {
     throw new Error('Failed to get D2 version.', { cause: error })
   }
+}
+
+export interface D2Diagram {
+  content: string
+  size: D2Size
 }
 
 export type D2Size =

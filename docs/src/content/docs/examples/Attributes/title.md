@@ -15,3 +15,15 @@ The `title` attribute is used as the `alt` attribute of the generated image:
 ```html '"My custom diagram"'
 <img alt="My custom diagram" … />
 ```
+
+:::note
+If the [`inline`](/configuration/#inline) configuration option is set to `true`, a `<title>` element is added to the inline SVG:
+
+```html {2}
+<svg …>
+  <title>My custom diagram</title>
+  …
+</svg>
+```
+
+:::

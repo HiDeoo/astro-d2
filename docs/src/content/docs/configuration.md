@@ -76,6 +76,15 @@ The padding (in pixels) around the rendered diagrams.
 
 The fonts to use for the generated diagrams.
 
+### `inline`
+
+**Type:** `boolean`  
+**Default:** `false`
+
+Defines if the SVG diagrams should be inlined in the HTML output.
+
+By default, the diagrams are rendered using the `<img>` tag.
+
 ---
 
 ## Theme configuration
