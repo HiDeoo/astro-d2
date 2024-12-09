@@ -37,6 +37,7 @@ export default defineConfig({
         },
       ],
       social: {
+        blueSky: 'https://bsky.app/profile/hideoo.dev',
         github: 'https://github.com/HiDeoo/astro-d2',
       },
       title: 'Astro D2',
