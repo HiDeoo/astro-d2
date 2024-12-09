@@ -12,7 +12,7 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.17.2",
+    "@astrojs/starlight": "0.22.4",
     "astro": "4.3.1",
     "astro-d2": "workspace:*",
     "sharp": "0.33.2"
