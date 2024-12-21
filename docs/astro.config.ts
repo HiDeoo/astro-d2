@@ -43,4 +43,5 @@ export default defineConfig({
       title: 'Astro D2',
     }),
   ],
+  site: 'https://astro-d2.vercel.app/',
 })

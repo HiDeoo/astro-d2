@@ -4,6 +4,7 @@ import path from 'node:path'
 import type { AstroIntegration } from 'astro'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from './config'
+import { clearContentLayerCache } from './libs/astro'
 import { isD2Installed } from './libs/d2'
 import { throwErrorWithHint } from './libs/integration'
 import { remarkAstroD2 } from './libs/remark'
@@ -39,6 +40,7 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
           }
 
           if (command === 'build') {
+            await clearContentLayerCache(astroConfig, logger)
             await fs.rm(path.join('public', config.output), { force: true, recursive: true })
           }
         }
