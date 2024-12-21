@@ -84,7 +84,7 @@ export async function generateD2Diagram(
 export async function getD2Diagram(diagramPath: string): Promise<D2Diagram | undefined> {
   try {
     const content = await fs.readFile(diagramPath, 'utf8')
-    const match = content.match(viewBoxRegex)
+    const match = viewBoxRegex.exec(content)
     const { height, width } = match?.groups ?? {}
 
     if (!height || !width) {

@@ -9,14 +9,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "lint": "eslint . --cache --max-warnings=0",
-    "format": "prettier -w --cache --ignore-unknown ."
+    "lint": "eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.22.4",
-    "astro": "4.3.1",
+    "@astrojs/starlight": "^0.30.3",
+    "astro": "^5.1.1",
     "astro-d2": "workspace:*",
-    "sharp": "0.33.2"
+    "sharp": "^0.33.5"
   },
   "engines": {
     "node": ">=18"
@@ -34,7 +33,8 @@
   "homepage": "https://github.com/HiDeoo/astro-d2",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/astro-d2.git"
+    "url": "https://github.com/HiDeoo/astro-d2.git",
+    "directory": "docs"
   },
   "bugs": "https://github.com/HiDeoo/astro-d2/issues"
 }

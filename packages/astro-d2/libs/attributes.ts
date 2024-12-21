@@ -82,7 +82,7 @@ function parseAttributes(attributesStr: string | null | undefined) {
     const { key, noQuoteValue, singleQuoteValue, doubleQuoteValue, truthyKey } = match.groups ?? {}
 
     const attributeKey = truthyKey ?? key
-    const attributeValue = truthyKey ? 'true' : noQuoteValue ?? singleQuoteValue ?? doubleQuoteValue
+    const attributeValue = truthyKey ? 'true' : (noQuoteValue ?? singleQuoteValue ?? doubleQuoteValue)
 
     if (attributeKey && attributeValue) {
       attributes[attributeKey] = attributeValue
