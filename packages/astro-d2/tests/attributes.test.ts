@@ -75,3 +75,19 @@ test('transforms the `target` root value to an empty string', () => {
 
   expect(attributes).toEqual({ ...defaultAttributes, target: '' })
 })
+
+test('supports a shorthand syntax for `appendix`', () => {
+  const attributes = getAttributes('appendix')
+
+  expect(attributes).toEqual({ ...defaultAttributes, appendix: true })
+})
+
+test('transforms the `appendix` value to a boolean', () => {
+  let attributes = getAttributes('appendix=false')
+
+  expect(attributes).toEqual({ ...defaultAttributes, appendix: false })
+
+  attributes = getAttributes('appendix=true')
+
+  expect(attributes).toEqual({ ...defaultAttributes, appendix: true })
+})

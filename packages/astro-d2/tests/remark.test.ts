@@ -339,6 +339,52 @@ test('sets the width and height attributes if the `width` attribute is set for i
   `)
 })
 
+test('uses the `appendix` attribute if specified', async () => {
+  await transformMd(`\`\`\`d2 appendix=true
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--force-appendix')
+})
+
+test('uses the `appendix` shorthand attribute if specified', async () => {
+  await transformMd(`\`\`\`d2 appendix
+${defaultDiagram}
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledWithArg('--force-appendix')
+})
+
+test('uses the `appendix` attribute to disable the `appendix` config if specified', async () => {
+  const config = { appendix: true }
+
+  await transformMd(
+    `\`\`\`d2 appendix=false
+${defaultDiagram}
+\`\`\`
+`,
+    config,
+  )
+
+  expectD2ToNotHaveBeenCalledWithArg('--force-appendix')
+})
+
+test('uses the `appendix` attribute to enable the `appendix` config if specified', async () => {
+  const config = { appendix: false }
+
+  await transformMd(
+    `\`\`\`d2 appendix
+${defaultDiagram}
+\`\`\`
+`,
+    config,
+  )
+
+  expectD2ToHaveBeenCalledWithArg('--force-appendix')
+})
+
 async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {
   const processor = userConfig
     ? remark().use(remarkAstroD2, {
