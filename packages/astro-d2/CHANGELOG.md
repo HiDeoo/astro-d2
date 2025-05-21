@@ -1,5 +1,11 @@
 # astro-d2
 
+## 0.8.0
+
+### Minor Changes
+
+- [#41](https://github.com/HiDeoo/astro-d2/pull/41) [`b2d3f4b`](https://github.com/HiDeoo/astro-d2/commit/b2d3f4ba8b1a2aefda7733df67ffe11c4f348d84) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a configuration option and attribute to add an appendix to diagrams with [tooltips or links](https://d2lang.com/tour/interactive/).
+
 ## 0.7.0
 
 ### Minor Changes
