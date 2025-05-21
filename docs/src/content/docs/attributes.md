@@ -151,3 +151,17 @@ See the D2 documentation for more information about the available [layout engine
 x -> y
 ```
 ````
+
+### `appendix`
+
+**Example**: [Appendix attribute](/examples/attributes/appendix/)
+
+Overrides the [global `attribute` configuration](/configuration/#appendix) and defines whether to add an appendix to the diagram with [tooltips or links](https://d2lang.com/tour/interactive/).
+
+````md title="src/content/docs/example.md" "appendix"
+```d2 appendix
+x: {tooltip: The x coordinate}
+y: {tooltip: The y coordinate}
+x -> y
+```
+````

@@ -3,6 +3,13 @@ import { z } from 'astro/zod'
 export const AstroD2ConfigSchema = z
   .object({
     /**
+     * Whether to add an appendix to the diagrams with tooltips or links.
+     *
+     * @default false
+     * @see https://d2lang.com/tour/interactive/
+     */
+    appendix: z.boolean().default(false),
+    /**
      * Defines the fonts to use for the generated diagrams.
      *
      * @see https://d2lang.com/tour/fonts/

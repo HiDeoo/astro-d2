@@ -58,6 +58,10 @@ export async function generateD2Diagram(
     extraArgs.push(`--font-bold=${path.relative(cwd, path.join(url.fileURLToPath(config.root), config.fonts.bold))}`)
   }
 
+  if ((config.appendix && attributes.appendix !== false) || attributes.appendix === true) {
+    extraArgs.push(`--force-appendix`)
+  }
+
   try {
     // The `-` argument is used to read from stdin instead of a file.
     await exec(

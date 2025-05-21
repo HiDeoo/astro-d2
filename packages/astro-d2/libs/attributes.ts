@@ -8,6 +8,13 @@ export const AttributesSchema = z
      */
     animateInterval: z.string().optional(),
     /**
+     * Overrides the global `appendix` configuration for the diagram.
+     */
+    appendix: z
+      .union([z.literal('true'), z.literal('false')])
+      .optional()
+      .transform((value) => value === 'true'),
+    /**
      * The dark theme to use for the diagrams when the user's system preference is set to dark mode.
      *
      * To disable the dark theme and have all diagrams look the same, set this attribute to `'false'`.

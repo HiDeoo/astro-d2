@@ -76,6 +76,13 @@ The padding (in pixels) around the rendered diagrams.
 
 The fonts to use for the generated diagrams.
 
+### `appendix`
+
+**Type:** `boolean`  
+**Default:** `false`
+
+Whether to add an appendix to the diagrams with [tooltips or links](https://d2lang.com/tour/interactive/).
+
 ### `inline`
 
 **Type:** `boolean`  
