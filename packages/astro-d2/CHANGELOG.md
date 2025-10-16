@@ -1,5 +1,11 @@
 # astro-d2
 
+## 0.8.1
+
+### Patch Changes
+
+- [#47](https://github.com/HiDeoo/astro-d2/pull/47) [`7d1c6e0`](https://github.com/HiDeoo/astro-d2/commit/7d1c6e0c9759475ca470178e9947af698c096d0e) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Setups trusted publishing using OpenID Connect (OIDC) authentication — no code changes.
+
 ## 0.8.0
 
 ### Minor Changes
