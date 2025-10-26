@@ -4,6 +4,11 @@ import astroD2 from 'astro-d2'
 
 import { expressiveCodeD2Plugin } from './src/libs/ec'
 
+const site =
+  process.env['VERCEL_ENV'] !== 'production' && process.env['VERCEL_URL']
+    ? `https://${process.env['VERCEL_URL']}`
+    : 'https://astro-d2.vercel.app/'
+
 export default defineConfig({
   integrations: [
     astroD2({
@@ -15,6 +20,19 @@ export default defineConfig({
         baseUrl: 'https://github.com/HiDeoo/astro-d2/edit/main/docs/',
       },
       expressiveCode: { plugins: [expressiveCodeD2Plugin()] },
+      head: [
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image', content: new URL('og.jpg', site).href },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image:alt',
+            content: 'Astro integration and remark plugin to transform D2 Markdown code blocks into diagrams.',
+          },
+        },
+      ],
       sidebar: [
         {
           label: 'Start Here',
@@ -43,5 +61,5 @@ export default defineConfig({
       title: 'Astro D2',
     }),
   ],
-  site: 'https://astro-d2.vercel.app/',
+  site,
 })
