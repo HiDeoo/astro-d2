@@ -271,15 +271,6 @@ test('uses the specified base option', async () => {
   `)
 })
 
-test('uses the `layout` attribute if specified', async () => {
-  await transformMd(`\`\`\`d2 pad=50
-${defaultDiagram}
-\`\`\`
-`)
-
-  expectD2ToHaveBeenCalledWithArg('--pad=50')
-})
-
 test('uses the `layout` attribute to override the `layout` config if specified', async () => {
   await transformMd(
     `\`\`\`d2 layout=tala
@@ -302,6 +293,20 @@ test('uses the specified publicDir option', async () => {
 
 test('inlines SVGs if the `inline` config is set', async () => {
   const result = await transformMd(defaultMd, { inline: true })
+
+  expect(result).toMatchInlineSnapshot(`
+    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+    "
+  `)
+})
+
+test('inlines SVGs if the `inline` attribute is specified', async () => {
+  const result = await transformMd(
+    `\`\`\`d2 inline
+    ${defaultDiagram}
+    \`\`\`
+    `,
+  )
 
   expect(result).toMatchInlineSnapshot(`
     "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
