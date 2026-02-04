@@ -92,7 +92,11 @@ Defines if the SVG diagrams should be inlined in the HTML output.
 
 By default, the diagrams are rendered using the `<img>` tag.
 
----
+### `experimental`
+
+**Type:** [`AstroD2ExperimentalConfig`](#fonts-configuration)
+
+The experimental features to enable for the generated diagrams.
 
 ## Theme configuration
 
@@ -118,8 +122,6 @@ To disable the dark theme, set this option to `false`.
 
 See the D2 documentation for more information about the available [themes](https://d2lang.com/tour/themes).
 
----
-
 ## Fonts configuration
 
 The fonts configuration is an object used to configure the fonts used for the generated diagrams.
@@ -142,3 +144,21 @@ The relative path from the project's root to the `.ttf` font file to use for the
 **Type:** `string`
 
 The relative path from the project's root to the `.ttf` font file to use for the bold font.
+
+## Experimental configuration
+
+Experimental flags allow you to participate in feature development by reporting issues and providing feedback on features that are still in development.
+These features are not guaranteed to be stable and may change or be removed in any future release.
+
+The experimental configuration is an object used to configure the experimental features to enable for the generated diagrams.
+It accepts the following options:
+
+### `useD2js`
+
+**Type:** `boolean`  
+**Default:** `false`
+
+Whether to use [D2.js](https://www.npmjs.com/package/@terrastruct/d2) to generate the diagrams instead of the D2 binary.
+
+By default, the integration requires the D2 binary to be installed on the system to generate diagrams.
+Enabling this option allows generating diagrams using D2.js, a JavaScript wrapper around D2 to run it through WebAssembly.

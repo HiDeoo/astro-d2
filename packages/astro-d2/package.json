@@ -14,6 +14,7 @@
     "lint": "eslint . --cache --max-warnings=0"
   },
   "dependencies": {
+    "@terrastruct/d2": "^0.1.33",
     "hast-util-from-html": "^2.0.3",
     "hast-util-to-html": "^9.0.4",
     "unist-util-visit": "^5.0.0"
