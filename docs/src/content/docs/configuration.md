@@ -94,7 +94,7 @@ By default, the diagrams are rendered using the `<img>` tag.
 
 ### `experimental`
 
-**Type:** [`AstroD2ExperimentalConfig`](#fonts-configuration)
+**Type:** [`AstroD2ExperimentalConfig`](#experimental-configuration)
 
 The experimental features to enable for the generated diagrams.
 
