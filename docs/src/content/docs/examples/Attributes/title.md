@@ -20,9 +20,9 @@ The `title` attribute is used as the `alt` attribute of the generated image:
 If the [`inline`](/configuration/#inline) configuration option is set to `true`, a `<title>` element is added to the inline SVG:
 
 ```html {2}
-<svg …>
+<svg ...>
   <title>My custom diagram</title>
-  …
+  ...
 </svg>
 ```
 

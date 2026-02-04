@@ -13,7 +13,7 @@ x -> y
 The above code block will be rendered with an inline SVG diagram in the HTML output:
 
 ```html
-<svg>...</svg>
+<svg ...>...</svg>
 ```
 
 By default, the diagrams are rendered using the `<img>` tag.
