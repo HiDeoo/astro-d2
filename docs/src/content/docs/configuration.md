@@ -145,6 +145,12 @@ The relative path from the project's root to the `.ttf` font file to use for the
 
 The relative path from the project's root to the `.ttf` font file to use for the bold font.
 
+### `semibold`
+
+**Type:** `string`
+
+The relative path from the project's root to the `.ttf` font file to use for the semibold font.
+
 ## Experimental configuration
 
 Experimental flags allow you to participate in feature development by reporting issues and providing feedback on features that are still in development.

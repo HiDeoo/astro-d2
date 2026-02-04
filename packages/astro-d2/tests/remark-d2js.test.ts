@@ -117,7 +117,14 @@ test('uses the configured themes', async () => {
 })
 
 test('uses the configured fonts', async () => {
-  const config = { fonts: { regular: './fonts/regular.ttf', italic: './fonts/italic.ttf', bold: './fonts/bold.ttf' } }
+  const config = {
+    fonts: {
+      regular: './fonts/regular.ttf',
+      italic: './fonts/italic.ttf',
+      bold: './fonts/bold.ttf',
+      semibold: './fonts/semibold.ttf',
+    },
+  }
 
   await transformMd(defaultMd, config)
 
@@ -126,6 +133,8 @@ test('uses the configured fonts', async () => {
   expect(vi.mocked(d2.compile).mock.lastCall?.[0].options.fontItalic).toBeDefined()
 
   expect(vi.mocked(d2.compile).mock.lastCall?.[0].options.fontBold).toBeDefined()
+
+  expect(vi.mocked(d2.compile).mock.lastCall?.[0].options.fontSemibold).toBeDefined()
 })
 
 test('uses a single theme if the dark theme is disabled', async () => {

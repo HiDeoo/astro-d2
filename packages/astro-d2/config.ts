@@ -47,6 +47,10 @@ export const AstroD2ConfigSchema = z
          * The relative path from the project's root to the .ttf font file to use for the bold font.
          */
         bold: z.string().optional(),
+        /**
+         * The relative path from the project's root to the .ttf font file to use for the semibold font.
+         */
+        semibold: z.string().optional(),
       })
       .optional(),
     /**
@@ -114,6 +118,10 @@ export const AstroD2ConfigSchema = z
         default: z.string().default('0'),
       })
       .default({}),
+  })
+  .refine((config) => config.layout !== 'tala' || !config.experimental.useD2js, {
+    // TODO(HiDeoo) test
+    message: 'The `tala` layout engine is not supported when using the `experimental.useD2js` option.',
   })
   .default({})
 

@@ -74,6 +74,12 @@ async function generateD2BinaryDiagram(
     extraArgs.push(`--font-bold=${path.relative(cwd, path.join(url.fileURLToPath(config.root), config.fonts.bold))}`)
   }
 
+  if (config.fonts?.semibold) {
+    extraArgs.push(
+      `--font-semibold=${path.relative(cwd, path.join(url.fileURLToPath(config.root), config.fonts.semibold))}`,
+    )
+  }
+
   if ((config.appendix && attributes.appendix !== false) || attributes.appendix === true) {
     extraArgs.push(`--force-appendix`)
   }
@@ -138,6 +144,10 @@ async function generateD2jsDiagram(
 
     if (config.fonts?.bold) {
       request.options.fontBold = await getD2jsFont('bold', config.root, config.fonts.bold)
+    }
+
+    if (config.fonts?.semibold) {
+      request.options.fontSemibold = await getD2jsFont('semibold', config.root, config.fonts.semibold)
     }
 
     if ((config.appendix && attributes.appendix !== false) || attributes.appendix === true) {
@@ -217,4 +227,4 @@ export type D2Size =
     }
   | undefined
 
-type D2Font = 'regular' | 'italic' | 'bold'
+type D2Font = 'regular' | 'italic' | 'bold' | 'semibold'

@@ -102,7 +102,14 @@ test('uses the configured themes', async () => {
 })
 
 test('uses the configured fonts', async () => {
-  const config = { fonts: { regular: './fonts/regular.ttf', italic: './fonts/italic.ttf', bold: './fonts/bold.ttf' } }
+  const config = {
+    fonts: {
+      regular: './fonts/regular.ttf',
+      italic: './fonts/italic.ttf',
+      bold: './fonts/bold.ttf',
+      semibold: './fonts/semibold.ttf',
+    },
+  }
 
   await transformMd(defaultMd, config)
 
@@ -121,6 +128,12 @@ test('uses the configured fonts', async () => {
   expect(
     vi.mocked(exec).mock.lastCall?.[1].some((arg) => {
       return /--font-bold=fonts[/\\]bold\.ttf/.test(arg)
+    }),
+  ).toBe(true)
+
+  expect(
+    vi.mocked(exec).mock.lastCall?.[1].some((arg) => {
+      return /--font-semibold=fonts[/\\]semibold\.ttf/.test(arg)
     }),
   ).toBe(true)
 })
