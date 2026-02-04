@@ -91,3 +91,19 @@ test('transforms the `appendix` value to a boolean', () => {
 
   expect(attributes).toEqual({ ...defaultAttributes, appendix: true })
 })
+
+test('supports a shorthand syntax for `inline`', () => {
+  const attributes = getAttributes('inline')
+
+  expect(attributes).toEqual({ ...defaultAttributes, inline: true })
+})
+
+test('transforms the `inline` value to a boolean', () => {
+  let attributes = getAttributes('inline=false')
+
+  expect(attributes).toEqual({ ...defaultAttributes, inline: false })
+
+  attributes = getAttributes('inline=true')
+
+  expect(attributes).toEqual({ ...defaultAttributes, inline: true })
+})

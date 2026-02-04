@@ -165,3 +165,15 @@ y: {tooltip: The y coordinate}
 x -> y
 ```
 ````
+
+### `inline`
+
+**Example**: [Inline attribute](/examples/attributes/inline/)
+
+Overrides the [global `inline` configuration](/configuration/#inline) and defines if the SVG diagram should be inlined in the HTML output.
+
+````md title="src/content/docs/example.md" "inline"
+```d2 inline
+x -> y
+```
+````

@@ -26,6 +26,13 @@ export const AttributesSchema = z
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
     /**
+     * Overrides the global `inline` configuration for the diagram.
+     */
+    inline: z
+      .union([z.literal('true'), z.literal('false')])
+      .optional()
+      .transform((value) => (value === undefined ? undefined : value === 'true')),
+    /**
      * Overrides the global `layout` configuration for the diagram.
      */
     layout: z.union([z.literal('dagre'), z.literal('elk'), z.literal('tala')]).optional(),
