@@ -1,5 +1,27 @@
 # astro-d2
 
+## 0.9.0
+
+### Minor Changes
+
+- [#49](https://github.com/HiDeoo/astro-d2/pull/49) [`68bfe04`](https://github.com/HiDeoo/astro-d2/commit/68bfe04b6098c748beb4ffc24c595419917d5a4c) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds new `inline` attribute to override the global `inline` configuration for a specific diagram.
+
+- [#49](https://github.com/HiDeoo/astro-d2/pull/49) [`68bfe04`](https://github.com/HiDeoo/astro-d2/commit/68bfe04b6098c748beb4ffc24c595419917d5a4c) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for customizing the semibold font in diagrams.
+
+- [#49](https://github.com/HiDeoo/astro-d2/pull/49) [`68bfe04`](https://github.com/HiDeoo/astro-d2/commit/68bfe04b6098c748beb4ffc24c595419917d5a4c) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds experimental support for using [D2.js](https://www.npmjs.com/package/@terrastruct/d2) to render diagrams.
+
+  By default, the integration requires the D2 binary to be installed on the system to generate diagrams. Enabling this option allows generating diagrams using D2.js, a JavaScript wrapper around D2 to run it through WebAssembly.
+
+  To enable this feature, add the experimental flag in your Astro D2 integration configuration:
+
+  ```js
+  astroD2({
+    experimental: {
+      useD2js: true,
+    },
+  })
+  ```
+
 ## 0.8.1
 
 ### Patch Changes
