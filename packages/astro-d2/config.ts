@@ -10,6 +10,25 @@ export const AstroD2ConfigSchema = z
      */
     appendix: z.boolean().default(false),
     /**
+     * Available experimental flags.
+     *
+     * Note that experimental flags are not guaranteed to be stable and may change or be removed in any future release.
+     */
+    experimental: z
+      .object({
+        /**
+         * Whether to use D2.js to generate the diagrams instead of the D2 binary.
+         *
+         * By default, the integration requires the D2 binary to be installed on the system to generate diagrams.
+         * Enabling this option allows generating diagrams using D2.js, a JavaScript wrapper around D2 to run it through
+         * WebAssembly.
+         *
+         * @default false
+         */
+        useD2js: z.boolean().default(false),
+      })
+      .default({}),
+    /**
      * Defines the fonts to use for the generated diagrams.
      *
      * @see https://d2lang.com/tour/fonts/
@@ -28,6 +47,10 @@ export const AstroD2ConfigSchema = z
          * The relative path from the project's root to the .ttf font file to use for the bold font.
          */
         bold: z.string().optional(),
+        /**
+         * The relative path from the project's root to the .ttf font file to use for the semibold font.
+         */
+        semibold: z.string().optional(),
       })
       .optional(),
     /**
@@ -95,6 +118,10 @@ export const AstroD2ConfigSchema = z
         default: z.string().default('0'),
       })
       .default({}),
+  })
+  .refine((config) => config.layout !== 'tala' || !config.experimental.useD2js, {
+    // TODO(HiDeoo) test
+    message: 'The `tala` layout engine is not supported when using the `experimental.useD2js` option.',
   })
   .default({})
 

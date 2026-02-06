@@ -11,9 +11,7 @@ const site =
 
 export default defineConfig({
   integrations: [
-    astroD2({
-      skipGeneration: !!process.env['CI'] || !!process.env['VERCEL'],
-    }),
+    astroD2({ experimental: { useD2js: true } }),
     starlight({
       customCss: ['./src/styles/custom.css'],
       editLink: {

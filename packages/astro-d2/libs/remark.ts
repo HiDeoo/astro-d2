@@ -59,7 +59,7 @@ export function remarkAstroD2(config: RemarkAstroD2Config) {
           parent.children.splice(
             index,
             1,
-            config.inline
+            (attributes.inline ?? config.inline)
               ? makeHtmlSvgNode(attributes, diagram)
               : makeHtmlImgNode(attributes, outputPath.imgPath, diagram?.size),
           )

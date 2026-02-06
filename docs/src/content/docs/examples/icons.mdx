@@ -37,7 +37,7 @@ container: Docker {
 
 The above code block will be rendered as the following diagram:
 
-```d2
+```d2 inline
 container: Docker {
   icon: https://icons.terrastruct.com/dev%2Fdocker.svg
   style: {
@@ -64,6 +64,8 @@ container: Docker {
 }
 ```
 
+When using the [`experimental.useD2js` configuration option](/configuration/#used2js), the [`inline` configuration option](/configuration/#inline) or [attribute](/attributes/#inline) must be set to `true` to properly render the icons.
+
 :::tip
 A collection of icons commonly found in software architecture diagrams is hosted for free by Terrastruct: https://icons.terrastruct.com
 :::
@@ -84,8 +86,6 @@ network: {
 
 The above code block will be rendered as the following diagram:
 
-```d2
-network: {
-  icon: ../../../assets/icon.svg
-}
-```
+![Diagram with an icon using a relative path](../../../assets/relative-icon.svg)
+
+When using the [`experimental.useD2js` configuration option](/configuration/#used2js), icons with relative paths are not supported.

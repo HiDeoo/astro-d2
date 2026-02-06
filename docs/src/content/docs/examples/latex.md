@@ -12,13 +12,13 @@ input -> output: electrolysis
 
 input: {
   equation: |latex
-    2 \\ce{NaCL} + 2 \\ce{H2O}
+    2 \ce{NaCL} + 2 \ce{H2O}
   |
 }
 
 output: {
   equation: |latex
-    \\ce{Cl2} + \\ce{H2} + 2 \\ce{NaOH}
+    \ce{Cl2} + \ce{H2} + 2 \ce{NaOH}
   |
 }
 ```
@@ -31,13 +31,13 @@ input -> output: electrolysis
 
 input: {
   equation: |latex
-    2 \\ce{NaCL} + 2 \\ce{H2O}
+    2 \ce{NaCL} + 2 \ce{H2O}
   |
 }
 
 output: {
   equation: |latex
-    \\ce{Cl2} + \\ce{H2} + 2 \\ce{NaOH}
+    \ce{Cl2} + \ce{H2} + 2 \ce{NaOH}
   |
 }
 ```

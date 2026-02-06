@@ -5,7 +5,7 @@ import type { AstroIntegration } from 'astro'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from './config'
 import { clearContentLayerCache } from './libs/astro'
-import { isD2Installed } from './libs/d2'
+import { isD2BinaryInstalled } from './libs/d2'
 import { throwErrorWithHint } from './libs/integration'
 import { remarkAstroD2 } from './libs/remark'
 
@@ -33,7 +33,7 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
         if (config.skipGeneration) {
           logger.warn("Skipping generation of D2 diagrams as the 'skipGeneration' option is enabled.")
         } else {
-          if (!(await isD2Installed())) {
+          if (!config.experimental.useD2js && !(await isD2BinaryInstalled())) {
             throwErrorWithHint(
               'Could not find D2. Please check the installation instructions at https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md',
             )

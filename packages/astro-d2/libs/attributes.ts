@@ -15,9 +15,9 @@ export const AttributesSchema = z
       .optional()
       .transform((value) => value === 'true'),
     /**
-     * The dark theme to use for the diagrams when the user's system preference is set to dark mode.
+     * The dark theme to use for the diagram when the user's system preference is set to dark mode.
      *
-     * To disable the dark theme and have all diagrams look the same, set this attribute to `'false'`.
+     * To disable the dark theme, set this attribute to `'false'`.
      *
      * @see https://d2lang.com/tour/themes
      */
@@ -25,6 +25,13 @@ export const AttributesSchema = z
       .string()
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
+    /**
+     * Overrides the global `inline` configuration for the diagram.
+     */
+    inline: z
+      .union([z.literal('true'), z.literal('false')])
+      .optional()
+      .transform((value) => (value === undefined ? undefined : value === 'true')),
     /**
      * Overrides the global `layout` configuration for the diagram.
      */
@@ -57,7 +64,7 @@ export const AttributesSchema = z
      */
     title: z.string().default('Diagram'),
     /**
-     * The default theme to use for the diagrams.
+     * The default theme to use for the diagram.
      *
      * @see https://d2lang.com/tour/themes
      */
