@@ -74,7 +74,7 @@ export const AttributesSchema = z
      */
     width: z.coerce.number().optional(),
   })
-  .default({})
+  .prefault({})
 
 const attributeRegex =
   /(?<key>[^\s"'=]+)=(?:(?<noQuoteValue>\w+)|'(?<singleQuoteValue>[^']+)'|"(?<doubleQuoteValue>[^"]+))|(?<truthyKey>\w+)/g

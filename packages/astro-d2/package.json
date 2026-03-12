@@ -16,24 +16,24 @@
   "dependencies": {
     "@terrastruct/d2": "^0.1.33",
     "hast-util-from-html": "^2.0.3",
-    "hast-util-to-html": "^9.0.4",
-    "unist-util-visit": "^5.0.0"
+    "hast-util-to-html": "^9.0.5",
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^18.19.68",
+    "@types/node": "^22.19.15",
     "remark": "^15.0.1",
     "vfile": "^6.0.3",
-    "vitest": "2.1.6"
+    "vitest": "4.1.0"
   },
   "peerDependencies": {
-    "astro": ">=5.0.0"
+    "astro": ">=6.0.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.12.0"
   },
-  "packageManager": "pnpm@8.15.1",
+  "packageManager": "pnpm@10.32.1",
   "publishConfig": {
     "access": "public"
   },

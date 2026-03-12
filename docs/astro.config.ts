@@ -52,10 +52,18 @@ export default defineConfig({
           autogenerate: { directory: 'examples' },
         },
       ],
-      social: {
-        blueSky: 'https://bsky.app/profile/hideoo.dev',
-        github: 'https://github.com/HiDeoo/astro-d2',
-      },
+      social: [
+        {
+          href: 'https://bsky.app/profile/hideoo.dev',
+          icon: 'blueSky',
+          label: 'Bluesky',
+        },
+        {
+          href: 'https://github.com/HiDeoo/astro-d2',
+          icon: 'github',
+          label: 'GitHub',
+        },
+      ],
       title: 'Astro D2',
     }),
   ],

@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 
 import type { AstroIntegration } from 'astro'
+import { z } from 'astro/zod'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from './config'
 import { clearContentLayerCache } from './libs/astro'
@@ -16,7 +17,10 @@ export default function astroD2Integration(userConfig?: AstroD2UserConfig): Astr
 
   if (!parsedConfig.success) {
     throwErrorWithHint(
-      `The provided D2 integration configuration is invalid.\n${parsedConfig.error.issues.map((issue) => issue.message).join('\n')}`,
+      `Invalid astro-d2 configuration:
+
+${z.prettifyError(parsedConfig.error)}
+`,
     )
   }
 

@@ -27,7 +27,7 @@ export const AstroD2ConfigSchema = z
          */
         useD2js: z.boolean().default(false),
       })
-      .default({}),
+      .prefault({}),
     /**
      * Defines the fonts to use for the generated diagrams.
      *
@@ -117,13 +117,12 @@ export const AstroD2ConfigSchema = z
          */
         default: z.string().default('0'),
       })
-      .default({}),
+      .prefault({}),
   })
   .refine((config) => config.layout !== 'tala' || !config.experimental.useD2js, {
-    // TODO(HiDeoo) test
     message: 'The `tala` layout engine is not supported when using the `experimental.useD2js` option.',
   })
-  .default({})
+  .prefault({})
 
 export type AstroD2UserConfig = z.input<typeof AstroD2ConfigSchema>
 export type AstroD2Config = z.output<typeof AstroD2ConfigSchema>

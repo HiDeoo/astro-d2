@@ -37,6 +37,7 @@ vi.mock(import('@terrastruct/d2'), () => {
 })
 
 vi.spyOn(fs, 'readFile').mockResolvedValue(svg)
+vi.spyOn(fs, 'mkdir').mockResolvedValue('')
 vi.spyOn(fs, 'writeFile').mockResolvedValue()
 
 afterEach(() => {
@@ -283,6 +284,7 @@ test('uses the specified base option', async () => {
   `)
 })
 
+// FIXME(HiDeoo)
 test('uses the `layout` attribute to override the `layout` config if specified', async () => {
   await transformMd(
     `\`\`\`d2 layout=tala

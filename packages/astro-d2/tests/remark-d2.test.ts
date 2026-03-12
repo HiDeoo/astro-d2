@@ -22,6 +22,7 @@ ${defaultDiagram}
 `
 
 vi.mock('../libs/exec')
+vi.spyOn(fs, 'mkdir').mockResolvedValue('')
 vi.spyOn(fs, 'readFile').mockResolvedValue(
   `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`,
 )
