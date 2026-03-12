@@ -1,5 +1,15 @@
 # astro-d2
 
+## 0.10.0
+
+### Minor Changes
+
+- [#51](https://github.com/HiDeoo/astro-d2/pull/51) [`b64ed5e`](https://github.com/HiDeoo/astro-d2/commit/b64ed5e1331598e6fb00df8972bb2bacf3e742fa) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for Astro v6, drops support for Astro v5.
+
+  ⚠️ **BREAKING CHANGE:** The minimum supported version of Astro is now `6.0.0`.
+
+  Please follow the [upgrade guide](https://docs.astro.build/en/guides/upgrade-to/v6/) to update your project.
+
 ## 0.9.0
 
 ### Minor Changes
