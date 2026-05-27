@@ -21,6 +21,18 @@ In the above example, the `foo` attribute is set to `bar` and the `baz` attribut
 All attributes are optional and can be combined together.
 The following attributes are supported by the Astro D2 integration:
 
+### `file`
+
+Load diagram source from an external `.d2` file instead of duplicating it in the Markdown fence.
+The path is resolved relative to the directory of the Markdown file and must stay within the project root unless additional roots are configured with [`allowedIncludeRoots`](/configuration/#allowedincluderoots).
+
+````md title="src/content/docs/example.md" 'file="./diagrams/overview.d2"'
+```d2 file="./diagrams/overview.d2" title="Overview"
+```
+````
+
+The `file` attribute is not passed to the D2 renderer; other attributes on the same fence (such as `title` or `theme`) still apply.
+
 ### `title`
 
 **Default:** `'Diagram'`  

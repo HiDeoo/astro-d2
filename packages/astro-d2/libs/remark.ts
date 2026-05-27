@@ -12,10 +12,13 @@ import type { AstroD2Config } from '../config'
 
 import { type DiagramAttributes, getAttributes } from './attributes'
 import { generateD2Diagram, type D2Size, getD2Diagram, type D2Diagram } from './d2'
+import { expandD2FileIncludes } from './file-include'
 import { throwErrorWithHint } from './integration'
 
 export function remarkAstroD2(config: RemarkAstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {
+    await expandD2FileIncludes(tree, file, { allowedIncludeRoots: config.allowedIncludeRoots })
+
     const d2Nodes: [node: Code, context: VisitorContext][] = []
 
     visit(tree, 'code', (node, index, parent) => {

@@ -36,6 +36,21 @@ The themes to use for the generated diagrams.
 
 The name of the output directory containing the generated diagrams relative to the `public/` directory.
 
+### `allowedIncludeRoots`
+
+**Type:** `string[]`  
+**Default:** `undefined`
+
+Optional paths relative to the project root where external `.d2` files referenced by the [`file`](/attributes/#file) code fence attribute may be loaded from, in addition to the project root itself.
+
+By default, included files must resolve to a path under the project root.
+
+```js
+astroD2({
+  allowedIncludeRoots: ['src/assets/d2'],
+})
+```
+
 ### `skipGeneration`
 
 **Type:** `boolean`  
