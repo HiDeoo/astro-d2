@@ -1,3 +1,4 @@
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import url from 'node:url'
 
@@ -12,13 +13,10 @@ import type { AstroD2Config } from '../config'
 
 import { type DiagramAttributes, getAttributes } from './attributes'
 import { generateD2Diagram, type D2Size, getD2Diagram, type D2Diagram } from './d2'
-import { expandD2FileIncludes } from './file-include'
 import { throwErrorWithHint } from './integration'
 
 export function remarkAstroD2(config: RemarkAstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {
-    await expandD2FileIncludes(tree, file, { allowedIncludeRoots: config.allowedIncludeRoots })
-
     const d2Nodes: [node: Code, context: VisitorContext][] = []
 
     visit(tree, 'code', (node, index, parent) => {
@@ -43,13 +41,9 @@ export function remarkAstroD2(config: RemarkAstroD2Config) {
           diagram = await getD2Diagram(outputPath.fsPath)
         } else {
           try {
-            diagram = await generateD2Diagram(
-              config,
-              attributes,
-              node.value,
-              outputPath.fsPath,
-              file.history[0] ? path.dirname(file.history[0]) : file.cwd,
-            )
+            const baseCwd = file.history[0] ? path.dirname(file.history[0]) : file.cwd
+            const { cwd, input } = await getDiagramSource(attributes, node.value, baseCwd)
+            diagram = await generateD2Diagram(config, attributes, input, outputPath.fsPath, cwd)
           } catch (error) {
             throwErrorWithHint(
               `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
@@ -162,4 +156,29 @@ export interface RemarkAstroD2Config extends AstroD2Config {
   base: string
   publicDir: URL
   root: URL
+}
+
+/**
+ * Returns the D2 diagram source and the working directory to generate it from.
+ *
+ * When the `src` attribute is set, the referenced file is read relative to the Markdown file directory and its own
+ * directory becomes the working directory so that relative D2 imports keep resolving. Otherwise, the code fence content
+ * is used as-is.
+ */
+async function getDiagramSource(
+  attributes: DiagramAttributes,
+  input: string,
+  cwd: string,
+): Promise<{ cwd: string; input: string }> {
+  if (!attributes.src) {
+    return { cwd, input }
+  }
+
+  const srcPath = path.resolve(cwd, attributes.src)
+
+  try {
+    return { cwd: path.dirname(srcPath), input: await fs.readFile(srcPath, 'utf8') }
+  } catch (error) {
+    throw new Error(`Failed to read the D2 diagram source file '${attributes.src}'.`, { cause: error })
+  }
 }

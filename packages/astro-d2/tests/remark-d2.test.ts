@@ -27,7 +27,7 @@ const mockSvg = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3
 const actualReadFile = fs.readFile.bind(fs)
 
 vi.spyOn(fs, 'readFile').mockImplementation(async (filePath, options) => {
-  if (String(filePath).endsWith('.d2')) {
+  if (typeof filePath === 'string' && filePath.endsWith('.d2')) {
     return actualReadFile(filePath, options)
   }
 
@@ -411,13 +411,20 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--force-appendix')
 })
 
-test('loads diagram source from a file= attribute', async () => {
-  const result = await transformMd(`\`\`\`d2 file=./fixtures/simple.d2 title="Included"
+test('loads diagram source from a `src` attribute', async () => {
+  const result = await transformMd(`\`\`\`d2 src="./fixtures/simple.d2" title="Included"
 \`\`\`
 `)
 
   expectD2ToHaveBeenCalledTimes(1)
-  expectD2ToHaveBeenNthCalledWith(1, 0, 'x -> y\n')
+  expectD2ToHaveBeenNthCalledWith(
+    1,
+    0,
+    'x -> y\n',
+    {},
+    undefined,
+    expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests[/\\]fixtures$/),
+  )
 
   expect(result).toMatchInlineSnapshot(`
     "<img alt="Included" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
@@ -425,12 +432,19 @@ test('loads diagram source from a file= attribute', async () => {
   `)
 })
 
-test('preserves other attributes when using file=', async () => {
-  await transformMd(`\`\`\`d2 file=./fixtures/simple.d2 theme=102
+test('preserves other attributes when using `src`', async () => {
+  await transformMd(`\`\`\`d2 src="./fixtures/simple.d2" theme=102
 \`\`\`
 `)
 
-  expectD2ToHaveBeenNthCalledWith(1, 0, 'x -> y\n', { theme: { dark: '200', default: '102' } })
+  expectD2ToHaveBeenNthCalledWith(
+    1,
+    0,
+    'x -> y\n',
+    { theme: { dark: '200', default: '102' } },
+    undefined,
+    expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests[/\\]fixtures$/),
+  )
 })
 
 async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {
@@ -464,6 +478,7 @@ function expectD2ToHaveBeenNthCalledWith(
   input: string,
   userConfig: AstroD2UserConfig = {},
   astroConfig?: Partial<RemarkAstroD2Config>,
+  cwd: unknown = expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests$/),
 ) {
   const config = AstroD2ConfigSchema.parse(userConfig)
 
@@ -484,7 +499,7 @@ function expectD2ToHaveBeenNthCalledWith(
       ),
     ],
     input,
-    expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests$/),
+    cwd,
   )
 }
 

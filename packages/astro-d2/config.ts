@@ -85,14 +85,6 @@ export const AstroD2ConfigSchema = z
      */
     sketch: z.boolean().default(false),
     /**
-     * Optional paths relative to the project root where external `.d2` sources referenced via the
-     * `file` code fence attribute may be loaded from, in addition to the project root itself.
-     *
-     * By default, included files must resolve to a path under the project root (`process.cwd` during
-     * the build).
-     */
-    allowedIncludeRoots: z.array(z.string()).optional(),
-    /**
      * Whether the Astro D2 integration should skip the generation of diagrams.
      *
      * This is useful to disable generating diagrams when deploying on platforms that do not have the D2 binary
