@@ -48,6 +48,10 @@ export const AttributesSchema = z
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
     /**
+     * The path to an external `.d2` file containing the diagram source relative to the Markdown file.
+     */
+    src: z.string().optional(),
+    /**
      * Defines the target board to render when using composition.
      * Use `root` to target the root board.
      *

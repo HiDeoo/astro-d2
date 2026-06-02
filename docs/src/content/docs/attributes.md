@@ -177,3 +177,17 @@ Overrides the [global `inline` configuration](/configuration/#inline) and define
 x -> y
 ```
 ````
+
+### `src`
+
+**Example**: [Source file attribute](/examples/attributes/src/)
+
+Loads the diagram source from an external `.d2` file instead of duplicating it in the Markdown code fence.
+The path is resolved relative to the directory of the Markdown file.
+
+<!-- prettier-ignore-start -->
+````md title="src/content/docs/example.md" 'src="./diagrams/overview.d2"'
+```d2 src="./diagrams/overview.d2" title="Overview"
+```
+````
+<!-- prettier-ignore-end -->

@@ -23,9 +23,15 @@ ${defaultDiagram}
 
 vi.mock('../libs/exec')
 vi.spyOn(fs, 'mkdir').mockResolvedValue('')
-vi.spyOn(fs, 'readFile').mockResolvedValue(
-  `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`,
-)
+
+const actualFs = await vi.importActual<typeof import('node:fs/promises')>('node:fs/promises')
+vi.spyOn(fs, 'readFile').mockImplementation(async (filePath, options) => {
+  if (typeof filePath === 'string' && filePath.endsWith('.d2')) {
+    return actualFs.readFile(filePath, options)
+  }
+
+  return `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`
+})
 
 afterEach(() => {
   vi.clearAllMocks()
@@ -404,6 +410,42 @@ ${defaultDiagram}
   expectD2ToHaveBeenCalledWithArg('--force-appendix')
 })
 
+test('loads diagram source from a `src` attribute', async () => {
+  const result = await transformMd(`\`\`\`d2 src="./fixtures/simple.d2" title="Included"
+\`\`\`
+`)
+
+  expectD2ToHaveBeenCalledTimes(1)
+  expectD2ToHaveBeenNthCalledWith(
+    1,
+    0,
+    'x -> y\n',
+    {},
+    undefined,
+    expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests[/\\]fixtures$/),
+  )
+
+  expect(result).toMatchInlineSnapshot(`
+    "<img alt="Included" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
+    "
+  `)
+})
+
+test('preserves other attributes when using `src`', async () => {
+  await transformMd(`\`\`\`d2 src="./fixtures/simple.d2" theme=102
+\`\`\`
+`)
+
+  expectD2ToHaveBeenNthCalledWith(
+    1,
+    0,
+    'x -> y\n',
+    { theme: { dark: '200', default: '102' } },
+    undefined,
+    expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests[/\\]fixtures$/),
+  )
+})
+
 async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {
   const processor = userConfig
     ? remark().use(remarkAstroD2, {
@@ -416,6 +458,7 @@ async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConf
 
   const file = await processor.process(
     new VFile({
+      cwd: fileURLToPath(new URL('..', import.meta.url)),
       path: fileURLToPath(new URL('index.md', import.meta.url)),
       value: md,
     }),
@@ -434,6 +477,7 @@ function expectD2ToHaveBeenNthCalledWith(
   input: string,
   userConfig: AstroD2UserConfig = {},
   astroConfig?: Partial<RemarkAstroD2Config>,
+  cwd: unknown = expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests$/),
 ) {
   const config = AstroD2ConfigSchema.parse(userConfig)
 
@@ -454,7 +498,7 @@ function expectD2ToHaveBeenNthCalledWith(
       ),
     ],
     input,
-    expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests$/),
+    cwd,
   )
 }
 

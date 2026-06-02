@@ -107,3 +107,9 @@ test('transforms the `inline` value to a boolean', () => {
 
   expect(attributes).toEqual({ ...defaultAttributes, inline: true })
 })
+
+test('parses the `src` attribute', () => {
+  const attributes = getAttributes('src="./fixtures/simple.d2"')
+
+  expect(attributes).toEqual({ ...defaultAttributes, src: './fixtures/simple.d2' })
+})
