@@ -1,5 +1,11 @@
 # astro-d2
 
+## 0.11.0
+
+### Minor Changes
+
+- [#54](https://github.com/HiDeoo/astro-d2/pull/54) [`3b2672c`](https://github.com/HiDeoo/astro-d2/commit/3b2672c49518160e31e5984310720b588b3ae587) Thanks [@joesaby](https://github.com/joesaby)! - Adds a new `src` code fence attribute to load a diagram source from an external `.d2` file relative to the Markdown file.
+
 ## 0.10.0
 
 ### Minor Changes
