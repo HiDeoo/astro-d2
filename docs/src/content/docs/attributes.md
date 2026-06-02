@@ -21,20 +21,6 @@ In the above example, the `foo` attribute is set to `bar` and the `baz` attribut
 All attributes are optional and can be combined together.
 The following attributes are supported by the Astro D2 integration:
 
-### `src`
-
-**Example**: [Source file attribute](/examples/attributes/src/)
-
-Loads the diagram source from an external `.d2` file instead of duplicating it in the Markdown code fence.
-The path is resolved relative to the directory of the Markdown file.
-
-````md title="src/content/docs/example.md" 'src="./diagrams/overview.d2"'
-```d2 src="./diagrams/overview.d2" title="Overview"
-```
-````
-
-Other attributes on the same fence (such as `title` or `theme`) still apply to the loaded diagram.
-
 ### `title`
 
 **Default:** `'Diagram'`  
@@ -191,3 +177,17 @@ Overrides the [global `inline` configuration](/configuration/#inline) and define
 x -> y
 ```
 ````
+
+### `src`
+
+**Example**: [Source file attribute](/examples/attributes/src/)
+
+Loads the diagram source from an external `.d2` file instead of duplicating it in the Markdown code fence.
+The path is resolved relative to the directory of the Markdown file.
+
+<!-- prettier-ignore-start -->
+````md title="src/content/docs/example.md" 'src="./diagrams/overview.d2"'
+```d2 src="./diagrams/overview.d2" title="Overview"
+```
+````
+<!-- prettier-ignore-end -->
