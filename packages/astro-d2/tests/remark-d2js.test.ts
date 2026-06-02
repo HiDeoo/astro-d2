@@ -36,7 +36,14 @@ vi.mock(import('@terrastruct/d2'), () => {
   return { D2 }
 })
 
-vi.spyOn(fs, 'readFile').mockResolvedValue(svg)
+const actualFs = await vi.importActual<typeof import('node:fs/promises')>('node:fs/promises')
+vi.spyOn(fs, 'readFile').mockImplementation(async (filePath, options) => {
+  if (typeof filePath === 'string' && filePath.endsWith('.d2')) {
+    return actualFs.readFile(filePath, options)
+  }
+
+  return svg
+})
 vi.spyOn(fs, 'mkdir').mockResolvedValue('')
 vi.spyOn(fs, 'writeFile').mockResolvedValue()
 
@@ -402,6 +409,28 @@ ${defaultDiagram}
   )
 
   expectD2jsToHaveBeenCalledWithOption('forceAppendix', true)
+})
+
+test('loads diagram source from a `src` attribute', async () => {
+  const result = await transformMd(`\`\`\`d2 src="./fixtures/simple.d2" title="Included"
+\`\`\`
+`)
+
+  expectD2jsToHaveBeenCalledTimes(1)
+  expectD2jsToHaveBeenNthCalledWith(1, 0, 'x -> y\n')
+
+  expect(result).toMatchInlineSnapshot(`
+    "<img alt="Included" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" width="128" height="64" />
+    "
+  `)
+})
+
+test('preserves other attributes when using `src`', async () => {
+  await transformMd(`\`\`\`d2 src="./fixtures/simple.d2" theme=102
+\`\`\`
+`)
+
+  expectD2jsToHaveBeenNthCalledWith(1, 0, 'x -> y\n', { theme: { dark: '200', default: '102' } })
 })
 
 async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {

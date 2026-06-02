@@ -23,15 +23,14 @@ ${defaultDiagram}
 
 vi.mock('../libs/exec')
 vi.spyOn(fs, 'mkdir').mockResolvedValue('')
-const mockSvg = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`
-const actualReadFile = fs.readFile.bind(fs)
 
+const actualFs = await vi.importActual<typeof import('node:fs/promises')>('node:fs/promises')
 vi.spyOn(fs, 'readFile').mockImplementation(async (filePath, options) => {
   if (typeof filePath === 'string' && filePath.endsWith('.d2')) {
-    return actualReadFile(filePath, options)
+    return actualFs.readFile(filePath, options)
   }
 
-  return mockSvg
+  return `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`
 })
 
 afterEach(() => {
