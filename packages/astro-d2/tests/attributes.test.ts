@@ -113,4 +113,3 @@ test('parses the `src` attribute', () => {
 
   expect(attributes).toEqual({ ...defaultAttributes, src: './fixtures/simple.d2' })
 })
-
