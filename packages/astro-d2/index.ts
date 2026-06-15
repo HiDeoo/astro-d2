@@ -4,13 +4,13 @@ import path from 'node:path'
 import type { AstroIntegration } from 'astro'
 import { z } from 'astro/zod'
 
-import { AstroD2ConfigSchema, type AstroD2UserConfig } from './config'
-import { clearContentLayerCache } from './libs/astro'
-import { isD2BinaryInstalled } from './libs/d2'
-import { throwErrorWithHint } from './libs/integration'
-import { remarkAstroD2 } from './libs/remark'
+import { AstroD2ConfigSchema, type AstroD2UserConfig } from './config.js'
+import { clearContentLayerCache } from './libs/astro.js'
+import { isD2BinaryInstalled } from './libs/d2.js'
+import { throwErrorWithHint } from './libs/integration.js'
+import { remarkAstroD2 } from './libs/remark.js'
 
-export type { AstroD2UserConfig } from './config'
+export type { AstroD2UserConfig } from './config.js'
 
 export default function astroD2Integration(userConfig?: AstroD2UserConfig): AstroIntegration {
   const parsedConfig = AstroD2ConfigSchema.safeParse(userConfig)

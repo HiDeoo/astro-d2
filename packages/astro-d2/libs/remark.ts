@@ -9,11 +9,11 @@ import type { Code, Html, Parent, Root } from 'mdast'
 import { CONTINUE, EXIT, SKIP, visit } from 'unist-util-visit'
 import type { VFile } from 'vfile'
 
-import type { AstroD2Config } from '../config'
+import type { AstroD2Config } from '../config.js'
 
-import { type DiagramAttributes, getAttributes } from './attributes'
-import { generateD2Diagram, type D2Size, getD2Diagram, type D2Diagram } from './d2'
-import { throwErrorWithHint } from './integration'
+import { type DiagramAttributes, getAttributes } from './attributes.js'
+import { generateD2Diagram, type D2Size, getD2Diagram, type D2Diagram } from './d2.js'
+import { throwErrorWithHint } from './integration.js'
 
 export function remarkAstroD2(config: RemarkAstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {

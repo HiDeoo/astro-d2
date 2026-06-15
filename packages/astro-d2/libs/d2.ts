@@ -4,9 +4,9 @@ import url from 'node:url'
 
 import { D2, type CompileRequest } from '@terrastruct/d2'
 
-import type { DiagramAttributes } from './attributes'
-import { exec } from './exec'
-import type { RemarkAstroD2Config } from './remark'
+import type { DiagramAttributes } from './attributes.js'
+import { exec } from './exec.js'
+import type { RemarkAstroD2Config } from './remark.js'
 
 const viewBoxRegex = /viewBox="\d+ \d+ (?<width>\d+) (?<height>\d+)"/
 
