@@ -6,7 +6,7 @@ import { D2, type CompileRequest } from '@terrastruct/d2'
 
 import type { DiagramAttributes } from './attributes'
 import { exec } from './exec'
-import type { RemarkAstroD2Config } from './remark'
+import type { MarkdownAstroD2Config } from './markdown'
 
 const viewBoxRegex = /viewBox="\d+ \d+ (?<width>\d+) (?<height>\d+)"/
 
@@ -24,7 +24,7 @@ export async function isD2BinaryInstalled() {
 }
 
 export async function generateD2Diagram(
-  config: RemarkAstroD2Config,
+  config: MarkdownAstroD2Config,
   attributes: DiagramAttributes,
   input: string,
   outputPath: string,
@@ -35,7 +35,7 @@ export async function generateD2Diagram(
 }
 
 async function generateD2BinaryDiagram(
-  config: RemarkAstroD2Config,
+  config: MarkdownAstroD2Config,
   attributes: DiagramAttributes,
   input: string,
   outputPath: string,
@@ -108,7 +108,7 @@ async function generateD2BinaryDiagram(
 }
 
 async function generateD2jsDiagram(
-  config: RemarkAstroD2Config,
+  config: MarkdownAstroD2Config,
   attributes: DiagramAttributes,
   input: string,
   outputPath: string,

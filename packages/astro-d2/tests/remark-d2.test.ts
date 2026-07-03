@@ -7,7 +7,8 @@ import { afterEach, expect, test, vi } from 'vitest'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
 import { exec } from '../libs/exec'
-import { remarkAstroD2, type RemarkAstroD2Config } from '../libs/remark'
+import type { MarkdownAstroD2Config } from '../libs/markdown'
+import { remarkAstroD2 } from '../libs/remark'
 
 const defaultProcessor = remark().use(remarkAstroD2, {
   ...AstroD2ConfigSchema.parse({}),
@@ -446,7 +447,7 @@ test('preserves other attributes when using `src`', async () => {
   )
 })
 
-async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {
+async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<MarkdownAstroD2Config>) {
   const processor = userConfig
     ? remark().use(remarkAstroD2, {
         ...AstroD2ConfigSchema.parse(userConfig),
@@ -476,7 +477,7 @@ function expectD2ToHaveBeenNthCalledWith(
   diagramIndex: number,
   input: string,
   userConfig: AstroD2UserConfig = {},
-  astroConfig?: Partial<RemarkAstroD2Config>,
+  astroConfig?: Partial<MarkdownAstroD2Config>,
   cwd: unknown = expect.stringMatching(/astro-d2[/\\]packages[/\\]astro-d2[/\\]tests$/),
 ) {
   const config = AstroD2ConfigSchema.parse(userConfig)

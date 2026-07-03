@@ -9,13 +9,12 @@ import type { Code, Html, Parent, Root } from 'mdast'
 import { CONTINUE, EXIT, SKIP, visit } from 'unist-util-visit'
 import type { VFile } from 'vfile'
 
-import type { AstroD2Config } from '../config'
-
 import { type DiagramAttributes, getAttributes } from './attributes'
 import { generateD2Diagram, type D2Size, getD2Diagram, type D2Diagram } from './d2'
-import { throwErrorWithHint } from './integration'
+import { throwPluginError } from './error'
+import type { MarkdownAstroD2Config } from './markdown'
 
-export function remarkAstroD2(config: RemarkAstroD2Config) {
+export function remarkAstroD2(config: MarkdownAstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {
     const d2Nodes: [node: Code, context: VisitorContext][] = []
 
@@ -45,7 +44,7 @@ export function remarkAstroD2(config: RemarkAstroD2Config) {
             const { cwd, input } = await getDiagramSource(attributes, node.value, baseCwd)
             diagram = await generateD2Diagram(config, attributes, input, outputPath.fsPath, cwd)
           } catch (error) {
-            throwErrorWithHint(
+            throwPluginError(
               `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
               error instanceof Error ? (error.cause instanceof Error ? error.cause : error) : undefined,
             )
@@ -86,7 +85,7 @@ function makeHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D
 
 function makeHtmlSvgNode(attributes: DiagramAttributes, diagram?: D2Diagram): Html {
   if (!diagram) {
-    throwErrorWithHint('Failed to retrieve the D2 diagram content for inline rendering.')
+    throwPluginError('Failed to retrieve the D2 diagram content for inline rendering.')
   }
 
   const tree = fromHtml(diagram.content, { fragment: true })
@@ -112,7 +111,7 @@ function makeHtmlSvgNode(attributes: DiagramAttributes, diagram?: D2Diagram): Ht
   }
 }
 
-function getOutputPaths(config: RemarkAstroD2Config, file: VFile, nodeIndex: number) {
+function getOutputPaths(config: MarkdownAstroD2Config, file: VFile, nodeIndex: number) {
   const relativePath = path.relative(file.cwd, file.path).replace(/^src[/\\](content|pages)[/\\]/, '')
   const parsedRelativePath = path.parse(relativePath)
 
@@ -150,12 +149,6 @@ function computeSvgSize(node: Element, attributes: DiagramAttributes, size: D2Si
 interface VisitorContext {
   index: number | undefined
   parent: Parent | undefined
-}
-
-export interface RemarkAstroD2Config extends AstroD2Config {
-  base: string
-  publicDir: URL
-  root: URL
 }
 
 /**

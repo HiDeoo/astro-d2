@@ -7,7 +7,8 @@ import { VFile } from 'vfile'
 import { afterEach, expect, test, vi } from 'vitest'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
-import { remarkAstroD2, type RemarkAstroD2Config } from '../libs/remark'
+import type { MarkdownAstroD2Config } from '../libs/markdown'
+import { remarkAstroD2 } from '../libs/remark'
 
 const defaultProcessor = remark().use(remarkAstroD2, {
   ...AstroD2ConfigSchema.parse({}),
@@ -291,6 +292,7 @@ test('uses the specified base option', async () => {
   `)
 })
 
+// TODO(HiDeoo)
 // FIXME(HiDeoo)
 test('uses the `layout` attribute to override the `layout` config if specified', async () => {
   await transformMd(
@@ -433,7 +435,7 @@ test('preserves other attributes when using `src`', async () => {
   expectD2jsToHaveBeenNthCalledWith(1, 0, 'x -> y\n', { theme: { dark: '200', default: '102' } })
 })
 
-async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<RemarkAstroD2Config>) {
+async function transformMd(md: string, userConfig?: AstroD2UserConfig, astroConfig?: Partial<MarkdownAstroD2Config>) {
   const processor = userConfig
     ? remark().use(remarkAstroD2, {
         ...AstroD2ConfigSchema.parse(userConfig),
@@ -464,7 +466,7 @@ function expectD2jsToHaveBeenNthCalledWith(
   diagramIndex: number,
   input: string,
   userConfig: AstroD2UserConfig = {},
-  astroConfig?: Partial<RemarkAstroD2Config>,
+  astroConfig?: Partial<MarkdownAstroD2Config>,
 ) {
   const config = AstroD2ConfigSchema.parse(userConfig)
 
