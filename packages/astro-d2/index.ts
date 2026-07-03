@@ -27,7 +27,7 @@ ${z.prettifyError(parsedConfig.error)}
   const config = parsedConfig.data
 
   return {
-    name: 'astro-d2-integration',
+    name: 'astro-d2',
     hooks: {
       'astro:config:setup': async ({ command, config: astroConfig, logger }) => {
         if (command !== 'build' && command !== 'dev') {

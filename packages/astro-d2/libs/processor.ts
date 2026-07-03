@@ -3,11 +3,11 @@ import type { AstroConfig } from 'astro'
 import { throwPluginError } from './error'
 import type { MarkdownAstroD2Config } from './markdown'
 import { remarkAstroD2 } from './remark'
+import { satteriAstroD2 } from './satteri'
 
 export function applyMarkdownPlugin(processor: MarkdownProcessor, config: MarkdownAstroD2Config) {
   if (isSatteriProcessor(processor)) {
-    // TODO(HiDeoo)
-    // processor.options.mdastPlugins.push(satteriMdastStarlightHeadingBadges())
+    processor.options.mdastPlugins.push(() => satteriAstroD2(config))
   } else if (isUnifiedProcessor(processor)) {
     processor.options.remarkPlugins.push([remarkAstroD2, config])
   } else {
@@ -29,7 +29,7 @@ function isUnifiedProcessor(processor: unknown): processor is UnifiedMarkdownPro
 
 type MarkdownProcessor = NonNullable<AstroConfig['markdown']['processor']>
 
-interface SatteriMarkdownProcessor {
+export interface SatteriMarkdownProcessor {
   name: string
   options: { mdastPlugins: unknown[] }
 }

@@ -1,18 +1,8 @@
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import url from 'node:url'
-
-import type { Element } from 'hast'
-import { fromHtml } from 'hast-util-from-html'
-import { toHtml } from 'hast-util-to-html'
-import type { Code, Html, Parent, Root } from 'mdast'
-import { CONTINUE, EXIT, SKIP, visit } from 'unist-util-visit'
+import type { Code, Parent, Root } from 'mdast'
+import { SKIP, visit } from 'unist-util-visit'
 import type { VFile } from 'vfile'
 
-import { type DiagramAttributes, getAttributes } from './attributes'
-import { generateD2Diagram, type D2Size, getD2Diagram, type D2Diagram } from './d2'
-import { throwPluginError } from './error'
-import type { MarkdownAstroD2Config } from './markdown'
+import { renderD2Node, type MarkdownAstroD2Config } from './markdown'
 
 export function remarkAstroD2(config: MarkdownAstroD2Config) {
   return async function transformer(tree: Root, file: VFile) {
@@ -32,146 +22,22 @@ export function remarkAstroD2(config: MarkdownAstroD2Config) {
 
     await Promise.all(
       d2Nodes.map(async ([node, { index, parent }], d2Index) => {
-        const outputPath = getOutputPaths(config, file, d2Index)
-        const attributes = getAttributes(node.meta)
-        let diagram: D2Diagram | undefined = undefined
-
-        if (config.skipGeneration) {
-          diagram = await getD2Diagram(outputPath.fsPath)
-        } else {
-          try {
-            const baseCwd = file.history[0] ? path.dirname(file.history[0]) : file.cwd
-            const { cwd, input } = await getDiagramSource(attributes, node.value, baseCwd)
-            diagram = await generateD2Diagram(config, attributes, input, outputPath.fsPath, cwd)
-          } catch (error) {
-            throwPluginError(
-              `Failed to generate the D2 diagram at ${node.position?.start.line ?? 0}:${node.position?.start.column ?? 0}.`,
-              error instanceof Error ? (error.cause instanceof Error ? error.cause : error) : undefined,
-            )
-          }
-        }
+        const htmlNode = await renderD2Node(
+          config,
+          node,
+          { cwd: file.cwd, path: file.history[0] ?? file.path },
+          d2Index,
+        )
 
         if (parent && index !== undefined) {
-          parent.children.splice(
-            index,
-            1,
-            (attributes.inline ?? config.inline)
-              ? makeHtmlSvgNode(attributes, diagram)
-              : makeHtmlImgNode(attributes, outputPath.imgPath, diagram?.size),
-          )
+          parent.children.splice(index, 1, htmlNode)
         }
       }),
     )
   }
 }
 
-function makeHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D2Size): Html {
-  const htmlAttributes: Record<string, string> = {
-    alt: attributes.title,
-    decoding: 'async',
-    loading: 'lazy',
-    src: imgPath,
-  }
-
-  computeImgSize(htmlAttributes, attributes, size)
-
-  return {
-    type: 'html',
-    value: `<img ${Object.entries(htmlAttributes)
-      .map(([key, value]) => `${key}="${value}"`)
-      .join(' ')} />`,
-  }
-}
-
-function makeHtmlSvgNode(attributes: DiagramAttributes, diagram?: D2Diagram): Html {
-  if (!diagram) {
-    throwPluginError('Failed to retrieve the D2 diagram content for inline rendering.')
-  }
-
-  const tree = fromHtml(diagram.content, { fragment: true })
-
-  visit(tree, 'element', (node) => {
-    if (node.tagName !== 'svg' || !('d2version' in node.properties)) return CONTINUE
-
-    computeSvgSize(node, attributes, diagram.size)
-
-    node.children.unshift({
-      type: 'element',
-      tagName: 'title',
-      properties: {},
-      children: [{ type: 'text', value: attributes.title }],
-    })
-
-    return EXIT
-  })
-
-  return {
-    type: 'html',
-    value: toHtml(tree),
-  }
-}
-
-function getOutputPaths(config: MarkdownAstroD2Config, file: VFile, nodeIndex: number) {
-  const relativePath = path.relative(file.cwd, file.path).replace(/^src[/\\](content|pages)[/\\]/, '')
-  const parsedRelativePath = path.parse(relativePath)
-
-  const relativeOutputPath = path.join(parsedRelativePath.dir, `${parsedRelativePath.name}-${nodeIndex}.svg`)
-
-  return {
-    fsPath: path.join(url.fileURLToPath(config.publicDir), config.output, relativeOutputPath),
-    imgPath: path.posix.join(config.base, config.output, relativeOutputPath),
-  }
-}
-
-function computeImgSize(htmlAttributes: Record<string, string>, attributes: DiagramAttributes, size: D2Size) {
-  if (attributes.width !== undefined) {
-    htmlAttributes['width'] = String(attributes.width)
-
-    if (size) {
-      const aspectRatio = size.height / size.width
-      htmlAttributes['height'] = String(Math.round(attributes.width * aspectRatio))
-    }
-  } else if (size) {
-    htmlAttributes['width'] = String(size.width)
-    htmlAttributes['height'] = String(size.height)
-  }
-}
-
-function computeSvgSize(node: Element, attributes: DiagramAttributes, size: D2Size) {
-  if (!attributes.width || !size) return
-
-  const aspectRatio = size.height / size.width
-
-  node.properties['width'] = String(attributes.width)
-  node.properties['height'] = String(Math.round(attributes.width * aspectRatio))
-}
-
 interface VisitorContext {
   index: number | undefined
   parent: Parent | undefined
-}
-
-/**
- * Returns the D2 diagram source and the working directory to generate it from.
- *
- * When the `src` attribute is set, the referenced file is read relative to the Markdown file directory and its own
- * directory becomes the working directory so that relative D2 imports keep resolving. Otherwise, the code fence content
- * is used as-is.
- */
-async function getDiagramSource(
-  attributes: DiagramAttributes,
-  input: string,
-  cwd: string,
-): Promise<{ cwd: string; input: string }> {
-  if (!attributes.src) {
-    return { cwd, input }
-  }
-
-  const srcPath = path.resolve(cwd, attributes.src)
-
-  try {
-    return { cwd: path.dirname(srcPath), input: await fs.readFile(srcPath, 'utf8') }
-  } catch (error) {
-    throw new Error(`Failed to read the D2 diagram source file '${attributes.src}'.`, { cause: error })
-  }
 }
