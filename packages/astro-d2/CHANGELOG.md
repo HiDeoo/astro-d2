@@ -1,5 +1,21 @@
 # astro-d2
 
+## 0.12.0
+
+### Minor Changes
+
+- [#59](https://github.com/HiDeoo/astro-d2/pull/59) [`67958c0`](https://github.com/HiDeoo/astro-d2/commit/67958c0e22e5a4e35ee4d42ea40263ec40df5de7) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for Astro v7, drops support for Astro v6.
+
+  #### Upgrade Astro and dependencies
+
+  ⚠️ **BREAKING CHANGE:** Astro v6 is no longer supported. Make sure you [update Astro](https://docs.astro.build/en/guides/upgrade-to/v7/) and any other official integrations at the same time:
+
+  ```sh
+  npx @astrojs/upgrade
+  ```
+
+- [#59](https://github.com/HiDeoo/astro-d2/pull/59) [`67958c0`](https://github.com/HiDeoo/astro-d2/commit/67958c0e22e5a4e35ee4d42ea40263ec40df5de7) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for the Sätteri Markdown processor.
+
 ## 0.11.0
 
 ### Minor Changes
