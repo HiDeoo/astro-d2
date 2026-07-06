@@ -429,6 +429,32 @@ ${TestDefaultDiagram}
 
       expectD2jsToHaveBeenNthCalledWith(1, 0, 'x -> y\n', { theme: { dark: '200', default: '102' } })
     })
+
+    test('adds HTML data attributes to images', async () => {
+      const result = await transformMd(`\`\`\`d2 data-test data-id=3 data-label="Test Diagram"
+   ${TestDefaultDiagram}
+   \`\`\`
+   `)
+
+      expect(result).toMatchInlineSnapshot(`
+       "<img alt="Diagram" decoding="async" loading="lazy" src="/d2/tests/index-0.svg" data-test="true" data-id="3" data-label="Test Diagram" width="128" height="64" />
+       "
+     `)
+    })
+
+    test('adds HTML data attributes to inline SVGs', async () => {
+      const result = await transformMd(
+        `\`\`\`d2 inline data-test=diagram
+   ${TestDefaultDiagram}
+   \`\`\`
+   `,
+      )
+
+      expect(result).toMatchInlineSnapshot(`
+       "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64" data-test="diagram"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+       "
+     `)
+    })
   },
 )
 

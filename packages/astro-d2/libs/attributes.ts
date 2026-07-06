@@ -26,6 +26,10 @@ export const AttributesSchema = z
       .optional()
       .transform((value) => (value === 'false' ? false : value)),
     /**
+     * HTML data attributes to add to the generated diagram element.
+     */
+    dataAttributes: z.record(z.string(), z.string()).default({}),
+    /**
      * Overrides the global `inline` configuration for the diagram.
      */
     inline: z
@@ -81,10 +85,17 @@ export const AttributesSchema = z
   .prefault({})
 
 const attributeRegex =
-  /(?<key>[^\s"'=]+)=(?:(?<noQuoteValue>\w+)|'(?<singleQuoteValue>[^']+)'|"(?<doubleQuoteValue>[^"]+))|(?<truthyKey>\w+)/g
+  /(?<key>[^\s"'=]+)=(?:(?<noQuoteValue>[^\s"']+)|'(?<singleQuoteValue>[^']+)'|"(?<doubleQuoteValue>[^"]+))|(?<truthyKey>[^\s"'=]+)/g
+const dataAttributeRegex = /^data-[a-z0-9_.:-]+$/
 
 export function getAttributes(attributesStr: string | null | undefined) {
-  return AttributesSchema.parse(parseAttributes(attributesStr))
+  const attributes = parseAttributes(attributesStr)
+
+  return AttributesSchema.parse({ ...attributes, dataAttributes: getDataAttributes(attributes) })
+}
+
+function getDataAttributes(attributes: Record<string, string>) {
+  return Object.fromEntries(Object.entries(attributes).filter(([key]) => dataAttributeRegex.test(key)))
 }
 
 function parseAttributes(attributesStr: string | null | undefined) {

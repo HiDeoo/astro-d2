@@ -113,3 +113,36 @@ test('parses the `src` attribute', () => {
 
   expect(attributes).toEqual({ ...defaultAttributes, src: './fixtures/simple.d2' })
 })
+
+test('does not parse hyphenated unknown shorthand attributes as separate attributes', () => {
+  const attributes = getAttributes('foo-sketch')
+
+  expect(attributes).toEqual(defaultAttributes)
+})
+
+test('parses HTML data attributes', () => {
+  const attributes = getAttributes('data-test=3 data-label="Hello world"')
+
+  expect(attributes).toEqual({
+    ...defaultAttributes,
+    dataAttributes: { 'data-test': '3', 'data-label': 'Hello world' },
+  })
+})
+
+test('parses unquoted HTML data attribute values with hyphens', () => {
+  const attributes = getAttributes('data-testid=submit-button')
+
+  expect(attributes).toEqual({ ...defaultAttributes, dataAttributes: { 'data-testid': 'submit-button' } })
+})
+
+test('supports a shorthand syntax for HTML data attributes', () => {
+  const attributes = getAttributes('data-test')
+
+  expect(attributes).toEqual({ ...defaultAttributes, dataAttributes: { 'data-test': 'true' } })
+})
+
+test('strips invalid HTML data attributes', () => {
+  const attributes = getAttributes('data-test=3 data-Test=4 foo=bar')
+
+  expect(attributes).toEqual({ ...defaultAttributes, dataAttributes: { 'data-test': '3' } })
+})
