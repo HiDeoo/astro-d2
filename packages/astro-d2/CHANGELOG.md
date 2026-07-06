@@ -1,5 +1,13 @@
 # astro-d2
 
+## 0.13.0
+
+### Minor Changes
+
+- [#61](https://github.com/HiDeoo/astro-d2/pull/61) [`5155733`](https://github.com/HiDeoo/astro-d2/commit/515573349fbe5b6536eea1a671391680a2810601) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for specifying HTML data attributes on D2 code fences.
+
+  Data attributes are added to the generated element when rendering diagrams. This can be useful, for example, when combined with the [`starlight-image-zoom`](https://github.com/HiDeoo/starlight-image-zoom) plugin to disable zooming for some diagrams using the `data-zoom-off` attribute.
+
 ## 0.12.0
 
 ### Minor Changes
