@@ -191,3 +191,18 @@ The path is resolved relative to the directory of the Markdown file.
 ```
 ````
 <!-- prettier-ignore-end -->
+
+## Data attributes
+
+**Example**: [Data attributes](/examples/attributes/data-attributes/)
+
+Adds HTML `data-*` attributes to the generated diagram element.
+
+When diagrams are rendered as images, the attributes are added to the generated `<img>` element.
+When rendered [inline](#inline), the attributes are added to the generated `<svg>` element.
+
+````md title="src/content/docs/example.md" "data-testid=example"
+```d2 data-testid=example
+x -> y
+```
+````

@@ -62,6 +62,7 @@ function makeHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D
     decoding: 'async',
     loading: 'lazy',
     src: imgPath,
+    ...attributes.dataAttributes,
   }
 
   computeImgSize(htmlAttributes, attributes, size)
@@ -69,7 +70,7 @@ function makeHtmlImgNode(attributes: DiagramAttributes, imgPath: string, size: D
   return {
     type: 'html',
     value: `<img ${Object.entries(htmlAttributes)
-      .map(([key, value]) => `${key}="${value}"`)
+      .map(([key, value]) => `${key}="${escapeHtmlAttribute(value)}"`)
       .join(' ')} />`,
   }
 }
@@ -85,6 +86,7 @@ function makeHtmlSvgNode(attributes: DiagramAttributes, diagram?: D2Diagram): Ht
     if (node.tagName !== 'svg' || !('d2version' in node.properties)) return CONTINUE
 
     computeSvgSize(node, attributes, diagram.size)
+    node.properties = { ...node.properties, ...attributes.dataAttributes }
 
     node.children.unshift({
       type: 'element',
@@ -148,6 +150,10 @@ async function getDiagramSource(
   } catch (error) {
     throw new Error(`Failed to read the D2 diagram source file '${attributes.src}'.`, { cause: error })
   }
+}
+
+function escapeHtmlAttribute(value: string) {
+  return value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
 }
 
 interface MarkdownFile {

@@ -17,5 +17,3 @@ The above code block will be rendered with an inline SVG diagram in the HTML out
 ```
 
 By default, the diagrams are rendered using the `<img>` tag.
-
-###
