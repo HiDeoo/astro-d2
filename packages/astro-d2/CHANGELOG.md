@@ -1,5 +1,11 @@
 # astro-d2
 
+## 0.13.1
+
+### Patch Changes
+
+- [#64](https://github.com/HiDeoo/astro-d2/pull/64) [`e648941`](https://github.com/HiDeoo/astro-d2/commit/e648941f57fbe78422987350af99d6956a1a5812) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes rendering of inline SVG when using the Sätteri Markdown processor.
+
 ## 0.13.0
 
 ### Minor Changes
