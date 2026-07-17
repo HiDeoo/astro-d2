@@ -16,7 +16,14 @@ export function satteriAstroD2(config: MarkdownAstroD2Config): MdastPluginDefini
       const path = fileURLToPath(ctx.fileURL)
       const htmlNode = await renderD2Node(config, node, { cwd: fileURLToPath(config.root), path }, d2Index++)
 
-      return { rawHtml: htmlNode.value }
+      return ctx.fileURL.pathname.endsWith('.mdx')
+        ? {
+            type: 'mdxJsxFlowElement',
+            name: 'Fragment',
+            attributes: [{ type: 'mdxJsxAttribute', name: 'set:html', value: htmlNode.value }],
+            children: [],
+          }
+        : htmlNode
     },
   })
 }
