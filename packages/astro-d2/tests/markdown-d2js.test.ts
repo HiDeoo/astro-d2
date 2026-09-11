@@ -1,10 +1,12 @@
 import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
-import { D2, type CompileRequest } from '@terrastruct/d2'
-import { afterEach, describe, expect, test, vi } from 'vitest'
+import { D2, type CompileOptions } from '@d2lang/d2'
+import { afterEach, assert, describe, expect, test, vi } from 'vitest'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
+import { getAttributes } from '../libs/attributes'
+import { disposeD2js, generateD2Diagram } from '../libs/d2'
 import type { MarkdownAstroD2Config } from '../libs/markdown'
 
 import { getTestProcessors, TestD2Svg, TestDefaultDiagram, TestDefaultMd } from './utils'
@@ -12,10 +14,12 @@ import { getTestProcessors, TestD2Svg, TestDefaultDiagram, TestDefaultMd } from 
 const svg = vi.hoisted(() => ({ raw: '' }))
 svg.raw = TestD2Svg
 
-vi.mock(import('@terrastruct/d2'), () => {
+vi.mock(import('@d2lang/d2'), () => {
   const D2 = vi.fn()
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   D2.prototype.compile = vi.fn().mockResolvedValue({})
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  D2.prototype.dispose = vi.fn().mockResolvedValue(undefined)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   D2.prototype.render = vi.fn().mockImplementation(() => svg.raw)
   return { D2 }
@@ -134,13 +138,12 @@ y -> z
 
       await transformMd(TestDefaultMd, config)
 
-      expect(vi.mocked(d2.compile).mock.lastCall?.[0].options.fontRegular).toBeDefined()
+      const options = getD2jsCompileOptions()
 
-      expect(vi.mocked(d2.compile).mock.lastCall?.[0].options.fontItalic).toBeDefined()
-
-      expect(vi.mocked(d2.compile).mock.lastCall?.[0].options.fontBold).toBeDefined()
-
-      expect(vi.mocked(d2.compile).mock.lastCall?.[0].options.fontSemibold).toBeDefined()
+      expect(options.fontRegular).toBeDefined()
+      expect(options.fontItalic).toBeDefined()
+      expect(options.fontBold).toBeDefined()
+      expect(options.fontSemibold).toBeDefined()
     })
 
     test('uses a single theme if the dark theme is disabled', async () => {
@@ -458,6 +461,43 @@ ${TestDefaultDiagram}
   },
 )
 
+test('reuses a single D2 instance', async () => {
+  const config: MarkdownAstroD2Config = {
+    ...AstroD2ConfigSchema.parse({ experimental: { useD2js: true } }),
+    base: '/',
+    publicDir: new URL('public/', import.meta.url),
+    root: new URL('..', import.meta.url),
+  }
+
+  const attributes = getAttributes(undefined)
+  const outputPath = fileURLToPath(new URL('public/reuse.svg', import.meta.url))
+  const cwd = fileURLToPath(config.root)
+
+  vi.mocked(D2).mockClear()
+
+  await Promise.all([
+    generateD2Diagram(config, attributes, 'a -> b', outputPath, cwd),
+    generateD2Diagram(config, attributes, 'c -> d', outputPath, cwd),
+  ])
+
+  expect(D2).toHaveBeenCalledTimes(1)
+  expect(d2.compile).toHaveBeenCalledTimes(2)
+  expect(d2.render).toHaveBeenCalledTimes(2)
+  expect(d2.dispose).not.toHaveBeenCalled()
+
+  await disposeD2js(config)
+  await disposeD2js(config)
+
+  expect(d2.dispose).toHaveBeenCalledTimes(1)
+  expect(config.d2js).toBeUndefined()
+
+  await generateD2Diagram(config, attributes, 'e -> f', outputPath, cwd)
+
+  expect(D2).toHaveBeenCalledTimes(2)
+
+  await disposeD2js(config)
+})
+
 function expectD2jsToHaveBeenCalledTimes(times: number) {
   expect(d2.compile).toHaveBeenCalledTimes(times)
   expect(d2.render).toHaveBeenCalledTimes(times)
@@ -491,10 +531,19 @@ function expectD2jsToHaveBeenNthCalledWith(
   })
 }
 
-function expectD2jsToNotHaveBeenCalledWithOption(name: keyof CompileRequest['options']) {
-  expect(vi.mocked(d2.compile).mock.lastCall?.[0].options[name]).not.toBeDefined()
+function expectD2jsToNotHaveBeenCalledWithOption(name: keyof CompileOptions) {
+  expect(getD2jsCompileOptions()[name]).not.toBeDefined()
 }
 
-function expectD2jsToHaveBeenCalledWithOption(name: keyof CompileRequest['options'], value: unknown) {
-  expect(vi.mocked(d2.compile).mock.lastCall?.[0].options[name]).toBe(value)
+function expectD2jsToHaveBeenCalledWithOption(name: keyof CompileOptions, value: unknown) {
+  expect(getD2jsCompileOptions()[name]).toBe(value)
+}
+
+function getD2jsCompileOptions() {
+  const request = vi.mocked(d2.compile).mock.lastCall?.[0]
+
+  assert(request !== undefined && typeof request !== 'string', 'Expected a compile request object.')
+  assert(request.options !== undefined, 'Expected request compile options.')
+
+  return request.options
 }

@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import type { D2 } from '@d2lang/d2'
 import type { Element } from 'hast'
 import { fromHtml } from 'hast-util-from-html'
 import { toHtml } from 'hast-util-to-html'
@@ -163,6 +164,7 @@ interface MarkdownFile {
 
 export interface MarkdownAstroD2Config extends AstroD2Config {
   base: string
+  d2js?: D2 | undefined
   publicDir: URL
   root: URL
 }

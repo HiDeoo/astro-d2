@@ -6,8 +6,9 @@ import { z } from 'astro/zod'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from './config'
 import { clearContentLayerCache } from './libs/astro'
-import { isD2BinaryInstalled } from './libs/d2'
+import { disposeD2js, isD2BinaryInstalled } from './libs/d2'
 import { throwPluginError } from './libs/error'
+import type { MarkdownAstroD2Config } from './libs/markdown'
 import { applyMarkdownPlugin } from './libs/processor'
 
 export type { AstroD2UserConfig } from './config'
@@ -25,6 +26,7 @@ ${z.prettifyError(parsedConfig.error)}
   }
 
   const config = parsedConfig.data
+  let markdownConfig: MarkdownAstroD2Config | undefined
 
   return {
     name: 'astro-d2',
@@ -49,13 +51,17 @@ ${z.prettifyError(parsedConfig.error)}
           }
         }
 
-        applyMarkdownPlugin(astroConfig.markdown.processor, {
+        markdownConfig = {
           ...config,
           base: astroConfig.base,
           publicDir: astroConfig.publicDir,
           root: astroConfig.root,
-        })
+        }
+
+        applyMarkdownPlugin(astroConfig.markdown.processor, markdownConfig)
       },
+      'astro:build:done': () => disposeD2js(markdownConfig),
+      'astro:server:done': () => disposeD2js(markdownConfig),
     },
   }
 }
