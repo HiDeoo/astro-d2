@@ -1,5 +1,15 @@
 # astro-d2
 
+## 0.14.0
+
+### Minor Changes
+
+- [#67](https://github.com/HiDeoo/astro-d2/pull/67) [`409e398`](https://github.com/HiDeoo/astro-d2/commit/409e3989847a1ff58fd8e04f54fa738dc2f669bb) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Updates [D2.js](https://www.npmjs.com/package/@d2lang/d2) to v0.1.34.
+
+### Patch Changes
+
+- [#67](https://github.com/HiDeoo/astro-d2/pull/67) [`409e398`](https://github.com/HiDeoo/astro-d2/commit/409e3989847a1ff58fd8e04f54fa738dc2f669bb) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Reduces memory usage and improves performance when using the `experimental.useD2js` configuration option.
+
 ## 0.13.1
 
 ### Patch Changes
