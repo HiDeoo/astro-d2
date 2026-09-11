@@ -164,7 +164,7 @@ It accepts the following options:
 **Type:** `boolean`  
 **Default:** `false`
 
-Whether to use [D2.js](https://www.npmjs.com/package/@terrastruct/d2) to generate the diagrams instead of the D2 binary.
+Whether to use [D2.js](https://www.npmjs.com/package/@d2lang/d2) to generate the diagrams instead of the D2 binary.
 
 By default, the integration requires the D2 binary to be installed on the system to generate diagrams.
 Enabling this option allows generating diagrams using D2.js, a JavaScript wrapper around D2 to run it through WebAssembly.

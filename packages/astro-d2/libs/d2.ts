@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import url from 'node:url'
 
-import { D2, type CompileRequest } from '@terrastruct/d2'
+import { D2, type CompileOptions, type CompileRequest } from '@d2lang/d2'
 
 import type { DiagramAttributes } from './attributes'
 import { exec } from './exec'
@@ -114,45 +114,42 @@ async function generateD2jsDiagram(
   outputPath: string,
 ) {
   try {
-    const request: CompileRequest = {
-      fs: { [outputPath]: input },
-      inputPath: outputPath,
-      options: {
-        // @ts-expect-error - We enforce that the layout cannot be 'tala' when using D2.js when validating the config.
-        layout: attributes.layout ?? config.layout,
-        pad: attributes.pad ?? config.pad,
-        sketch: (attributes.sketch === 'true' ? true : attributes.sketch) ?? config.sketch,
-        themeID: Number.parseInt(attributes.theme ?? config.theme.default, 10),
-      },
+    const options: CompileOptions = {
+      layout: attributes.layout ?? config.layout,
+      pad: attributes.pad ?? config.pad,
+      sketch: (attributes.sketch === 'true' ? true : attributes.sketch) ?? config.sketch,
+      themeID: Number.parseInt(attributes.theme ?? config.theme.default, 10),
     }
 
     const darkTheme = attributes.darkTheme ?? config.theme.dark
-    if (darkTheme !== false) request.options.darkThemeID = Number.parseInt(darkTheme, 10)
+    if (darkTheme !== false) options.darkThemeID = Number.parseInt(darkTheme, 10)
 
-    if (attributes.animateInterval) request.options.animateInterval = Number.parseInt(attributes.animateInterval, 10)
+    if (attributes.animateInterval) options.animateInterval = Number.parseInt(attributes.animateInterval, 10)
 
-    if (attributes.target !== undefined) request.options.target = attributes.target
-    else if (attributes.animateInterval) request.options.target = '*'
+    if (attributes.target !== undefined) options.target = attributes.target
+    else if (attributes.animateInterval) options.target = '*'
 
     if (config.fonts?.regular) {
-      request.options.fontRegular = await getD2jsFont('regular', config.root, config.fonts.regular)
+      options.fontRegular = await getD2jsFont('regular', config.root, config.fonts.regular)
     }
 
     if (config.fonts?.italic) {
-      request.options.fontItalic = await getD2jsFont('italic', config.root, config.fonts.italic)
+      options.fontItalic = await getD2jsFont('italic', config.root, config.fonts.italic)
     }
 
     if (config.fonts?.bold) {
-      request.options.fontBold = await getD2jsFont('bold', config.root, config.fonts.bold)
+      options.fontBold = await getD2jsFont('bold', config.root, config.fonts.bold)
     }
 
     if (config.fonts?.semibold) {
-      request.options.fontSemibold = await getD2jsFont('semibold', config.root, config.fonts.semibold)
+      options.fontSemibold = await getD2jsFont('semibold', config.root, config.fonts.semibold)
     }
 
     if ((config.appendix && attributes.appendix !== false) || attributes.appendix === true) {
-      request.options.forceAppendix = true
+      options.forceAppendix = true
     }
+
+    const request: CompileRequest = { fs: { [outputPath]: input }, inputPath: outputPath, options }
 
     const d2 = new D2()
     const response = await d2.compile(request)

@@ -59,9 +59,9 @@ importers:
 
   packages/astro-d2:
     dependencies:
-      '@terrastruct/d2':
-        specifier: ^0.1.33
-        version: 0.1.33
+      '@d2lang/d2':
+        specifier: ^0.1.34
+        version: 0.1.34
       astro:
         specifier: '>=7.0.0'
         version: 7.0.3(@astrojs/markdown-remark@7.2.0)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@22.19.15)(rollup@4.59.0)(yaml@2.9.0)
@@ -420,6 +420,9 @@ packages:
   '@ctrl/tinycolor@4.2.0':
     resolution: {integrity: sha512-kzyuwOAQnXJNLS9PSyrk0CWk35nWJW/zl/6KvnTBMFK65gm7U1/Z5BqjxeapjZCIhQcM/DsrEmcbRwDyXyXK4A==}
     engines: {node: '>=14'}
+
+  '@d2lang/d2@0.1.34':
+    resolution: {integrity: sha512-35m2DaRUgeBy1cFbF9XEGIuaN/pMWrqkJtGj/tsq7OrU4N8degbY80Js7Mw7UeuE+fwGpxdZaGckEUVOPAj7CA==}
 
   '@emmetio/abbreviation@2.3.3':
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
@@ -1242,9 +1245,6 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
-
-  '@terrastruct/d2@0.1.33':
-    resolution: {integrity: sha512-eK5hyfGIJFolC7sUsiKvWdY9xGFctTe3d+PSijo09IYDso8psztC+A4SammizXtlwYZpnnW0AtDjfBYauceSeA==}
 
   '@tybys/wasm-util@0.10.3':
     resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
@@ -2186,6 +2186,7 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -4855,6 +4856,8 @@ snapshots:
 
   '@ctrl/tinycolor@4.2.0': {}
 
+  '@d2lang/d2@0.1.34': {}
+
   '@emmetio/abbreviation@2.3.3':
     dependencies:
       '@emmetio/scanner': 1.0.4
@@ -5504,8 +5507,6 @@ snapshots:
   '@shikijs/vscode-textmate@10.0.2': {}
 
   '@standard-schema/spec@1.1.0': {}
-
-  '@terrastruct/d2@0.1.33': {}
 
   '@tybys/wasm-util@0.10.3':
     dependencies:

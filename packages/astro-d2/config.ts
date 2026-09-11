@@ -119,9 +119,6 @@ export const AstroD2ConfigSchema = z
       })
       .prefault({}),
   })
-  .refine((config) => config.layout !== 'tala' || !config.experimental.useD2js, {
-    message: 'The `tala` layout engine is not supported when using the `experimental.useD2js` option.',
-  })
   .prefault({})
 
 export type AstroD2UserConfig = z.input<typeof AstroD2ConfigSchema>
