@@ -23,6 +23,12 @@ export async function isD2BinaryInstalled() {
   }
 }
 
+export async function disposeD2js(config?: MarkdownAstroD2Config) {
+  const d2 = config?.d2js
+  if (config) config.d2js = undefined
+  await d2?.dispose()
+}
+
 export async function generateD2Diagram(
   config: MarkdownAstroD2Config,
   attributes: DiagramAttributes,
@@ -151,7 +157,7 @@ async function generateD2jsDiagram(
 
     const request: CompileRequest = { fs: { [outputPath]: input }, inputPath: outputPath, options }
 
-    const d2 = new D2()
+    const d2 = (config.d2js ??= new D2())
     const response = await d2.compile(request)
     const content = await d2.render(response.diagram, response.renderOptions)
 
