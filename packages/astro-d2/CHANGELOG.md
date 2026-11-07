@@ -1,5 +1,11 @@
 # astro-d2
 
+## 0.14.1
+
+### Patch Changes
+
+- [#70](https://github.com/HiDeoo/astro-d2/pull/70) [`77b23cb`](https://github.com/HiDeoo/astro-d2/commit/77b23cb73a919756c27cc0033f829ba6b05ab47e) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes some attributes not being applied to inline SVG diagrams generated with D2 v0.6.9 or later.
+
 ## 0.14.0
 
 ### Minor Changes
