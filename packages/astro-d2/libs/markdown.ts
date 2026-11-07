@@ -84,7 +84,9 @@ function makeHtmlSvgNode(attributes: DiagramAttributes, diagram?: D2Diagram): Ht
   const tree = fromHtml(diagram.content, { fragment: true })
 
   visit(tree, 'element', (node) => {
-    if (node.tagName !== 'svg' || !('d2version' in node.properties)) return CONTINUE
+    if (node.tagName !== 'svg') return CONTINUE
+    // D2 v0.6.9+ uses `data-d2-version` while older versions and animated diagrams still use `d2Version`.
+    if (!('dataD2Version' in node.properties) && !('d2version' in node.properties)) return CONTINUE
 
     computeSvgSize(node, attributes, diagram.size)
     node.properties = { ...node.properties, ...attributes.dataAttributes }

@@ -15,7 +15,10 @@ ${TestDefaultDiagram}
 \`\`\`
 `
 
-export const TestD2Svg = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`
+export const TestD2Svg = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.9.0" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg class="d2-3990259979 d2-svg" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`
+
+// D2 v0.6.9+ uses `data-d2-version` while older versions and animated diagrams still use `d2Version`.
+export const TestD2LegacySvg = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>`
 
 export function getTestProcessors(config?: AstroD2UserConfig) {
   return [

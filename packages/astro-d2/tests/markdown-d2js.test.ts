@@ -2,14 +2,14 @@ import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
 import { D2, type CompileOptions } from '@d2lang/d2'
-import { afterEach, assert, describe, expect, test, vi } from 'vitest'
+import { afterAll, afterEach, assert, describe, expect, test, vi } from 'vitest'
 
 import { AstroD2ConfigSchema, type AstroD2UserConfig } from '../config'
 import { getAttributes } from '../libs/attributes'
 import { disposeD2js, generateD2Diagram } from '../libs/d2'
 import type { MarkdownAstroD2Config } from '../libs/markdown'
 
-import { getTestProcessors, TestD2Svg, TestDefaultDiagram, TestDefaultMd } from './utils'
+import { getTestProcessors, TestD2LegacySvg, TestD2Svg, TestDefaultDiagram, TestDefaultMd } from './utils'
 
 const svg = vi.hoisted(() => ({ raw: '' }))
 svg.raw = TestD2Svg
@@ -38,6 +38,12 @@ vi.spyOn(fs, 'writeFile').mockResolvedValue()
 
 afterEach(() => {
   vi.clearAllMocks()
+
+  svg.raw = TestD2Svg
+})
+
+afterAll(() => {
+  vi.restoreAllMocks()
 })
 
 const d2 = new D2()
@@ -316,9 +322,9 @@ ${TestDefaultDiagram}
       const result = await transformMd(TestDefaultMd, { inline: true })
 
       expect(result).toMatchInlineSnapshot(`
-    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
-    "
-  `)
+        "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.9.0" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Diagram</title><svg class="d2-3990259979 d2-svg" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+        "
+      `)
     })
 
     test('inlines SVGs if the `inline` attribute is specified', async () => {
@@ -330,9 +336,9 @@ ${TestDefaultDiagram}
       )
 
       expect(result).toMatchInlineSnapshot(`
-    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
-    "
-  `)
+        "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.9.0" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Diagram</title><svg class="d2-3990259979 d2-svg" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+        "
+      `)
     })
 
     test('uses the `title` attribute if specified for inline SVGs', async () => {
@@ -345,9 +351,9 @@ ${TestDefaultDiagram}
       )
 
       expect(result).toMatchInlineSnapshot(`
-    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Test Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
-    "
-  `)
+        "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.9.0" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64"><title>Test Diagram</title><svg class="d2-3990259979 d2-svg" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+        "
+      `)
     })
 
     test('sets the width and height attributes if the `width` attribute is set for inline SVGs', async () => {
@@ -360,9 +366,9 @@ ${TestDefaultDiagram}
       )
 
       expect(result).toMatchInlineSnapshot(`
-    "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64" width="100" height="50"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
-    "
-  `)
+        "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.9.0" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64" width="100" height="50"><title>Diagram</title><svg class="d2-3990259979 d2-svg" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+        "
+      `)
     })
 
     test('uses the `appendix` attribute if specified', async () => {
@@ -454,9 +460,25 @@ ${TestDefaultDiagram}
       )
 
       expect(result).toMatchInlineSnapshot(`
-       "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64" data-test="diagram"><title>Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
-       "
-     `)
+        "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" data-d2-version="v0.9.0" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64" data-test="diagram"><title>Diagram</title><svg class="d2-3990259979 d2-svg" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+        "
+      `)
+    })
+
+    test('supports inline SVGs using the legacy `d2Version` attribute', async () => {
+      svg.raw = TestD2LegacySvg
+
+      const result = await transformMd(
+        `\`\`\`d2 inline title="Test Diagram" width=100 data-test=diagram
+${TestDefaultDiagram}
+\`\`\`
+`,
+      )
+
+      expect(result).toMatchInlineSnapshot(`
+        "<!--?xml version="1.0" encoding="utf-8"?--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2version="0.6.6" preserveAspectRatio="xMinYMin meet" viewBox="0 0 128 64" width="100" height="50" data-test="diagram"><title>Test Diagram</title><svg id="d2-svg" class="d2-3990259979" width="128" height="64" viewBox="-101 -101 128 64"></svg></svg>
+        "
+      `)
     })
   },
 )
